@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -13,5 +13,4 @@
     <ProjectReference Include="..\Sp8de.Common\Sp8de.Common.csproj" />
     <ProjectReference Include="..\Sp8de.DataModel\Sp8de.DataModel.csproj" />
   </ItemGroup>
-
 </Project>
