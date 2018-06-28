@@ -22,5 +22,11 @@ namespace Sp8de.Services
             }
             return new string(result);
         }
+
+        public static long RandomLong()
+        {
+            var rnd = new CryptoRandom();
+            return rnd.NextLong();
+        }
     }
 }

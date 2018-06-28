@@ -7,10 +7,12 @@
   <ItemGroup>
     <PackageReference Include="Inferno" Version="1.5.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Troschuetz.Random" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Sp8de.Common\Sp8de.Common.csproj" />
     <ProjectReference Include="..\Sp8de.DataModel\Sp8de.DataModel.csproj" />
+    <ProjectReference Include="..\Sp8de.EthServices\Sp8de.EthServices.csproj" />
   </ItemGroup>
 </Project>
