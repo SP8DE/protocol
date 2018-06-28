@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="2.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="2.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="2.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sp8de.DataModel\Sp8de.DataModel.csproj" />
+  </ItemGroup>
+
+</Project>
