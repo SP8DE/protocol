@@ -35,6 +35,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sp8de.NeoServices", "src\Sp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sp8de.Services.Tests", "test\Sp8de.Services.Tests\Sp8de.Services.Tests.csproj", "{B9AD73AD-459C-41E8-9B82-6C521192F95F}"
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Sp8de.Frontend.Demo", "src\Sp8de.Frontend.Demo\", "{D84B7F70-76FD-454A-92CB-A5B8686E5C6D}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_52923"
+		Debug.AspNetCompiler.PhysicalPath = "src\Sp8de.Frontend.Demo\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52923\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_52923"
+		Release.AspNetCompiler.PhysicalPath = "src\Sp8de.Frontend.Demo\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52923\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "52923"
+		SlnRelativePath = "src\Sp8de.Frontend.Demo\"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +114,10 @@ Global
 		{B9AD73AD-459C-41E8-9B82-6C521192F95F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9AD73AD-459C-41E8-9B82-6C521192F95F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9AD73AD-459C-41E8-9B82-6C521192F95F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D84B7F70-76FD-454A-92CB-A5B8686E5C6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D84B7F70-76FD-454A-92CB-A5B8686E5C6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D84B7F70-76FD-454A-92CB-A5B8686E5C6D}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{D84B7F70-76FD-454A-92CB-A5B8686E5C6D}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,6 +136,7 @@ Global
 		{76C4F47B-E831-4237-8F7D-3ADA8F12D4D3} = {BDCDC468-2E1C-47D7-A499-987FBDC86BDD}
 		{3A739419-A238-4175-B415-80B23499A205} = {BDCDC468-2E1C-47D7-A499-987FBDC86BDD}
 		{B9AD73AD-459C-41E8-9B82-6C521192F95F} = {9C591A5E-BAF7-4624-98CD-FF125AEC9366}
+		{D84B7F70-76FD-454A-92CB-A5B8686E5C6D} = {BDCDC468-2E1C-47D7-A499-987FBDC86BDD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {09583719-2DC2-4BF1-A168-4C38B60B1FAC}

@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>Vue 2.0 Hello World</title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta name="robots" content="noindex, nofollow">
+	<meta name="googlebot" content="noindex, nofollow">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/vue/2.2.1/vue.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="/css/result-light.css">
+
+	<style type="text/css">
+	</style>
+
+	<script type="text/javascript">
+
+
+		window.onload = function () {
+
+			function concatBuffer(buffer1, buffer2, buffer3) {
+				var tmp = new Uint8Array(buffer1.byteLength + buffer2.byteLength + buffer3.byteLength);
+				tmp.set(buffer1, 0);
+				tmp.set(buffer2, buffer1.byteLength);
+				tmp.set(buffer3, buffer1.byteLength + buffer2.byteLength);
+
+				return tmp;
+			};
+
+			function runGame(array) {
+				var r = new Random(Random.engines.mt19937().seedWithArray(array));
+				var value = r.bool();
+				return value;
+			}
+
+
+			function sing(privateKey, message) {
+
+				var publicAddress = EthJS.Util.addHexPrefix(EthJS.Util.privateToAddress(privateKey).toString('hex'));
+
+				var msg = EthJS.Util.hashPersonalMessage(EthJS.Util.toBuffer(message));
+
+				var signed = EthJS.Util.ecsign(msg, EthJS.Util.toBuffer(privateKey));
+
+				var tx = signed.r.toString('hex') + signed.s.toString('hex') + EthJS.Util.stripHexPrefix(EthJS.Util.intToHex(signed.v));
+
+				var signedMsg = {
+					address: publicAddress,
+					msg: message,
+					sig: EthJS.Util.addHexPrefix(tx),
+					version: '3',
+					signer: 'MEW'
+				};
+
+				return signedMsg;
+			}
+
+			new Vue({
+				el: '#app',
+				data: {
+					message: '1',
+					privateKey: '0xd3a7d42d881a9b59ccefcac0f5bcc69f85e68fdf0bfb6fcbbe42373320de420f',
+					messageSign: '',
+					rndData: '',
+					log: ''
+				},
+				methods: {
+					singMessage: function () {
+						this.messageSign = sing(this.privateKey, this.message).sig
+					},
+					sendMessage: function () {
+						console.log(this.messageSign);
+					},
+					rndRun: function () {
+						var rnd = new Uint32Array(2);
+						window.crypto.getRandomValues(rnd);
+						this.rndData = rnd.join('')
+					},
+					coinGame: function (response) {
+						var arr = [1, 2];
+						this.rndData = runGame(arr);
+					},
+					fetchData: function () {
+
+						var self = this;
+						axios
+							.get('TODO')
+							.then(response => (this.log = response))
+					}
+				}
+			})
+
+		}
+
+	</script>
+
+</head>
+<body>
+	<script src="https://www.mobilefish.com/scripts/ethereumjs/ethereumjs-util.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/random-js/1.0.8/random.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+
+	<div id="app">
+		<p>
+			message
+			<input v-model="message">
+		</p>
+		<p>
+			rndData
+			<input v-model="rndData">
+		</p>
+
+		<p>
+			pk:
+			<input v-model="privateKey">
+		</p>
+
+		<p>{{ messageSign }}</p>
+		<p>{{ log }}</p>
+
+
+		<button v-on:click="singMessage">SingMessage Message</button>
+
+		<button v-on:click="rndRun">rnd</button>
+
+		<button v-on:click="coinGame">coinGame</button>
+
+		<button v-on:click="fetchData">fetchData</button>
+
+
+	</div>
+
+
+
+</body>
+</html>
