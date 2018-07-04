@@ -10,20 +10,6 @@ using System.Threading.Tasks;
 
 namespace Sp8de.Services
 {
-    public interface IBlockchainDepositAddressService
-    {
-        Task<WalletInfo> GenerateAddress(Currency currency, Guid userId);
-        Task<IList<WalletInfo>> GetAddresses(Guid userId);
-    }
-
-    public class WalletInfo
-    {
-        public Guid WalletId { get; set; }
-        public string GatewayCode { get; set; }
-        public Currency Currency { get; set; }
-        public string Address { get; set; }
-    }
-
     public class BlockchainDepositAddressService : IBlockchainDepositAddressService
     {
         private const string defaultGatewayCode = "SPAY";

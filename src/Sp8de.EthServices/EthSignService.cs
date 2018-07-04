@@ -19,6 +19,7 @@ namespace Sp8de.EthServices
         {
             var signer = new EthereumMessageSigner();
             var account = signer.HashAndEcRecover(message, signature);
+
             return account == pubKey;
         }
     }

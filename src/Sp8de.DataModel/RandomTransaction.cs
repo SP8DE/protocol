@@ -13,15 +13,8 @@ namespace Sp8de.DataModel
         public DateTime DateCreated { get; set; }
         public DateTime? LastUpdated { get; set; }
         public RandomTransactionStatus Status { get; set; }
-        public string Body { get; set; }
-    }
-
-    public enum RandomTransactionStatus
-    {
-        New = 0,
-        InProgress = 1,
-        Compleated = 2,
-        Canceled = 4,
-        Error = 8,
+        public string CommitBody { get; set; }
+        public string RevealBody { get; set; }
+        public string Secret { get; set; }
     }
 }

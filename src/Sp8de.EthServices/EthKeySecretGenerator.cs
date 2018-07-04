@@ -16,5 +16,16 @@ namespace Sp8de.EthServices
                 PublicAddress = key.GetPublicAddress()
             };
         }
+
+        public IKeySecret Load(string privateKey)
+        {
+            var key = new EthECKey(privateKey);
+
+            return new EthKeySecret()
+            {
+                PrivateKey = key.GetPrivateKey(),
+                PublicAddress = key.GetPublicAddress()
+            };
+        }
     }
 }
