@@ -56,6 +56,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Sp8de.Frontend.Demo", "src\
 		SlnRelativePath = "src\Sp8de.Frontend.Demo\"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sp8de.Casino.Web", "src\Sp8de.Casino.Web\Sp8de.Casino.Web.csproj", "{0F5CE793-7B84-412C-912F-7F5E63FF3920}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,6 +120,10 @@ Global
 		{D84B7F70-76FD-454A-92CB-A5B8686E5C6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D84B7F70-76FD-454A-92CB-A5B8686E5C6D}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{D84B7F70-76FD-454A-92CB-A5B8686E5C6D}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{0F5CE793-7B84-412C-912F-7F5E63FF3920}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F5CE793-7B84-412C-912F-7F5E63FF3920}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F5CE793-7B84-412C-912F-7F5E63FF3920}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F5CE793-7B84-412C-912F-7F5E63FF3920}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -137,6 +143,7 @@ Global
 		{3A739419-A238-4175-B415-80B23499A205} = {BDCDC468-2E1C-47D7-A499-987FBDC86BDD}
 		{B9AD73AD-459C-41E8-9B82-6C521192F95F} = {9C591A5E-BAF7-4624-98CD-FF125AEC9366}
 		{D84B7F70-76FD-454A-92CB-A5B8686E5C6D} = {BDCDC468-2E1C-47D7-A499-987FBDC86BDD}
+		{0F5CE793-7B84-412C-912F-7F5E63FF3920} = {BDCDC468-2E1C-47D7-A499-987FBDC86BDD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {09583719-2DC2-4BF1-A168-4C38B60B1FAC}
