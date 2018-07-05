@@ -2,19 +2,13 @@
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<title>Vue 2.0 Hello World</title>
+	<title>Game Demo</title>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<meta name="robots" content="noindex, nofollow">
 	<meta name="googlebot" content="noindex, nofollow">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/vue/2.2.1/vue.js"></script>
-
-	<link rel="stylesheet" type="text/css" href="/css/result-light.css">
-
-	<style type="text/css">
-	</style>
 
 	<script type="text/javascript">
 
@@ -30,16 +24,27 @@
 				return tmp;
 			};
 
-			function runGame(array) {
+			function getPrnd(array) {
 				var r = new Random(Random.engines.mt19937().seedWithArray(array));
 				var value = r.bool();
 				return value;
 			}
 
+			function generateSeed() {
+				var rnd = new Uint32Array(2);
+				window.crypto.getRandomValues(rnd);
+				return rnd[0] * rnd[1];
+			}
 
-			function sing(privateKey, message) {
+			function getPubKey(privateKey) {
+				return EthJS.Util.addHexPrefix(EthJS.Util.privateToAddress(privateKey).toString('hex'));
+			}
 
-				var publicAddress = EthJS.Util.addHexPrefix(EthJS.Util.privateToAddress(privateKey).toString('hex'));
+			function sing(privateKey, seed, bet) {
+
+				var pubKey = EthJS.Util.addHexPrefix(EthJS.Util.privateToAddress(privateKey).toString('hex'));
+
+				var message = pubKey + ";" + seed + ";" + bet;
 
 				var msg = EthJS.Util.hashPersonalMessage(EthJS.Util.toBuffer(message));
 
@@ -48,8 +53,8 @@
 				var tx = signed.r.toString('hex') + signed.s.toString('hex') + EthJS.Util.stripHexPrefix(EthJS.Util.intToHex(signed.v));
 
 				var signedMsg = {
-					address: publicAddress,
-					msg: message,
+					pubKey: pubKey,
+					message: message,
 					sig: EthJS.Util.addHexPrefix(tx),
 					version: '3',
 					signer: 'MEW'
@@ -61,40 +66,54 @@
 			new Vue({
 				el: '#app',
 				data: {
+					playerBet:'',
 					message: '1',
+					pubKey: '',
 					privateKey: '0xd3a7d42d881a9b59ccefcac0f5bcc69f85e68fdf0bfb6fcbbe42373320de420f',
 					messageSign: '',
-					rndData: '',
+					seedData: '',
 					log: ''
 				},
 				methods: {
-					singMessage: function () {
-						this.messageSign = sing(this.privateKey, this.message).sig
-					},
-					sendMessage: function () {
-						console.log(this.messageSign);
-					},
-					rndRun: function () {
-						var rnd = new Uint32Array(2);
-						window.crypto.getRandomValues(rnd);
-						this.rndData = rnd.join('')
-					},
-					coinGame: function (response) {
-						var arr = [1, 2];
-						this.rndData = runGame(arr);
-					},
-					fetchData: function () {
-
+					prepareGame: function () {
 						var self = this;
-						axios
-							.get('TODO')
-							.then(response => (this.log = response))
+						self.seedData = generateSeed();
+						var s = sing(self.privateKey, self.seedData, self.playerBet);
+
+						self.messageSign = s.sig;
+						self.message = s.message;
+						self.pubKey = s.pubKey;
+					},
+					runGame: function () {
+						var self = this;
+
+						axios.post('https://localhost:44301/api/DemoGame/start', {
+							"type": "TossCoin",
+							"bet": self.playerBet,
+							"betAmount": 0,
+							"pubKey": self.pubKey,
+							"sign": self.messageSign
+						}).then(function (response) {
+
+							self.log = response;
+
+							axios.post('https://localhost:44301/api/DemoGame/end', {
+								"gameId": response.data.gameId,
+								"seed": self.seedData,
+								"pubKey": self.pubKey,
+								"sign": self.singMessage
+							}).then(function (response2) {
+								self.log = response2.data
+							})
+						});
+					},
+					oneClickGame: function () {
+						this.prepareGame();
+						this.runGame();
 					}
 				}
 			})
-
 		}
-
 	</script>
 
 </head>
@@ -105,35 +124,30 @@
 
 	<div id="app">
 		<p>
+			playerBet
+			<input v-model="playerBet">
+		</p>
+		<p>
+			seedData
+			<input v-model="seedData">
+		</p>
+		<p>
 			message
 			<input v-model="message">
 		</p>
-		<p>
-			rndData
-			<input v-model="rndData">
-		</p>
-
 		<p>
 			pk:
 			<input v-model="privateKey">
 		</p>
 
 		<p>{{ messageSign }}</p>
+
 		<p>{{ log }}</p>
 
-
-		<button v-on:click="singMessage">SingMessage Message</button>
-
-		<button v-on:click="rndRun">rnd</button>
-
-		<button v-on:click="coinGame">coinGame</button>
-
-		<button v-on:click="fetchData">fetchData</button>
-
+		<button v-on:click="prepareGame">prepare</button>
+		<button v-on:click="runGame">run Game</button>
+		<button v-on:click="oneClickGame">one Click Game</button>
 
 	</div>
-
-
-
 </body>
 </html>
