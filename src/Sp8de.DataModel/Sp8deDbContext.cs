@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Sp8de.DataModel
 {
@@ -23,49 +24,61 @@ namespace Sp8de.DataModel
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Wallet>(entity =>
-            {
-                entity.HasOne(x => x.User)
+            builder.Entity<Wallet>(ConfigureWallet);
+
+            builder.Entity<BlockchainAddress>(ConfigureBlockchainAddress);
+
+            builder.Entity<UserApiKey>(ConfigureUserApiKey);
+
+            builder.Entity<WalletTransaction>(ConfigureWalletTransaction);
+
+            builder.Entity<BlockchainTransaction>(ConfigureBlockchainTransaction);
+        }
+
+        private void ConfigureBlockchainTransaction(EntityTypeBuilder<BlockchainTransaction> builder)
+        {
+            builder.HasOne(x => x.BlockchainAddress)
+               .WithMany(x => x.BlockchainTransactions)
+               .HasForeignKey(x => x.BlockchainAddressId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasIndex(e => e.Hash)
+                .HasName("HashIndex")
+                .IsUnique();
+        }
+
+        private void ConfigureWalletTransaction(EntityTypeBuilder<WalletTransaction> builder)
+        {
+            builder.HasOne(x => x.Wallet)
+                   .WithMany(x => x.WalletTransactions)
+                   .OnDelete(DeleteBehavior.Restrict)
+                   .HasForeignKey(x => x.WalletId);
+        }
+
+        private void ConfigureUserApiKey(EntityTypeBuilder<UserApiKey> builder)
+        {
+            builder.HasOne(x => x.User)
+              .WithMany(x => x.UserApiKeys)
+              .HasForeignKey(x => x.UserId)
+              .OnDelete(DeleteBehavior.Restrict);
+        }
+
+        private void ConfigureWallet(EntityTypeBuilder<Wallet> builder)
+        {
+            builder.HasOne(x => x.User)
                    .WithMany(x => x.Wallets)
                    .HasForeignKey(x => x.UserId)
                    .OnDelete(DeleteBehavior.Restrict);
 
-                entity.Property(u => u.ConcurrencyStamp).IsConcurrencyToken();
-            });
+            builder.Property(u => u.ConcurrencyStamp).IsConcurrencyToken();
+        }
 
-            builder.Entity<BlockchainAddress>()
-               .HasOne(x => x.User)
+        private void ConfigureBlockchainAddress(EntityTypeBuilder<BlockchainAddress> builder)
+        {
+            builder.HasOne(x => x.User)
                .WithMany(x => x.BlockchainAddresses)
                .OnDelete(DeleteBehavior.Restrict)
                .HasForeignKey(x => x.UserId);
-
-            builder.Entity<WalletTransaction>()
-                   .HasOne(x => x.Wallet)
-                   .WithMany(x => x.WalletTransactions)
-                   .OnDelete(DeleteBehavior.Restrict)
-                   .HasForeignKey(x => x.WalletId);
-            
-            builder.Entity<UserApiKey>(entity =>
-            {
-                entity.HasOne(x => x.User)
-                   .WithMany(x => x.UserApiKeys)
-                   .HasForeignKey(x => x.UserId)
-                   .OnDelete(DeleteBehavior.Restrict);
-            });
-
-            builder.Entity<BlockchainTransaction>(entity =>
-            {
-                entity.HasOne(x => x.BlockchainAddress)
-                   .WithMany(x => x.BlockchainTransactions)
-                   .HasForeignKey(x => x.BlockchainAddressId)
-                   .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasIndex(e => e.Hash)
-                    .HasName("HashIndex")
-                    .IsUnique();
-            });
-
-
         }
     }
 }

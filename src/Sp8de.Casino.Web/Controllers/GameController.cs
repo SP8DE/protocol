@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Sp8de.Casino.Web.Models;
+using Sp8de.Casino.Web.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,11 +13,13 @@ namespace Sp8de.Casino.Web.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class DemoGameController : Controller
+    public class GameController : Controller
     {
-        public DemoGameController()
-        {
+        private readonly IGameService gameService;
 
+        public GameController(IGameService gameService)
+        {
+            this.gameService = gameService;
         }
 
         [Route("start")]
@@ -52,20 +55,12 @@ namespace Sp8de.Casino.Web.Controllers
             return new GameFinishResponse()
             {
                 GameId = value.GameId,
-                WinNumber = RandomInteger(1, 6),
+                WinNumber = RandomInteger(1,6),
                 Items = items
             };
         }
 
-        private int DemoWinner()
-        {
-            var rand = new RNGCryptoServiceProvider();
-            byte[] arr = new byte[1];
-            rand.GetBytes(arr);
-            return arr[0] % 2 == 0 ? 0 : 1;
-        }
-
-        public int RandomInteger(int min, int max)
+        private int RandomInteger(int min, int max)
         {
             using (var rand = new RNGCryptoServiceProvider())
             {
@@ -83,6 +78,14 @@ namespace Sp8de.Casino.Web.Controllers
                 // Add min to the scaled difference between max and min.
                 return (int)(min + (max - min) * (scale / (double)uint.MaxValue));
             }
+        }
+
+        private int DemoWinner()
+        {
+            var rand = new RNGCryptoServiceProvider();
+            byte[] arr = new byte[1];
+            rand.GetBytes(arr);
+            return arr[0] % 2 == 0 ? 0 : 1;
         }
     }
 

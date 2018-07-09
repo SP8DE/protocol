@@ -32,10 +32,10 @@ namespace Sp8de.Random.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddEntityFrameworkNpgsql()
-                    .AddDbContext<Sp8deDbContext>(x => x.UseNpgsql(
-                        Configuration.GetConnectionString("DefaultConnection")
-                        ));
+            //services.AddEntityFrameworkNpgsql()
+            //        .AddDbContext<Sp8deDbContext>(x => x.UseNpgsql(
+            //            Configuration.GetConnectionString("DefaultConnection")
+            //            ));
 
             services.Configure<ApiBehaviorOptions>(options =>
             {

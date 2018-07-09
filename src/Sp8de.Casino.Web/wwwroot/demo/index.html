@@ -111,7 +111,7 @@
 			new Vue({
 				el: '#app',
 				data: {
-					playerBet: '',
+					playerBet: '1',
 					winNumber:'',
 					message: '1',
 					pubKey: '',
@@ -145,7 +145,7 @@
 							"sign": self.messageSign
 						}).then(function (response) {
 
-							self.log = response;
+							//self.log = response;
 
 							axios.post('https://localhost:44301/api/DemoGame/end', {
 								"gameId": response.data.gameId,
@@ -154,9 +154,9 @@
 								"sign": self.singMessage
 							}).then(function (response2) {
 
-								self.winNumber = response2.data.WinNumber;
+								self.winNumber = response2.data.winNumber;
 
-								if(self.playerBet == response2.data.WinNumber)
+								if (self.playerBet == response2.data.winNumber)
 								{
 									self.gameResult = "Win";
 								}
@@ -195,12 +195,10 @@
 			{{ gameResult}}
 		</p>
 
-
 		<ul class='dice'>
-			<li v-bind:class="{ "dice-" + winNumber }" class=''></li>
+			<li v-bind:class="'dice-' + winNumber"></li>
 		</ul>
-
-
+		
 		<p>
 			seedData
 			<input v-model="seedData">

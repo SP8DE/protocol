@@ -96,15 +96,6 @@ namespace Sp8de.Services
         public string Currency { get; internal set; }
     }
 
-    public class SpxPaymentGatewayConfig
-    {
-        public string ApiUrl { get; set; }
-        public string ApiKey { get; set; }
-        public string ApiSecret { get; set; }
-        public string CallbackUrl { get; set; }
-        public List<CurrencyItem> Settings { get; set; }
-    }
-
     public class CurrencyItem
     {
         public string Currency { get; set; }

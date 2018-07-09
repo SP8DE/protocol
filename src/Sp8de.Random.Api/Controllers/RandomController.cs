@@ -35,7 +35,7 @@ namespace Sp8de.Random.Api.Controllers
         }
 
         [HttpPost("reveal")]
-        public async Task<IActionResult> Reveal([FromBody]  RevealRequest value)
+        public async Task<ActionResult<RevealResponse>> Reveal([FromBody] RevealRequest value)
         {
             throw new NotImplementedException();
         }

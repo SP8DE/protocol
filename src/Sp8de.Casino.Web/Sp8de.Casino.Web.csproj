@@ -11,4 +11,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="2.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Demo\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\demo\index.html" />
+  </ItemGroup>
+
 </Project>

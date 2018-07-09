@@ -42,7 +42,7 @@ namespace Sp8de.Casino.Web.Models
     {
         public string GameId { get; set; }
 
-        public bool IsWinner { get; set; }
+        public int WinNumber { get; set; }
         public decimal WinAmount { get; set; }
 
         public IList<RevealItem> Items { get; set; }
