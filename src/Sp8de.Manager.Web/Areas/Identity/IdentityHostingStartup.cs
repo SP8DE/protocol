@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Sp8de.Manager.Web.Data;
 
 [assembly: HostingStartup(typeof(Sp8de.Manager.Web.Areas.Identity.IdentityHostingStartup))]
 namespace Sp8de.Manager.Web.Areas.Identity

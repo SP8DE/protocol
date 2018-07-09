@@ -9,10 +9,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Sp8de.Manager.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Sp8de.DataModel;
+using Sp8de.Common.Interfaces;
+using Sp8de.Services;
+using Microsoft.Extensions.Options;
+using Sp8de.Manager.Web.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Sp8de.Manager.Web
 {
@@ -35,10 +39,13 @@ namespace Sp8de.Manager.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddDbContext<Sp8deDbContext>(c =>
+                c.UseInMemoryDatabase("Sp8de"));
+
+            /*
             services.AddDbContext<Sp8deDbContext>(options =>
-                //options.UseNpgsql(Configuration.GetConnectionString("PgDefaultConnection"))
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
-            );
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
+            );*/
 
             services.AddDefaultIdentity<ApplicationUser>(o => {
                 o.Password.RequireNonAlphanumeric = false;
@@ -46,6 +53,15 @@ namespace Sp8de.Manager.Web
             })
             .AddEntityFrameworkStores<Sp8deDbContext>();
 
+            
+            services.AddTransient<IBlockchainDepositAddressService, BlockchainDepositAddressService>();
+            services.AddTransient<IPaymentAddressService, SpxPaymentAddressService>();
+            services.AddTransient<IFinService, FinService>();
+
+            services.Configure<SpxPaymentGatewayConfig>(Configuration.GetSection(nameof(SpxPaymentGatewayConfig)));
+            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<SpxPaymentGatewayConfig>>().Value);
+
+            services.AddTransient<IApiKeyManager, ApiKeyManager>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

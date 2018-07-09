@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Sp8de.Common.Enums;
 using Sp8de.DataModel;
+using Sp8de.Manager.Web.Services;
 using Sp8de.Services;
 using System;
 using System.Collections.Generic;
@@ -22,12 +23,6 @@ namespace Sp8de.Manager.Web.Controllers
     {
         public string Address { get; set; }
         public string Currency { get; set; }
-    }
-
-    public interface IFinService
-    {
-        (Guid, string) CreateWithdrawalRequest(CreateWithdrawalRequestModel model);
-        Task<bool> ConfirmWithdrawalRequestByCode(Guid requestId, string code);
     }
 
     public class CreateWithdrawalRequestModel
@@ -122,7 +117,7 @@ namespace Sp8de.Manager.Web.Controllers
                 return BadRequest("Verification code is invalid");
 
             var result = finService.CreateWithdrawalRequest(model);
-            
+
             //if (!result.IsSuccess)
             //    return BadRequest(ErrorResult.GetResult(result));
 

@@ -11,10 +11,11 @@ namespace Sp8de.Manager.Web.Controllers
     {
         private readonly ILogger<DashboardController> logger;
 
-        public DashboardController()
+        public DashboardController(ILogger<DashboardController> logger)
         {
-
+            this.logger = logger;
         }
+
         public IActionResult Index()
         {
             return View();

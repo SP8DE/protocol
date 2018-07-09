@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sp8de.DataModel;
+using Sp8de.Manager.Web.Models;
 
 namespace Sp8de.Manager.Web.Controllers
 {
@@ -42,15 +43,6 @@ namespace Sp8de.Manager.Web.Controllers
 
             return Ok(transactions);
         }
-    }
-
-    public class WalletTransactionViewModel
-    {
-        public string Currency { get; internal set; }
-        public decimal Amount { get; internal set; }
-        public DateTime DateCreated { get; internal set; }
-        public string Address { get; internal set; }
-        public string Hash { get; internal set; }
     }
 
 }
