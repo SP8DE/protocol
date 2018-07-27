@@ -17,6 +17,8 @@ using Sp8de.DataModel;
 using Sp8de.Random.Api.Authentication;
 using Sp8de.Random.Api.Models;
 using Sp8de.Random.Api.Services;
+using Sp8de.RandomGenerators;
+using Sp8de.Services;
 
 namespace Sp8de.Random.Api
 {
@@ -53,18 +55,28 @@ namespace Sp8de.Random.Api
                 };
             });
 
-            //services.AddTransient<IPaymentTransactionService, PaymentTransactionService>();
+
+            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
             services.Configure<RandomApiConfig>(Configuration.GetSection(nameof(RandomApiConfig)));
             services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<RandomApiConfig>>().Value);
 
-            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+            services.AddDbContext<Sp8deDbContext>(c => c.UseInMemoryDatabase("Sp8de"));
+
+            services.AddTransient<IApiKeyProvider, ApiKeyProvider>();
+            services.AddTransient<ISharedSeedService, SharedSeedService>();
+            services.AddTransient<IRandomNumberGenerator, RNGRandomGenerator>();
+            services.AddTransient<IRandomContributorService, BuildinRandomContributorService>();
+            services.AddTransient<IPRNGRandomService, PRNGRandomService>();
+
             services.AddTransient<IApiKeyProvider, ApiKeyProvider>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSwaggerGen(c =>
             {
+                c.DescribeAllParametersInCamelCase();
+                //c.DescribeStringEnumsInCamelCase();
                 c.DescribeAllEnumsAsStrings();
                 c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info() { Title = "Sp8de API", Version = "v1" });
                 c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
@@ -90,7 +102,18 @@ namespace Sp8de.Random.Api
                 app.UseHsts();
             }
 
-            app.UseSwagger();
+            app.UseSwagger(c =>
+            {
+                c.PreSerializeFilters.Add((document, request) =>
+                {
+                    var paths = document.Paths.ToDictionary(item => item.Key.ToLowerInvariant(), item => item.Value);
+                    document.Paths.Clear();
+                    foreach (var pathItem in paths)
+                    {
+                        document.Paths.Add(pathItem.Key, pathItem.Value);
+                    }
+                });
+            });
 
             app.UseAuthentication();
 

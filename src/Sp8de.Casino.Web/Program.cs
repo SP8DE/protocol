@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Sp8de.Casino.Web
+namespace Sp8de.DemoGame.Web
 {
     public class Program
     {

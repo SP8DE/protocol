@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Sp8de.Common.RandomModels;
+using System.Collections.Generic;
 
 namespace Sp8de.Random.Api.Models
 {
     public class RevealRequest
     {
-        public string GameId { get; set; }
+        public string SharedSeedId { get; set; }
         public List<RevealItem> Items { get; set; }
     }
 }

@@ -18,10 +18,10 @@ namespace Sp8de.IpfsStorageService.Test
 
             var id = Guid.NewGuid().ToString("n");
 
-            var rs1 = await service.WriteBlock(new RandomSessionData() { Version = 1, SessionId = id });
+            var rs1 = await service.WriteBlock(new RandomSessionData() { Version = 1, Id = id });
 
             var rs2 = await service.ReadBlock(rs1);
-            Assert.Equal(rs2.SessionId, id);
+            Assert.Equal(rs2.Id, id);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Sp8de.EthServices
 {
     public class EthSignService : ISignService
     {
-        public string SignMessage(string message, string privateKey, string pubKey)
+        public string SignMessage(string message, string privateKey)
         {
             var signer = new EthereumMessageSigner();
             return signer.HashAndSign(message, privateKey);

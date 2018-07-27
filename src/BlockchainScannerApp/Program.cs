@@ -28,6 +28,7 @@ namespace BlockchainScannerApp
                     { "GethAddress", "http://127.0.0.1:8545/" },
                     { "CallbackUrl", "http://127.0.0.1:5000/CallbackUrl" },
                     { "Type", "token" },
+                    { "Delay", "5" },
                     { "TokenContractAddress","0x05aaaa829afa407d83315cded1d45eb16025910c" },
                     { "TokenCurrency","SPX" }
                 };
@@ -67,12 +68,12 @@ namespace BlockchainScannerApp
                         {
                             logger.Info($"From block: {fromBlock}");
                             fromBlock = paymentService.VerifyWalletsAsync(fromBlock).GetAwaiter().GetResult();
-                            Thread.Sleep(1 * 1000);
+                            Thread.Sleep(config.Delay * 1000);
                         }
                         catch (Exception ex)
                         {
                             logger.Error(ex.ToString());
-                            Thread.Sleep(10 * 1000);
+                            Thread.Sleep(config.Delay * 1000 + 10000);
                         }
                     }
                 }
@@ -83,12 +84,12 @@ namespace BlockchainScannerApp
                         try
                         {
                             paymentService.VerifyWalletsAsync().GetAwaiter().GetResult();
-                            Thread.Sleep(1 * 1000);
+                            Thread.Sleep(config.Delay * 1000);
                         }
                         catch (Exception ex)
                         {
                             logger.Error(ex.ToString());
-                            Thread.Sleep(10 * 1000);
+                            Thread.Sleep(config.Delay * 1000 + 10000);
                         }
                     }
                 }

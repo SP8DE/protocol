@@ -90,7 +90,6 @@ namespace Sp8de.Manager.Web.Data
                 await context.SaveChangesAsync();
             }
 
-
         }
     }
 }

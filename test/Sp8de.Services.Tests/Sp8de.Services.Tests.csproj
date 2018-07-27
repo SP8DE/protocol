@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0-preview-20180610-02" />
+    <PackageReference Include="protobuf-net" Version="2.3.13" />
     <PackageReference Include="xunit" Version="2.4.0-beta.2.build4010" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0-beta.2.build4010" />
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
@@ -17,6 +18,7 @@
     <ProjectReference Include="..\..\src\Sp8de.Common\Sp8de.Common.csproj" />
     <ProjectReference Include="..\..\src\Sp8de.EthServices\Sp8de.EthServices.csproj" />
     <ProjectReference Include="..\..\src\Sp8de.NeoServices\Sp8de.NeoServices.csproj" />
+    <ProjectReference Include="..\..\src\Sp8de.RandomGenerators\Sp8de.RandomGenerators.csproj" />
     <ProjectReference Include="..\..\src\Sp8de.Services\Sp8de.Services.csproj" />
   </ItemGroup>
 

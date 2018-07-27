@@ -7,40 +7,11 @@ using Sp8de.Manager.Web.Services;
 using Sp8de.Services;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Sp8de.Manager.Web.Controllers
 {
-    public class WalletAddressRequest
-    {
-        [Required]
-        public Currency Currency { get; set; }
-    }
-
-    public class WalletViewModel
-    {
-        public string Address { get; set; }
-        public string Currency { get; set; }
-    }
-
-    public class CreateWithdrawalRequestModel
-    {
-        public Guid UserId { get; set; }
-        public decimal Amount { get; set; }
-        public Currency Currency { get; set; }
-        public string Wallet { get; set; }
-
-        public string TwoFactorCode { get; set; }
-
-        public override string ToString()
-        {
-            return $"[CreateWithdrawalRequest] UserId {UserId}, amount {Amount} {Currency}, " +
-                   $"wallet {Wallet} ";
-        }
-    }
-
     public class WalletController : Controller
     {
         private readonly IBlockchainDepositAddressService addressService;
@@ -55,6 +26,12 @@ namespace Sp8de.Manager.Web.Controllers
             this.userManager = userManager;
             this.finService = finService;
         }
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+
 
         private ApplicationUser GetCurrentUser()
         {

@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Sp8de.Casino.Web.Models;
+using Sp8de.DemoGame.Web.Models;
+using Sp8de.Common.Interfaces;
+using Sp8de.RandomGenerators;
 
-namespace Sp8de.Casino.Web
+namespace Sp8de.DemoGame.Web
 {
     public class Startup
     {
@@ -50,11 +48,15 @@ namespace Sp8de.Casino.Web
                 };
             });
 
+            services.AddTransient<IPRNGRandomService, PRNGRandomService>();
+
+            services.AddMemoryCache();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSwaggerGen(c =>
             {
+                c.DescribeAllParametersInCamelCase();
                 c.DescribeAllEnumsAsStrings();
                 c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info() { Title = "Sp8de Game API", Version = "v1" });
                 //c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
@@ -80,7 +82,18 @@ namespace Sp8de.Casino.Web
 
             app.UseCors("AllowAllOrigins");
 
-            app.UseSwagger();
+            app.UseSwagger(c =>
+            {
+                c.PreSerializeFilters.Add((document, request) =>
+                {
+                    var paths = document.Paths.ToDictionary(item => item.Key.ToLowerInvariant(), item => item.Value);
+                    document.Paths.Clear();
+                    foreach (var pathItem in paths)
+                    {
+                        document.Paths.Add(pathItem.Key, pathItem.Value);
+                    }
+                });
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

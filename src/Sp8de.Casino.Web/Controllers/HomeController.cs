@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Sp8de.Casino.Web.Models;
+using Sp8de.DemoGame.Web.Models;
 
-namespace Sp8de.Casino.Web.Controllers
+namespace Sp8de.DemoGame.Web.Controllers
 {
     public class HomeController : Controller
     {

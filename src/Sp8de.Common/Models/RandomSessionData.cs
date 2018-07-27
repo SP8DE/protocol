@@ -2,7 +2,7 @@
 {
     public class RandomSessionData
     {
-        public string SessionId { get; set; }
+        public string Id { get; set; }
         public int Version { get; set; }
     }
 }

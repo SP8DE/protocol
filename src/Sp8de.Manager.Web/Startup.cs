@@ -17,6 +17,8 @@ using Sp8de.Services;
 using Microsoft.Extensions.Options;
 using Sp8de.Manager.Web.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Sp8de.Manager.Web.Models;
+using Sp8de.Email;
 
 namespace Sp8de.Manager.Web
 {
@@ -58,14 +60,22 @@ namespace Sp8de.Manager.Web
             services.AddTransient<IPaymentAddressService, SpxPaymentAddressService>();
             services.AddTransient<IFinService, FinService>();
 
+            services.Configure<SendGridApiConfig>(Configuration.GetSection(nameof(SendGridApiConfig)));
+            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<SendGridApiConfig>>().Value);
+
+            services.AddTransient<ICommonEmailSender, SendGridEmailSender>();
+            
             services.Configure<SpxPaymentGatewayConfig>(Configuration.GetSection(nameof(SpxPaymentGatewayConfig)));
             services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<SpxPaymentGatewayConfig>>().Value);
+
+            services.Configure<Sp8deManagerConfig>(Configuration.GetSection(nameof(Sp8deManagerConfig)));
+            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<Sp8deManagerConfig>>().Value);
 
             services.AddTransient<IApiKeyManager, ApiKeyManager>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            //services.AddSingleton<IEmailSender, EmailSender>();
+            //services.AddSingleton<ICommonEmailSender, EmailSender>();
             //services.Configure<AuthMessageSenderOptions>(Configuration);
         }
 

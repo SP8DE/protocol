@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace Sp8de.NeoServices
 {
-    public class NeoKeySecretGenerator: IKeySecretGenerator
+    public class NeoKeySecretGenerator: IKeySecretManager
     {
         public IKeySecret Generate()
         {

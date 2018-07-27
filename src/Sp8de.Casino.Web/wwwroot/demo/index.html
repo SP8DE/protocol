@@ -137,7 +137,7 @@
 					runGame: function () {
 						var self = this;
 
-						axios.post('https://localhost:44301/api/DemoGame/start', {
+						axios.post('https://localhost:5001/api/DemoGame/start', {
 							"type": "Dice",
 							"bet": self.playerBet,
 							"betAmount": 0,
@@ -147,7 +147,7 @@
 
 							//self.log = response;
 
-							axios.post('https://localhost:44301/api/DemoGame/end', {
+							axios.post('https://localhost:5001/api/DemoGame/end', {
 								"gameId": response.data.gameId,
 								"seed": self.seedData,
 								"pubKey": self.pubKey,

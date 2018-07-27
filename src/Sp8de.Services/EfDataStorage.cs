@@ -15,11 +15,19 @@ namespace Sp8de.Services
             this.context = context;
         }
 
+        public void Add(object data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Get(object key)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Save()
         {
 
         }
-
-
     }
 }

@@ -1,10 +1,11 @@
 ﻿using Sp8de.Common.Interfaces;
+using Sp8de.Common.RandomModels;
 using Sp8de.Random.Api.Models;
 using Sp8de.Services;
+using Sp8de.Services.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Sp8de.Random.Api.Services
 {
@@ -12,33 +13,74 @@ namespace Sp8de.Random.Api.Services
     {
         private readonly IDataStorage dataStorage;
         private readonly ISignService signService;
-        private readonly IRandomNumberGenerator random;
+        private readonly IRandomContributorService contributorService;
 
-        public SharedSeedService(IDataStorage dataStorage, ISignService signService, IRandomNumberGenerator random)
+        public SharedSeedService(IDataStorage dataStorage, ISignService signService, IRandomContributorService contributorService)
         {
             this.dataStorage = dataStorage;
             this.signService = signService;
-            this.random = random;
+            this.contributorService = contributorService;
         }
 
-        public void Commit(IList<CommitItem> items)
+        public SharedSeedData AggregatedCommit(List<CommitItem> items)
         {
+            var seedData = new SharedSeedData()
+            {
+                Id = TxIdHelper.GenerateId(),
+                MetaData = new SharedSeedMetaData()
+                {
+                    Expire = DateTime.UtcNow.AddMonths(5),
+                    TimeStamp = DateTime.UtcNow
+                },
+                Items = new List<CommitItem>()
+            };
 
+            seedData.Items.AddRange(items);
+
+            var contributorCommintItem = contributorService.GenerateCommit(DateTime.UtcNow.Ticks.ToString());
+            seedData.Items.Add(contributorCommintItem);
+
+            dataStorage.Add(seedData);
+
+            return seedData;
         }
 
-        public void Reveal(IList<RevealItem> items)
+        public RevealSharedSeedData Reveal(string sharedSeedId, IList<RevealItem> items)
         {
             foreach (var item in items)
             {
-                if (!signService.VerifySignature($"${item.PubKey};${item.Salt};${item.Seed}", item.Sign, item.PubKey))
+                if (!signService.VerifySignature(item.ToString(), item.Sign, item.PubKey))
                 {
                     throw new ArgumentException($"Invalid signature for {item.PubKey}");
                 }
             }
 
-            var sharedSeed =  RandomHelpers.CreateSharedSeed(items.Select(x => x.Seed).AsEnumerable());
+            var commintItems = dataStorage.Get(sharedSeedId);
 
-            
+            var contributorReveal = contributorService.Reveal(new CommitItem() { });
+
+            var sharedSeed = RandomHelpers.CreateSharedSeed(items.Select(x => x.Seed).AsEnumerable());
+
+            var list = new List<RevealItem>();
+            list.AddRange(items);
+            list.Add(contributorReveal);
+
+            return new RevealSharedSeedData()
+            {
+                Id = sharedSeedId,
+                Items = list,
+                SharedSeed = sharedSeed.ToList()
+            };
+        }
+
+        public RevealSharedSeedData Get(string sharedSeedId)
+        {
+            return new RevealSharedSeedData()
+            {
+                Id = sharedSeedId,
+                //Items = list,
+                //SharedSeed = sharedSeed
+            };
         }
     }
 }

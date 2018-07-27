@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Sp8de.Common.Interfaces;
 using Sp8de.DataModel;
 using Sp8de.Manager.Web.Models;
 
@@ -17,12 +18,12 @@ namespace Sp8de.Manager.Web.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IEmailSender _emailSender;
+        private readonly ICommonEmailSender _emailSender;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender)
+            ICommonEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -140,7 +141,8 @@ namespace Sp8de.Manager.Web.Areas.Identity.Pages.Account.Manage
             await _emailSender.SendEmailAsync(
                 email,
                 "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.",
+                $"Please confirm your account by link: {HtmlEncoder.Default.Encode(callbackUrl)}.");
 
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();

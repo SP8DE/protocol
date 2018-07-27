@@ -1,0 +1,29 @@
+﻿@model List<Sp8de.Common.Interfaces.ApiSecretInfo>
+@{
+    ViewData["Title"] = "Api Keys";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+
+<p>
+    <a class="btn btn-primary" href="/ApiKey/Generate">Generate</a>
+</p>
+
+<table class="table table-bordered">
+    <tr>
+        <td>Api Key</td>
+        <td>Api Secret</td>
+        <td></td>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ApiKey</td>
+            <td>@item.ApiSecret ...</td>
+            <td><a class="btn btn-primary" href="#revoke">Revoke</a></td>
+        </tr>
+    }
+</table>
+

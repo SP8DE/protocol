@@ -6,7 +6,8 @@ namespace BlockchainScannerApp.Models
 	public class EthPaymentsConfig
 	{
 		public string Type { get; set; }
-		public void SetWallets(string[] wallets)
+        public int Delay { get; set; }
+        public void SetWallets(string[] wallets)
 		{
 			Wallets = wallets.Select(w => w.ToLower()).ToList();
 			WalletsTrimmed = Wallets.Select(x => x.Substring(2, 40)).ToList();
