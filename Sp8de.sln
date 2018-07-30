@@ -56,7 +56,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Sp8de.Frontend.Demo", "src\
 		SlnRelativePath = "src\Sp8de.Frontend.Demo\"
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sp8de.DemoGame.Web", "src\Sp8de.Casino.Web\Sp8de.DemoGame.Web.csproj", "{0F5CE793-7B84-412C-912F-7F5E63FF3920}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sp8de.DemoGame.Web", "src\Sp8de.DemoGame.Web\Sp8de.DemoGame.Web.csproj", "{0F5CE793-7B84-412C-912F-7F5E63FF3920}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sp8de.Email", "src\Sp8de.Email\Sp8de.Email.csproj", "{4710754D-08A4-4789-A670-F39C7D603ACE}"
 EndProject
