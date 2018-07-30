@@ -23,8 +23,8 @@ namespace Sp8de.DemoGame.Web.Controllers
             this.prng = prng;
         }
 
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(200, Type = typeof(GameStartResponse))]
+        [ProducesResponseType(400, Type = typeof(List<Error>))]
         [Route("start")]
         [HttpPost]
         public ActionResult<GameStartResponse> Start([FromBody]GameStartRequest model)
@@ -34,9 +34,11 @@ namespace Sp8de.DemoGame.Web.Controllers
                 case GameType.Dice:
                     if (model.Bet == null || model.Bet.Length < 1 || model.Bet.Length > 5 || model.Bet.Any(x => x < 1 || x > 6))
                     {
-                        return BadRequest(new Error()
-                        {
-                            Message = "Invalid Bet"
+                        return BadRequest(new List<Error>{
+                            new Error()
+                            {
+                                Message = "Invalid Bet"
+                            }
                         });
                     }
                     break;
@@ -92,8 +94,8 @@ namespace Sp8de.DemoGame.Web.Controllers
             return rs;
         }
 
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(200, Type = typeof(GameStartResponse))]
+        [ProducesResponseType(400, Type = typeof(List<Error>))]
         [Route("end")]
         [HttpPost]
         public ActionResult<GameFinishResponse> End([FromBody]GameFinishRequest model)
