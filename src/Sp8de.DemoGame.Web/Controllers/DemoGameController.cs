@@ -67,7 +67,7 @@ namespace Sp8de.DemoGame.Web.Controllers
                 },
                 new SignedItem()
                 {
-                    PubKey = "0x492d0fd814940d1375225a7e10905585b72b0a8c",
+                    PubKey = "0x4619284a395b3959bFDE0251207b92EFA53a8500",
                     Nonce = 1,
                     Sign = "0xd7856f3065716ec57f226caf2c8456fb86890244d6e2d153c90265a5c957ef5b6d7f3d544b38cef5bd9dda5ede58d63c7868cccab136caded72d06425264ef851c"
                 },
@@ -113,7 +113,7 @@ namespace Sp8de.DemoGame.Web.Controllers
                 },
                 new RevealItem()
                 {
-                    PubKey = "0x492d0fd814940d1375225a7e10905585b72b0a8c",
+                    PubKey = "0x4619284a395b3959bFDE0251207b92EFA53a8500",
                     Nonce = 1,
                     Seed = 1,
                     Sign = "0xd7856f3065716ec57f226caf2c8456fb86890244d6e2d153c90265a5c957ef5b6d7f3d544b38cef5bd9dda5ede58d63c7868cccab136caded72d06425264ef851c"
