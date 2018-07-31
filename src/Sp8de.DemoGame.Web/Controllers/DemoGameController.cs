@@ -55,8 +55,6 @@ namespace Sp8de.DemoGame.Web.Controllers
                     throw new NotImplementedException();
             }
 
-
-
             var list = new List<SignedItem>
             {
                 new SignedItem()
@@ -96,11 +94,17 @@ namespace Sp8de.DemoGame.Web.Controllers
 
         [ProducesResponseType(200, Type = typeof(GameStartResponse))]
         [ProducesResponseType(400, Type = typeof(List<Error>))]
+        [ProducesResponseType(404)]
         [Route("end")]
         [HttpPost]
         public ActionResult<GameFinishResponse> End([FromBody]GameFinishRequest model)
         {
             var game = cache.Get<GameStartResponse>(model.GameId);
+
+            if (game == null)
+            {
+                return NotFound();
+            }
 
             var list = new List<RevealItem>
             {
@@ -147,32 +151,31 @@ namespace Sp8de.DemoGame.Web.Controllers
 
         private void DemoGameLogic(GameStartResponse game, (IList<int> seedArray, string seedHash) seed, out int[] winNumbers, out decimal winAmount, out bool isWinner)
         {
-
-            if (game.GameType == GameType.Dice)
+            switch (game.GameType)
             {
-                winNumbers = prng.Generate(seed.seedArray, 1, 1, 6);
-                winAmount = 0;
-                isWinner = false;
-                if (game.Bet.Contains(winNumbers.Single()))
-                {
-                    isWinner = true;
-                    winAmount = game.BetAmount / game.Bet.Length;
-                }
+                case GameType.TossCoin:
+                    winNumbers = prng.Generate(seed.seedArray, 1, 0, 1);
+                    winAmount = 0;
+                    isWinner = false;
+                    if (game.Bet.Single() == winNumbers.Single())
+                    {
+                        isWinner = true;
+                        winAmount = game.BetAmount;
+                    }
+                    break;
+                case GameType.Dice:
+                    winNumbers = prng.Generate(seed.seedArray, 1, 1, 6);
+                    winAmount = 0;
+                    isWinner = false;
+                    if (game.Bet.Contains(winNumbers.Single()))
+                    {
+                        isWinner = true;
+                        winAmount = game.BetAmount / game.Bet.Length;
+                    }
+                    break;
+                default:
+                    throw new NotImplementedException();
             }
-
-            if (game.GameType == GameType.TossCoin)
-            {
-                winNumbers = prng.Generate(seed.seedArray, 1, 0, 1);
-                winAmount = 0;
-                isWinner = false;
-                if (game.Bet.Single() == winNumbers.Single())
-                {
-                    isWinner = true;
-                    winAmount = game.BetAmount;
-                }
-            }
-
-            throw new NotImplementedException();
         }
 
         public static (IList<int> seedArray, string seedHash) CreateSharedSeedByStrings(IEnumerable<string> sharedSeedData)

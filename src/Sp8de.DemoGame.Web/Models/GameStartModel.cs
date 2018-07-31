@@ -37,7 +37,6 @@ namespace Sp8de.DemoGame.Web.Models
     {
         public string GameId { get; set; }
         public string PubKey { get; set; }
-        public string Salt { get; set; }
         public string Sign { get; set; }
         public long Seed { get; set; }
         public long Nonce { get; set; }
