@@ -19,6 +19,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs/Observable';
 
 import { GameFinishRequest } from '../model/gameFinishRequest';
+import { GameFinishResponse } from '../model/gameFinishResponse';
 import { GameStartRequest } from '../model/gameStartRequest';
 import { GameStartResponse } from '../model/gameStartResponse';
 
@@ -65,9 +66,9 @@ export class DemoGameService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDemoGameEndPost(model?: GameFinishRequest, observe?: 'body', reportProgress?: boolean): Observable<GameStartResponse>;
-    public apiDemoGameEndPost(model?: GameFinishRequest, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<GameStartResponse>>;
-    public apiDemoGameEndPost(model?: GameFinishRequest, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<GameStartResponse>>;
+    public apiDemoGameEndPost(model?: GameFinishRequest, observe?: 'body', reportProgress?: boolean): Observable<GameFinishResponse>;
+    public apiDemoGameEndPost(model?: GameFinishRequest, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<GameFinishResponse>>;
+    public apiDemoGameEndPost(model?: GameFinishRequest, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<GameFinishResponse>>;
     public apiDemoGameEndPost(model?: GameFinishRequest, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -95,7 +96,7 @@ export class DemoGameService {
             headers = headers.set("Content-Type", httpContentTypeSelected);
         }
 
-        return this.httpClient.post<GameStartResponse>(`${this.basePath}/api/demogame/end`,
+        return this.httpClient.post<GameFinishResponse>(`${this.basePath}/api/demogame/end`,
             model,
             {
                 withCredentials: this.configuration.withCredentials,
