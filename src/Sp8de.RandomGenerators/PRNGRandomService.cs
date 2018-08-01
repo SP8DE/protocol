@@ -15,7 +15,7 @@ namespace Sp8de.RandomGenerators
             var rng = GetGenerator(type, seed);
             for (int i = 0; i < count; i++)
             {
-                arr[i] = rng.Next(min, max);
+                arr[i] = rng.Next(min, max + 1);
             }
             return arr;
         }

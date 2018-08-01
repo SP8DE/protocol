@@ -39,7 +39,7 @@ namespace Sp8de.Services.Tests
         public void XorShift128Test(int max)
         {
             var service = new PRNGRandomService();
-            var array = service.Generate(new[] { 1, 2, 3 }, max * 10, 1, max, Common.Enums.PRNGAlgorithmType.XorShift128);
+            var array = service.Generate(new uint[] { 1, 2, 3 }, max * 10, 1, max, Common.Enums.PRNGAlgorithmType.XorShift128);
             var data = array.Distinct();
 
             Assert.Equal(max, data.Count());
@@ -99,7 +99,7 @@ namespace Sp8de.Services.Tests
         [Fact]
         void Mt21_3()
         {
-            var rnd = new MT19937Generator(new[] { 253858671, 858736590, 1052288703, 2110868011, 468866989, 799787176, 65869483, 1821377874, 1567047110, 1677552375, 1942724549, 1927805448 });
+            var rnd = new MT19937Generator(new uint[] { 3812420242, 459506247, 2183839257, 580200489, 2015677638, 927419777, 441890165, 2639697008, 2119246415, 1824953119, 2556517629, 704541974 });
             var list = new List<double>();
             for (int i = 0; i < 10; i++)
             {
@@ -111,14 +111,14 @@ namespace Sp8de.Services.Tests
         [Fact]
         void Mt21_4()
         {
-            var rnd = new MT19937Generator(new[] { 1, 2, 3 });
+            var rnd = new MT19937Generator(new uint[] { 3812420242, 459506247, 2183839257, 580200489, 2015677638, 927419777, 441890165, 2639697008, 2119246415, 1824953119, 2556517629, 704541974 });
             var list = new List<double>();
             for (int i = 0; i < 10; i++)
             {
                 //list.Add(rnd.NextUIntInclusiveMaxValue()* (1.0 / 4294967296.0));
                 //list.Add(scaleInt(rnd.NextUIntInclusiveMaxValue()));
                 list.Add(rnd.NextUInt(1,7));
-                list.Add(rnd.Next(1, 7));
+                //list.Add(rnd.Next(1, 7));
             }
 
             Assert.Equal(10, list.Count());
@@ -145,7 +145,7 @@ namespace Sp8de.Services.Tests
         [Fact]
         void Mt21_5()
         {
-            var rnd = new MT19937Generator(new[] { 1, 2, 3 });
+            var rnd = new MT19937Generator(new uint[] { 3812420242, 459506247, 2183839257, 580200489, 2015677638, 927419777, 441890165, 2639697008, 2119246415, 1824953119, 2556517629, 704541974 });
             var list = new List<double>();
             for (int i = 0; i < 10; i++)
             {
