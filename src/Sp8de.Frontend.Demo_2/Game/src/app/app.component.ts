@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Sp8deCrypto} from 'sp8de.crypto';
-import {DemoGameService, GameFinishRequest, GameStartRequest, GameStartResponse} from './api';
+import {DemoGameService, GameFinishRequest, GameFinishResponse, GameStartRequest, GameStartResponse} from './api';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -69,16 +69,16 @@ export class AppComponent implements OnInit {
         map(
           item => {
             this.startResponse = item;
-            return item;
+            return <GameFinishResponse>item;
           }));
   }
 
-  public endGame(parameters: parametersEndGame): Observable<any> {
+  public endGame(parameters: parametersEndGame): Observable<GameFinishResponse> {
     return this.api.apiDemoGameEndPost(this.createRequestEnd(this.requestEnd, parameters))
       .pipe(
         map(item => {
           // some actions
-          return item;
+          return <GameFinishResponse>item;
         })
       );
   }
