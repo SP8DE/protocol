@@ -92,7 +92,7 @@ namespace Sp8de.DemoGame.Web.Controllers
             return rs;
         }
 
-        [ProducesResponseType(200, Type = typeof(GameStartResponse))]
+        [ProducesResponseType(200, Type = typeof(GameFinishResponse))]
         [ProducesResponseType(400, Type = typeof(List<Error>))]
         [ProducesResponseType(404)]
         [Route("end")]
