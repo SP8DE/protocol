@@ -70,8 +70,12 @@
 			};
 
 			function getPrnd(array) {
-				var r = new Random(Random.engines.mt19937().seedWithArray(array));
-				var value = r.bool();
+                var r = new Random(Random.engines.mt19937().seedWithArray(array));
+                for (var i = 0; i < 10; i++) {
+                    var value = r.integer();
+                    console.log(value);
+                }
+				
 				return value;
 			}
 
@@ -107,6 +111,8 @@
 
 				return signedMsg;
 			}
+
+            getPrnd([1, 2, 3]);
 
 			new Vue({
 				el: '#app',

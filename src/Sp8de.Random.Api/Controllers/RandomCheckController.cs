@@ -66,7 +66,7 @@ namespace Sp8de.Random.Api.Controllers
 
     public class RandomCheckRequest
     {
-        public List<int> SharedSeed { get; set; }
+        public List<uint> SharedSeed { get; set; }
         public RandomSettings Settings { get; set; }
     }
 

@@ -9,24 +9,24 @@ namespace Sp8de.RandomGenerators
 {
     public class PRNGRandomService : IPRNGRandomService
     {
-        public Int32[] Generate(IList<int> seed, int count, int min, int max, PRNGAlgorithmType type = PRNGAlgorithmType.MT19937)
+        public Int32[] Generate(IList<uint> seed, int count, int min, int max, PRNGAlgorithmType type = PRNGAlgorithmType.MT19937)
         {
             var arr = new Int32[count];
             var rng = GetGenerator(type, seed);
             for (int i = 0; i < count; i++)
             {
-                arr[i] = Convert.ToInt32(rng.NextDouble(1, max));
+                arr[i] = rng.Next(min, max);
             }
             return arr;
         }
 
-        private AbstractGenerator GetGenerator(PRNGAlgorithmType type, IList<int> seed)
+        private AbstractGenerator GetGenerator(PRNGAlgorithmType type, IList<uint> seed)
         {
 
             switch (type)
             {
                 case PRNGAlgorithmType.MT19937:
-                    return new MT19937Generator(seed);
+                    return new MT19937Generator(seed.ToArray());
                 case PRNGAlgorithmType.XorShift128:
                     return new XorShift128Generator(AggregateSeed(seed));
                 default:
@@ -37,7 +37,7 @@ namespace Sp8de.RandomGenerators
         /// <summary>
         /// Fisher–Yates shuffle
         /// </summary>
-        public void Shuffle(IList<int> seed, int[] array, PRNGAlgorithmType type = PRNGAlgorithmType.MT19937)
+        public void Shuffle(IList<uint> seed, int[] array, PRNGAlgorithmType type = PRNGAlgorithmType.MT19937)
         {
             var rng = GetGenerator(type, seed);
 
@@ -51,12 +51,12 @@ namespace Sp8de.RandomGenerators
             }
         }
 
-        public int AggregateSeed(IList<int> seedArray)
+        public uint AggregateSeed(IList<uint> seedArray)
         {
             return seedArray.Aggregate((x, y) => x ^ y);
         }
 
-        public Int32[] GenerateUnique(IList<int> seed, int count, int min, int max, PRNGAlgorithmType type = PRNGAlgorithmType.MT19937)
+        public Int32[] GenerateUnique(IList<uint> seed, int count, int min, int max, PRNGAlgorithmType type = PRNGAlgorithmType.MT19937)
         {
             var rng = GetGenerator(type, seed);
 
@@ -65,7 +65,7 @@ namespace Sp8de.RandomGenerators
             int data;
             for (int i = 0; i < int.MaxValue; i++)
             {
-                data = Convert.ToInt32(rng.NextDouble(1, max));
+                data = rng.Next(min, max);
 
                 if (!set.Contains(data))
                 {
