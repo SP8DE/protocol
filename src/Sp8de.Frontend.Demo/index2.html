@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Game Demo</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/javascript" src="https://magicant.github.io/sjavascript/mt.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/random-js/1.0.8/random.min.js"></script>
+
+
+    <style>
+        /**
+        * CSS sprite for a dice with six faces.
+        *
+        */
+        ul.dice {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+            ul.dice li {
+                display: inline-block;
+                padding: 0;
+                margin: 0 4px 0 0;
+                width: 32px;
+                height: 32px;
+                background: url(https://upload.wikimedia.org/wikipedia/commons/2/2e/Dice-faces_32x32.jpg) no-repeat;
+            }
+
+                ul.dice li.dice-1 {
+                    background-position: -160px 0px;
+                }
+
+                ul.dice li.dice-2 {
+                    background-position: -128px 0px;
+                }
+
+                ul.dice li.dice-3 {
+                    background-position: -96px 0px;
+                }
+
+                ul.dice li.dice-4 {
+                    background-position: -64px 0px;
+                }
+
+                ul.dice li.dice-5 {
+                    background-position: -32px 0px;
+                }
+
+                ul.dice li.dice-6 {
+                    background-position: 0px 0px;
+                }
+    </style>
+
+    <script type="text/javascript">
+        function getPrnd(array) {
+            var arr = [];
+            var r = new Random(Random.engines.mt19937().seedWithArray(array));
+            for (var i = 0; i < 10; i++) {
+                //var value = r.integer(0, 4294967295);
+                var value = r.integer(1, 6);
+                //var value = r.real(0, 1.0);
+                arr.push(value);
+                //console.log(value);
+            }
+            console.log(arr);
+            //return value;
+        }
+
+        window.onload = function () {
+            var seed = [253858671, 858736590, 1052288703, 2110868011, 468866989, 799787176, 65869483, 1821377874, 1567047110, 1677552375, 1942724549, 1927805448];
+            getPrnd([1, 2, 3]);
+
+            var mt = new MersenneTwister([1,2,3]);
+
+            var arr = [];
+            for (var i = 0; i < 10; i++) {
+                //arr.push(mt.nextInt());
+                arr.push(mt.nextInt(1,7));
+            }
+            console.log(arr)
+
+            /*
+            var integer1 = ;
+            var integer1 = mt.nextInt(0, 5);
+            var integer1 = mt.nextInt(0, 5);
+            */
+        }
+    </script>
+
+</head>
+<body>
+
+</html>

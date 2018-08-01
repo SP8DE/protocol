@@ -51,7 +51,7 @@ namespace Sp8de.DemoGame.Web.Models
 
         public IList<RevealItem> Items { get; set; }
         public string SharedSeedHash { get; set; }
-        public IList<int> SharedSeedArray { get; set; }
+        public IList<uint> SharedSeedArray { get; set; }
         public string ValidationTxHash { get; set; }
         public bool IsWinner { get; set; }
     }

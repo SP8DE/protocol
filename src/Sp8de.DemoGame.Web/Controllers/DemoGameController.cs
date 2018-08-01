@@ -149,7 +149,7 @@ namespace Sp8de.DemoGame.Web.Controllers
             };
         }
 
-        private void DemoGameLogic(GameStartResponse game, (IList<int> seedArray, string seedHash) seed, out int[] winNumbers, out decimal winAmount, out bool isWinner)
+        private void DemoGameLogic(GameStartResponse game, (IList<uint> seedArray, string seedHash) seed, out int[] winNumbers, out decimal winAmount, out bool isWinner)
         {
             switch (game.GameType)
             {
@@ -178,7 +178,7 @@ namespace Sp8de.DemoGame.Web.Controllers
             }
         }
 
-        public static (IList<int> seedArray, string seedHash) CreateSharedSeedByStrings(IEnumerable<string> sharedSeedData)
+        public static (IList<uint> seedArray, string seedHash) CreateSharedSeedByStrings(IEnumerable<string> sharedSeedData)
         {
             var aggregated = string.Join(";", sharedSeedData);
 
@@ -187,10 +187,10 @@ namespace Sp8de.DemoGame.Web.Controllers
                 var hashedBytes = hasher.ComputeHash(Encoding.ASCII.GetBytes(aggregated));
                 string hex = SeedToHex(hashedBytes);
                 var size = hashedBytes.Count() / sizeof(int);
-                var ints = new int[size];
+                var ints = new uint[size];
                 for (var index = 0; index < size; index++)
                 {
-                    ints[index] = BitConverter.ToInt32(hashedBytes, index * sizeof(int));
+                    ints[index] = BitConverter.ToUInt32(hashedBytes, index * sizeof(uint));
                 }
 
                 return (ints, hex);
