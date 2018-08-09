@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {Sp8deCrypto} from 'sp8de.crypto';
+import {Sp8deClientSDK} from 'sp8de-client-sdk';
 import {AppComponent} from './app.component';
 import {ApiModule} from './api';
 import {DiceComponent} from './dice/dice.component';
@@ -34,7 +34,7 @@ import { AdvancedComponent } from './history/advanced/advanced.component';
     ApiModule,
     FormsModule
   ],
-  providers: [Sp8deCrypto, UserService, HistoryService],
+  providers: [Sp8deClientSDK],
   bootstrap: [AppComponent]
 })
 export class AppModule {
