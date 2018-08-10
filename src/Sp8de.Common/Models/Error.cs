@@ -1,4 +1,8 @@
-﻿namespace Sp8de.Random.Api.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Sp8de.Common.Models
 {
     public class Error
     {

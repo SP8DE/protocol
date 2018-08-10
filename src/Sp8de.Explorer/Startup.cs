@@ -1,23 +1,18 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Sp8de.Common.Interfaces;
 using Sp8de.Common.Models;
-using Sp8de.DataModel;
-using Sp8de.EthServices;
-using Sp8de.Random.Api.Authentication;
-using Sp8de.Random.Api.Models;
-using Sp8de.Random.Api.Services;
-using Sp8de.RandomGenerators;
-using Sp8de.Services;
 
-namespace Sp8de.Random.Api
+namespace Sp8de.Explorer
 {
     public class Startup
     {
@@ -31,10 +26,7 @@ namespace Sp8de.Random.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddEntityFrameworkNpgsql()
-            //        .AddDbContext<Sp8deDbContext>(x => x.UseNpgsql(
-            //            Configuration.GetConnectionString("DefaultConnection")
-            //            ));
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -52,38 +44,14 @@ namespace Sp8de.Random.Api
                 };
             });
 
-
-            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
-
-            services.Configure<RandomApiConfig>(Configuration.GetSection(nameof(RandomApiConfig)));
-            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<RandomApiConfig>>().Value);
-
-            services.AddDbContext<Sp8deDbContext>(c => c.UseInMemoryDatabase("Sp8de"));
-
-            services.AddTransient<IApiKeyProvider, ApiKeyProvider>();
-            services.AddTransient<ISignService, EthSignService>();
-            services.AddTransient<ISharedSeedService, SharedSeedService>();
-            services.AddTransient<IRandomNumberGenerator, RNGRandomGenerator>();
-            services.AddTransient<IRandomContributorService, BuildinRandomContributorService>();
-            services.AddTransient<IPRNGRandomService, PRNGRandomService>();
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
             services.AddSwaggerGen(c =>
             {
                 c.DescribeAllParametersInCamelCase();
                 //c.DescribeStringEnumsInCamelCase();
                 c.DescribeAllEnumsAsStrings();
-                c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info() { Title = "Sp8de API", Version = "v1" });
-                c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
+                c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info() { Title = "Sp8de Explorer API", Version = "v1" });
             });
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = ApiKeyAuthOptions.DefaultScheme;
-                options.DefaultChallengeScheme = ApiKeyAuthOptions.DefaultScheme;
-            })
-            .AddApiKeyAuth(o => { });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -110,8 +78,6 @@ namespace Sp8de.Random.Api
                     }
                 });
             });
-
-            app.UseAuthentication();
 
             app.UseHttpsRedirection();
 

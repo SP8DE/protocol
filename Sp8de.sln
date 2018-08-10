@@ -64,6 +64,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sp8de.RandomGenerators", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sp8de.MartenStorage", "src\Sp8de.MartenStorage\Sp8de.MartenStorage.csproj", "{2971DF2D-C291-4802-8C3A-EF8FEE889A53}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sp8de.Explorer.Api", "src\Sp8de.Explorer\Sp8de.Explorer.Api.csproj", "{F16144A8-32F0-4E56-9334-94D74D164020}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -142,6 +144,10 @@ Global
 		{2971DF2D-C291-4802-8C3A-EF8FEE889A53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2971DF2D-C291-4802-8C3A-EF8FEE889A53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2971DF2D-C291-4802-8C3A-EF8FEE889A53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F16144A8-32F0-4E56-9334-94D74D164020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F16144A8-32F0-4E56-9334-94D74D164020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F16144A8-32F0-4E56-9334-94D74D164020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F16144A8-32F0-4E56-9334-94D74D164020}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -165,6 +171,7 @@ Global
 		{4710754D-08A4-4789-A670-F39C7D603ACE} = {BDCDC468-2E1C-47D7-A499-987FBDC86BDD}
 		{98F906F3-0281-4F93-A177-244631D5A1AF} = {BDCDC468-2E1C-47D7-A499-987FBDC86BDD}
 		{2971DF2D-C291-4802-8C3A-EF8FEE889A53} = {BDCDC468-2E1C-47D7-A499-987FBDC86BDD}
+		{F16144A8-32F0-4E56-9334-94D74D164020} = {BDCDC468-2E1C-47D7-A499-987FBDC86BDD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {09583719-2DC2-4BF1-A168-4C38B60B1FAC}
