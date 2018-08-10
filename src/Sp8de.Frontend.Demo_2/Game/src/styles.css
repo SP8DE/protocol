@@ -1,1 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&subset=cyrillic-ext');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,700,800,900&subset=cyrillic-ext');
+html, body{
+  margin: 0px;
+  height: 100%;
+}
+html,body,button,input{
+  font-family: 'Montserrat';
+  font-weight: 300;
+  color: white;
+}
+body{
+  background: #508686;
+  /* Old browsers */
+  background: fixed -moz-linear-gradient(-45deg, #508686 0%, #7674ba 46%, #755084 100%) no-repeat;
+  /* FF3.6-15 */
+  background: fixed -webkit-linear-gradient(-45deg, #508686 0%, #7674ba 46%, #755084 100%) no-repeat;
+  /* Chrome10-25,Safari5.1-6 */
+  background: fixed linear-gradient(135deg, #508686 0%, #7674ba 46%, #755084 100%) no-repeat;
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
