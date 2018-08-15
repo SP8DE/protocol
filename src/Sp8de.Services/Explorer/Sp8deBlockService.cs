@@ -1,5 +1,4 @@
 ﻿using Sp8de.Common.BlockModels;
-using Sp8de.Common.Interfaces;
 using Sp8de.Common.Utils;
 using Sp8de.EthServices;
 using Stratis.Patricia;
@@ -11,10 +10,6 @@ using System.Text;
 
 namespace Sp8de.Services.Explorer
 {
-    public class Sp8deNodeConfig
-    {
-        public IKeySecret Key { get; set; }
-    }
 
     //temp
     public class Sp8deBlockService
@@ -39,7 +34,7 @@ namespace Sp8de.Services.Explorer
 
         public (string hash, byte[] bytes) CalculateTransactionHash(Sp8deTransaction transaction)
         {
-            byte[] inputBytes = Encoding.UTF8.GetBytes($"{transaction.Timestamp};{transaction.Type};{transaction.Signer ?? ""};{transaction?.InputData?.Hash ?? ""};{transaction?.OutputData?.Hash ?? ""}");
+            byte[] inputBytes = Encoding.UTF8.GetBytes($"{transaction.Type};{transaction.Timestamp};{transaction.InternalRoot};{transaction.Signer ?? ""};;{transaction?.InputData?.Hash ?? ""};{transaction?.OutputData?.Hash ?? ""}");
             byte[] outputBytes = hasher.Hash(inputBytes);
             return (HexConverter.ToHex(outputBytes), outputBytes);
         }
@@ -66,7 +61,9 @@ namespace Sp8de.Services.Explorer
 
             block.Hash = CalculateBlockHash(block);
 
-            signService.SignMessage(block.Hash, config.Key.PrivateKey);
+            block.Signature = signService.SignMessage(block.Hash, config.Key.PrivateKey);
+
+            //hasher.Hash()
 
             return block;
         }

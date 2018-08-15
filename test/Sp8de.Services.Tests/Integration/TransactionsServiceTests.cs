@@ -62,7 +62,7 @@ namespace Sp8de.Services.Tests.Integration
                     innerItems.Add(tx);
                 }
                 list.Add(blockService.GenerateNewTransaction(innerItems, Sp8deTransactionType.AggregatedReveal));
-            }
+            }                
 
             var blocks = new List<Sp8deBlock>();
 

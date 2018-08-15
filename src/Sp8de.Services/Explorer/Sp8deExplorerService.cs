@@ -14,6 +14,11 @@ namespace Sp8de.Explorer.Api.Models
             throw new NotImplementedException();
         }
 
+        public IList<Sp8deTransaction> GetTransactions(long offset, long limit)
+        {
+            throw new NotImplementedException();
+        }
+
         public Sp8deBlock GetBlock(long blockNumber)
         {
             throw new NotImplementedException();

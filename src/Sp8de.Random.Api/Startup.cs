@@ -52,7 +52,6 @@ namespace Sp8de.Random.Api
                 };
             });
 
-
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
             services.Configure<RandomApiConfig>(Configuration.GetSection(nameof(RandomApiConfig)));

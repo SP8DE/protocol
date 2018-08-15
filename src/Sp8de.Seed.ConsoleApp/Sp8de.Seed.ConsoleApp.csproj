@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Baseline" Version="1.5.0" />
+    <PackageReference Include="Npgsql" Version="4.0.2" />
+    <PackageReference Include="Remotion.Linq" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sp8de.Common\Sp8de.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Marten">
+      <HintPath>..\..\..\..\new-git\marten\src\Marten\bin\Debug\netstandard2.0\Marten.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

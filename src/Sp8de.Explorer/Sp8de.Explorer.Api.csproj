@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -10,8 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Marten" Version="2.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
     <PackageReference Include="Stratis.Patricia" Version="1.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="3.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="3.0.0" />
@@ -20,6 +20,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sp8de.Common\Sp8de.Common.csproj" />
+    <ProjectReference Include="..\Sp8de.MartenStorage\Sp8de.MartenStorage.csproj" />
+    <ProjectReference Include="..\Sp8de.RandomGenerators\Sp8de.RandomGenerators.csproj" />
+    <ProjectReference Include="..\Sp8de.Services\Sp8de.Services.csproj" />
   </ItemGroup>
 
 </Project>

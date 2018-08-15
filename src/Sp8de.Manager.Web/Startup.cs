@@ -55,7 +55,6 @@ namespace Sp8de.Manager.Web
             })
             .AddEntityFrameworkStores<Sp8deDbContext>();
 
-            
             services.AddTransient<IBlockchainDepositAddressService, BlockchainDepositAddressService>();
             services.AddTransient<IPaymentAddressService, SpxPaymentAddressService>();
             services.AddTransient<IFinService, FinService>();

@@ -23,7 +23,4 @@
   <ItemGroup>
     <Folder Include="Views\Emails\" />
   </ItemGroup>
-	
-	
-
 </Project>

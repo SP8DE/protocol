@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Sp8de.Common.Models;
+using Sp8de.Services.Explorer;
 
 namespace Sp8de.Explorer
 {
@@ -44,6 +40,11 @@ namespace Sp8de.Explorer
                 };
             });
 
+            services.Configure<Sp8deTransactionStorageConfig>(Configuration.GetSection(nameof(Sp8deTransactionStorageConfig)));
+            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<Sp8deTransactionStorageConfig>>().Value);
+
+            services.AddTransient<ISp8deTransactionStorage, Sp8deTransactionStorage>();
+
             services.AddSwaggerGen(c =>
             {
                 c.DescribeAllParametersInCamelCase();
@@ -66,6 +67,10 @@ namespace Sp8de.Explorer
                 app.UseHsts();
             }
 
+            app.UseCors(builder =>
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+            );
+
             app.UseSwagger(c =>
             {
                 c.PreSerializeFilters.Add((document, request) =>
@@ -83,7 +88,7 @@ namespace Sp8de.Explorer
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sp8de API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sp8de Explorer API V1");
             });
 
             app.UseMvc();

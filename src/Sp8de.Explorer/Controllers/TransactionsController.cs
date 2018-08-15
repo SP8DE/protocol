@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Sp8de.Common.BlockModels;
 using Sp8de.Explorer.Api.Models;
+using Sp8de.Services.Explorer;
 
 namespace Sp8de.Explorer.Api.Controllers
 {
@@ -12,16 +13,35 @@ namespace Sp8de.Explorer.Api.Controllers
     [ApiController]
     public class TransactionsController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult<IList<Sp8deTransaction>> Get()
+        private readonly ISp8deTransactionStorage storage;
+
+        public TransactionsController(ISp8deTransactionStorage storage)
         {
-            return new List<Sp8deTransaction>();
+            this.storage = storage;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<PagedResult<Sp8deTransaction>>> Get(int offset = 0, int limit = 25)
+        {
+            var rs = await storage.List(offset, limit);
+
+            return new PagedResult<Sp8deTransaction>()
+            {
+                Items = rs.Item1,
+                TotalCount = rs.totalResults
+            };
         }
 
         [HttpGet("{hash}")]
-        public ActionResult<Sp8deTransaction> Get(string hash)
+        public async Task<ActionResult<Sp8deTransaction>> Get(string hash)
         {
-            return new Sp8deTransaction();
+            var tx = await storage.Get(hash);
+            if (tx == null)
+            {
+                return NotFound();
+            }
+
+            return tx;
         }
     }
 }

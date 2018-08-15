@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Sp8de.MartenStorage
 {
-    public class MartenStorage : IStorageService
+    public class MartenStorageService : IStorageService
     {
         private readonly DocumentStore store;
 
-        public MartenStorage(string connectionString)
+        public MartenStorageService(string connectionString)
         {
             this.store = DocumentStore.For(connectionString);
         }
