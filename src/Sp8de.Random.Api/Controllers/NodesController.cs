@@ -9,9 +9,9 @@ using Sp8de.Random.Api.Models;
 
 namespace Sp8de.Random.Api.Controllers
 {
-    [Route("api/node")]
+    [Route("api/nodes")]
     [ApiController]
-    public class NodeController : ControllerBase
+    public class NodesController : ControllerBase
     {
         [HttpGet]
         public List<NodeInfo> Get()
@@ -20,7 +20,7 @@ namespace Sp8de.Random.Api.Controllers
             {
                 new NodeInfo ()
                 {
-                    Url = "https://localhost:5001",
+                    Url = "https://api-node1.sp8de.com",
                     Key = "0x492d0fd814940d1375225a7e10905585b72b0a8c"
                 }
             };

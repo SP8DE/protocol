@@ -1,10 +1,11 @@
 ﻿using Sp8de.Common.RandomModels;
+using System.Threading.Tasks;
 
 namespace Sp8de.Common.Interfaces
 {
     public interface IRandomContributorService
     {
-        CommitItem GenerateCommit(string salt);
-        RevealItem Reveal(CommitItem item);
+        Task<CommitItem> GenerateCommit(string salt);
+        Task<RevealItem> Reveal(CommitItem item);
     }
 }

@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Sp8de.Common.Interfaces;
+using System.Collections.Generic;
 
 namespace Sp8de.Common.BlockModels
 {
-    public class Sp8deTransaction
+
+    public class Sp8deTransaction : IEntity
     {
         public string Id { get; set; }
         public Sp8deTransactionType Type { get; set; }
-        public string Hash { get; set; }
         public string Signer { get; set; }
         public string Signature { get; set; }
         public Sp8deTransactionStatus Status { get; set; }
@@ -24,6 +25,7 @@ namespace Sp8de.Common.BlockModels
         public TransactionData OutputData { get; set; }
 
         public string InternalRoot { get; set; }
+
         public IList<InternalTransaction> InternalTransactions { get; set; }
 
         public TransactionMeta Meta { get; set; }

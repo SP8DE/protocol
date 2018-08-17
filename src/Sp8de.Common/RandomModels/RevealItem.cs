@@ -1,10 +1,12 @@
-﻿using Sp8de.Common.RandomModels;
+﻿using Sp8de.Common.Interfaces;
 
 namespace Sp8de.Common.RandomModels
 {
-    public class RevealItem : SignedItem
+    public class RevealItem : SignedItem, IEntity
     {
         public long Seed { get; set; }
+
+        public string Id => Sign;
 
         public override string ToString()
         {

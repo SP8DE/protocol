@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Sp8de.MartenStorage
 {
-    public class MartenStorageService : IStorageService
+    public class MartenStorageService : IGenericDataStorage
     {
         private readonly DocumentStore store;
 
@@ -16,26 +16,22 @@ namespace Sp8de.MartenStorage
             this.store = DocumentStore.For(connectionString);
         }
 
-        public async Task<RandomSessionData> ReadBlock(string hash)
-        {
-            using (var session = store.QuerySession())
-            {
-                var item = await session.LoadAsync<RandomSessionData>(hash);
-
-                return item;
-            }
-        }
-
-        public Task<string> WriteBlock(RandomSessionData data)
+        public Task Add<TEntity>(string key, TEntity data) where TEntity : class, IEntity
         {
             using (var session = store.LightweightSession())
             {
-                data.Id = data.Id ?? Guid.NewGuid().ToString("n");
-
                 session.Store(data);
                 session.SaveChanges();
 
                 return Task.FromResult(data.Id);
+            }
+        }
+
+        public Task<TEntity> Get<TEntity>(string key) where TEntity : class, IEntity
+        {
+            using (var session = store.QuerySession())
+            {
+                return session.LoadAsync<TEntity>(key);
             }
         }
     }

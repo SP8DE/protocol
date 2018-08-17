@@ -20,6 +20,7 @@
     <ProjectReference Include="..\..\src\Sp8de.NeoServices\Sp8de.NeoServices.csproj" />
     <ProjectReference Include="..\..\src\Sp8de.RandomGenerators\Sp8de.RandomGenerators.csproj" />
     <ProjectReference Include="..\..\src\Sp8de.Services\Sp8de.Services.csproj" />
+    <ProjectReference Include="..\..\src\Sp8de.Storage\Sp8de.Storage.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Sp8de.DemoGame.Web.Models;
 using Sp8de.Common.Interfaces;
 using Sp8de.RandomGenerators;
+using Sp8de.Storage;
 
 namespace Sp8de.DemoGame.Web
 {
@@ -47,6 +48,9 @@ namespace Sp8de.DemoGame.Web
                     return new BadRequestObjectResult(errors);
                 };
             });
+
+            
+            services.AddTransient<IGenericDataStorage, InMemoryDataStorage>();
 
             services.AddTransient<IPRNGRandomService, PRNGRandomService>();
 

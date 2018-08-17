@@ -27,7 +27,7 @@ namespace Sp8de.Services.Explorer
 
         public string CalculateBlockHash(Sp8deBlock block)
         {
-            byte[] inputBytes = Encoding.UTF8.GetBytes($"{block.Id};{block.ChainId};{block.Timestamp};{block.PreviousHash ?? ""};{block.TransactionRoot}");
+            byte[] inputBytes = Encoding.UTF8.GetBytes($"{block.Id};{block.ChainId};{block.Timestamp};{block.PreviousHash ?? ""};{block.TransactionRoot};{block.Signer};{block.TransactionsCount}");
             byte[] outputBytes = hasher.Hash(inputBytes);
             return HexConverter.ToHex(outputBytes);
         }
@@ -46,7 +46,7 @@ namespace Sp8de.Services.Explorer
                 Id = prevBlock.Id + 1,
                 PreviousHash = prevBlock.Hash,
                 Timestamp = DateConverter.UtcNow,
-                Transactions = list.Select(x => x.Hash).ToList(),
+                Transactions = list.Select(x => x.Id).ToList(),
                 Signer = config.Key.PublicAddress,
                 Anchors = new List<Anchor>() {
                     new Anchor(){
@@ -106,7 +106,7 @@ namespace Sp8de.Services.Explorer
 
             tx.InternalRoot = CalculateInternalTransactionRootHash(inner);
 
-            tx.Hash = CalculateTransactionHash(tx).hash;
+            tx.Id = CalculateTransactionHash(tx).hash;
 
             return tx;
         }

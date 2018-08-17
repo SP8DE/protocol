@@ -42,7 +42,6 @@ namespace Sp8de.Services.Explorer
         {
             using (var session = store.LightweightSession())
             {
-                data.Id = data.Id ?? data.Hash;
                 session.Store(data);
                 session.SaveChanges();
 

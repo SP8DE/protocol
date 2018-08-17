@@ -2,17 +2,18 @@
 using Sp8de.Common.RandomModels;
 using Sp8de.Random.Api.Models;
 using System;
+using System.Threading.Tasks;
 
 namespace Sp8de.Random.Api.Services
 {
     public class BuildinRandomContributorService : IRandomContributorService
     {
         private readonly IRandomNumberGenerator random;
-        private readonly IDataStorage storage;
+        private readonly IGenericDataStorage storage;
         private readonly ISignService signService;
         private readonly IKeySecret keySecret;
 
-        public BuildinRandomContributorService(IRandomNumberGenerator random, IDataStorage storage, ISignService signService, IKeySecretManager keySecretManager)
+        public BuildinRandomContributorService(IRandomNumberGenerator random, IGenericDataStorage storage, ISignService signService, IKeySecretManager keySecretManager)
         {
             this.random = random;
             this.storage = storage;
@@ -20,7 +21,7 @@ namespace Sp8de.Random.Api.Services
             this.keySecret = keySecretManager.Generate();
         }
 
-        public CommitItem GenerateCommit(string nonce)
+        public async Task<CommitItem> GenerateCommit(string nonce)
         {
             var revealItem = new RevealItem()
             {
@@ -32,17 +33,14 @@ namespace Sp8de.Random.Api.Services
 
             revealItem.Sign = signService.SignMessage(revealItem.ToString(), keySecret.PrivateKey);
 
-            storage.Add(revealItem);
+            await storage.Add(revealItem.Sign, revealItem);
 
             return revealItem.ToCommitItem();
         }
 
-        public RevealItem Reveal(CommitItem item)
+        public Task<RevealItem> Reveal(CommitItem item)
         {
-            return new RevealItem()
-            {
-                Type = UserType.Validator
-            };
+            return storage.Get<RevealItem>(item.Sign);
         }
     }
 }

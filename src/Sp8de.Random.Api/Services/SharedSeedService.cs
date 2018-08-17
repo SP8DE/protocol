@@ -37,7 +37,7 @@ namespace Sp8de.Random.Api.Services
             
             seedData.Items.AddRange(items.Select(x => new SeedItem() { PubKey = x.PubKey }).AsEnumerable());
 
-            var contributorCommintItem = contributorService.GenerateCommit(DateTime.UtcNow.Ticks.ToString());
+            var contributorCommintItem = contributorService.GenerateCommit(DateTime.UtcNow.Ticks.ToString()).GetAwaiter().GetResult();
             seedData.Items.Add(new SeedItem() { PubKey = contributorCommintItem.PubKey });
 
             dataStorage.Add(seedData);
@@ -55,9 +55,11 @@ namespace Sp8de.Random.Api.Services
                 }
             }
 
+            var commit = items.Single(x => x.PubKey == "TODO").ToCommitItem();
+
             var commintItems = dataStorage.Get(sharedSeedId);
 
-            var contributorReveal = contributorService.Reveal(new CommitItem() { });
+            var contributorReveal = contributorService.Reveal(commit).GetAwaiter().GetResult();
 
             var sharedSeed = RandomHelpers.CreateSharedSeed(items.Select(x => x.Seed).AsEnumerable());
 
