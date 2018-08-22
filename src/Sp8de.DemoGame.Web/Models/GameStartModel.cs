@@ -1,7 +1,5 @@
-﻿using System;
+﻿using Sp8de.Common.RandomModels;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Sp8de.DemoGame.Web.Models
 {
@@ -31,6 +29,8 @@ namespace Sp8de.DemoGame.Web.Models
         public int[] Bet { get; set; }
         public decimal BetAmount { get; set; }
         public GameType GameType { get; set; }
+        public string ValidationTx { get; set; }
+        public string IpfsHash { get; set; }
     }
 
     public class GameFinishRequest
@@ -53,18 +53,8 @@ namespace Sp8de.DemoGame.Web.Models
         public string SharedSeedHash { get; set; }
         public IList<uint> SharedSeedArray { get; set; }
         public string ValidationTxHash { get; set; }
+        public string ValidationLink { get; set; }
         public bool IsWinner { get; set; }
-    }
-
-    public class SignedItem
-    {
-        public string PubKey { get; set; }
-        public long Nonce { get; set; }
-        public string Sign { get; set; }
-    }
-
-    public class RevealItem : SignedItem
-    {
-        public long Seed { get; set; }
+        public string IpfsHash { get; set; }
     }
 }

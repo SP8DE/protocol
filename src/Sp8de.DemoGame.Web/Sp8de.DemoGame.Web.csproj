@@ -26,6 +26,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sp8de.Common\Sp8de.Common.csproj" />
+    <ProjectReference Include="..\Sp8de.EthServices\Sp8de.EthServices.csproj" />
+    <ProjectReference Include="..\Sp8de.IpfsStorageService\Sp8de.IpfsStorageService.csproj" />
     <ProjectReference Include="..\Sp8de.RandomGenerators\Sp8de.RandomGenerators.csproj" />
     <ProjectReference Include="..\Sp8de.Storage\Sp8de.Storage.csproj" />
   </ItemGroup>

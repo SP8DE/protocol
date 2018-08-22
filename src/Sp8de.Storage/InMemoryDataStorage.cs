@@ -14,11 +14,11 @@ namespace Sp8de.Storage
             this.storage = new ConcurrentDictionary<string, string>();
         }
 
-        public Task Add<TEntity>(string key, TEntity data) where TEntity : class, IEntity
+        public Task<IEntity> Add<TEntity>(string key, TEntity data) where TEntity : class, IEntity
         {
             var json = JsonConvert.SerializeObject(data);
             this.storage[key] = json;
-            return Task.CompletedTask;
+            return Task.FromResult((IEntity)data);
         }
 
         public Task<TEntity> Get<TEntity>(string key) where TEntity : class, IEntity

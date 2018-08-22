@@ -1,8 +1,5 @@
 ﻿using Marten;
 using Sp8de.Common.Interfaces;
-using Sp8de.Common.Models;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Sp8de.MartenStorage
@@ -16,14 +13,14 @@ namespace Sp8de.MartenStorage
             this.store = DocumentStore.For(connectionString);
         }
 
-        public Task Add<TEntity>(string key, TEntity data) where TEntity : class, IEntity
+        public Task<IEntity> Add<TEntity>(string key, TEntity data) where TEntity : class, IEntity
         {
             using (var session = store.LightweightSession())
             {
                 session.Store(data);
                 session.SaveChanges();
 
-                return Task.FromResult(data.Id);
+                return Task.FromResult((IEntity)data);
             }
         }
 

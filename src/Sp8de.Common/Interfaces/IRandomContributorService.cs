@@ -5,7 +5,7 @@ namespace Sp8de.Common.Interfaces
 {
     public interface IRandomContributorService
     {
-        Task<CommitItem> GenerateCommit(string salt);
-        Task<RevealItem> Reveal(CommitItem item);
+        Task<SignedItem> GenerateCommit(string salt = null);
+        Task<RevealItem> Reveal(SignedItem item);
     }
 }

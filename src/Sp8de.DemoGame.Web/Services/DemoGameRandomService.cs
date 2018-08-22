@@ -1,26 +1,32 @@
 ﻿using Sp8de.Common.Interfaces;
 using Sp8de.Common.RandomModels;
+using Sp8de.EthServices;
 using System;
 using System.Threading.Tasks;
 
 namespace Sp8de.DemoGame.Web.Services
 {
-    public class CasinoRandomService : IRandomContributorService
+    public class DemoGameConfig
+    {
+        public string PrivateKey { get; set; }
+    }
+
+    public class DemoGameRandomService : IRandomContributorService
     {
         private readonly IRandomNumberGenerator random;
         private readonly IGenericDataStorage storage;
         private readonly ISignService signService;
         private readonly IKeySecret keySecret;
 
-        public CasinoRandomService(IRandomNumberGenerator random, IGenericDataStorage storage, ISignService signService, IKeySecretManager keySecretManager)
+        public DemoGameRandomService(DemoGameConfig config, IRandomNumberGenerator random, IGenericDataStorage storage, ISignService signService, IKeySecretManager keySecretManager)
         {
             this.random = random;
             this.storage = storage;
             this.signService = signService;
-            this.keySecret = keySecretManager.Generate();
+            this.keySecret = keySecretManager.LoadKeySecret(config.PrivateKey);
         }
 
-        public async Task<CommitItem> GenerateCommit(string salt)
+        public async Task<SignedItem> GenerateCommit(string salt)
         {
             var revealItem = new RevealItem()
             {
@@ -37,9 +43,16 @@ namespace Sp8de.DemoGame.Web.Services
             return revealItem.ToCommitItem();
         }
 
-        public Task<RevealItem> Reveal(CommitItem item)
+        public async Task<RevealItem> Reveal(SignedItem item)
         {
-            return storage.Get<RevealItem>(item.Sign);
+            var revealItem = await storage.Get<RevealItem>(item.Sign);
+
+            if (!signService.VerifySignature(revealItem.ToString(), revealItem.Sign, revealItem.PubKey))
+            {
+                throw new ArgumentException("Invalid signature");
+            };
+
+            return revealItem;
         }
     }
 }

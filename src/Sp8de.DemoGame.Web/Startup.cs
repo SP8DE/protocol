@@ -1,14 +1,26 @@
-﻿using System.Linq;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Sp8de.DemoGame.Web.Models;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Sp8de.Common.Interfaces;
+using Sp8de.DemoGame.Web.Data;
+using Sp8de.DemoGame.Web.Infrastructure;
+using Sp8de.DemoGame.Web.Models;
+using Sp8de.DemoGame.Web.Services;
+using Sp8de.EthServices;
+using Sp8de.IpfsStorageService;
 using Sp8de.RandomGenerators;
 using Sp8de.Storage;
+using System;
+using System.Linq;
+using System.Text;
 
 namespace Sp8de.DemoGame.Web
 {
@@ -49,10 +61,28 @@ namespace Sp8de.DemoGame.Web
                 };
             });
 
-            
-            services.AddTransient<IGenericDataStorage, InMemoryDataStorage>();
+            services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("AuthTests"));
 
+            ConfigureIdentity(services);
+
+            services.Configure<DemoGameConfig>(Configuration.GetSection(nameof(DemoGameConfig)));
+            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<DemoGameConfig>>().Value);
+            services.AddTransient<IRandomContributorService, DemoGameRandomService>();
+
+            services.AddSingleton<IGenericDataStorage, InMemoryDataStorage>(); //DEV
             services.AddTransient<IPRNGRandomService, PRNGRandomService>();
+            services.AddScoped<ISignService, EthSignService>();
+            services.AddTransient<IRandomNumberGenerator, RNGRandomGenerator>();
+            services.AddScoped<IKeySecretManager, EthKeySecretManager>();
+
+            services.Configure<ChaosProtocolConfig>(Configuration.GetSection(nameof(ChaosProtocolConfig)));
+            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<ChaosProtocolConfig>>().Value);
+            services.AddTransient<IChaosProtocolService, DemoProtocolService>();
+
+            services.Configure<IpfsStorageConfig>(Configuration.GetSection(nameof(IpfsStorageConfig)));
+            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<IpfsStorageConfig>>().Value);
+
+            services.AddTransient<IpfsFileStorageService>();
 
             services.AddMemoryCache();
 
@@ -65,6 +95,46 @@ namespace Sp8de.DemoGame.Web
                 c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info() { Title = "Sp8de Game API", Version = "v1" });
                 //c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
             });
+        }
+
+        private void ConfigureIdentity(IServiceCollection services)
+        {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(
+                    options =>
+                    {
+                        var tokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidIssuer = Configuration["AuthToken:Issuer"],
+                            ValidAudience = Configuration["AuthToken:Issuer"],
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["AuthToken:Key"]))
+                        };
+
+                        options.TokenValidationParameters = tokenValidationParameters;
+                    });
+
+            services.AddIdentityCore<IdentityUser>(options =>
+            {
+                options.Stores.MaxLengthForKeys = 128;
+
+                //simplified for demo
+                options.Password.RequiredLength = 6;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+                options.SignIn.RequireConfirmedEmail = false;
+
+                options.Lockout = new LockoutOptions
+                {
+                    AllowedForNewUsers = true,
+                    DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5),
+                    MaxFailedAccessAttempts = 100
+                };
+
+            }).AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddSignInManager()
+            .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -107,6 +177,10 @@ namespace Sp8de.DemoGame.Web
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sp8de API V1");
             });
+
+            app.UseAuthentication();
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseMvc(routes =>
             {

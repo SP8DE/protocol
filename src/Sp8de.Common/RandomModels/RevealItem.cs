@@ -6,7 +6,7 @@ namespace Sp8de.Common.RandomModels
     {
         public long Seed { get; set; }
 
-        public string Id => Sign;
+        public string Id { get => Sign; set => Sign = value; } //TODO REMOVE
 
         public override string ToString()
         {

@@ -21,7 +21,7 @@ namespace Sp8de.Random.Api.Services
             this.keySecret = keySecretManager.Generate();
         }
 
-        public async Task<CommitItem> GenerateCommit(string nonce)
+        public async Task<SignedItem> GenerateCommit(string nonce)
         {
             var revealItem = new RevealItem()
             {
@@ -38,7 +38,7 @@ namespace Sp8de.Random.Api.Services
             return revealItem.ToCommitItem();
         }
 
-        public Task<RevealItem> Reveal(CommitItem item)
+        public Task<RevealItem> Reveal(SignedItem item)
         {
             return storage.Get<RevealItem>(item.Sign);
         }

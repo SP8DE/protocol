@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Sp8de.DemoGame.Web.Controllers
 {
@@ -14,6 +12,13 @@ namespace Sp8de.DemoGame.Web.Controllers
         public string Get()
         {
             return $"Pong {DateTime.UtcNow}";
+        }
+
+        [Authorize]
+        [HttpGet("autorized")]
+        public string AutorizedGet()
+        {
+            return $"Autorized Pong {DateTime.UtcNow}";
         }
     }
 }

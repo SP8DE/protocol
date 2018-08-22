@@ -19,5 +19,10 @@ namespace Sp8de.NeoServices
                 };
             }
         }
+
+        public IKeySecret LoadKeySecret(string privateKey)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

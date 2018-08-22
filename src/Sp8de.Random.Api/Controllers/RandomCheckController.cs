@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -62,16 +61,5 @@ namespace Sp8de.Random.Api.Controllers
 
             return vm;
         }
-    }
-
-    public class RandomCheckRequest
-    {
-        public List<uint> SharedSeed { get; set; }
-        public RandomSettings Settings { get; set; }
-    }
-
-    public class RandomCheckResponse
-    {
-        public IList<int> Numbers { get; set; }
     }
 }

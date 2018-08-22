@@ -7,5 +7,6 @@ namespace Sp8de.Common.Interfaces
     public interface IKeySecretManager
     {
         IKeySecret Generate();
+        IKeySecret LoadKeySecret(string privateKey);
     }
 }

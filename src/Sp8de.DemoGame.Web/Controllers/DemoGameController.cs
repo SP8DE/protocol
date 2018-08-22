@@ -1,12 +1,15 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using Sp8de.Common.Interfaces;
+using Sp8de.Common.RandomModels;
+using Sp8de.DemoGame.Web.Models;
+using Sp8de.DemoGame.Web.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
-using Sp8de.DemoGame.Web.Models;
-using Sp8de.Common.Interfaces;
+using System.Threading.Tasks;
 
 namespace Sp8de.DemoGame.Web.Controllers
 {
@@ -17,76 +20,66 @@ namespace Sp8de.DemoGame.Web.Controllers
         private readonly IMemoryCache cache;
         private readonly IPRNGRandomService prng;
         private readonly ISignService signService;
+        private readonly IRandomContributorService randomContributorService;
+        private readonly IChaosProtocolService protocol;
 
-        public DemoGameController(IMemoryCache cache, IPRNGRandomService prng, ISignService signService)
+        public DemoGameController(IMemoryCache cache, IPRNGRandomService prng, ISignService signService, IRandomContributorService randomContributorService, IChaosProtocolService protocol)
         {
             this.cache = cache;
             this.prng = prng;
             this.signService = signService;
+            this.randomContributorService = randomContributorService;
+            this.protocol = protocol;
         }
 
         [ProducesResponseType(200, Type = typeof(GameStartResponse))]
         [ProducesResponseType(400, Type = typeof(List<Error>))]
         [Route("start")]
         [HttpPost]
-        public ActionResult<GameStartResponse> Start([FromBody]GameStartRequest model)
+        public async Task<ActionResult<GameStartResponse>> Start([FromBody]GameStartRequest model)
         {
             switch (model.Type)
             {
                 case GameType.Dice:
                     if (model.Bet == null || model.Bet.Length < 1 || model.Bet.Length > 5 || model.Bet.Any(x => x < 1 || x > 6))
                     {
-                        return BadRequest(new List<Error>{
-                            new Error()
-                            {
-                                Message = "Invalid Bet"
-                            }
-                        });
+                        return BadRequest(ErrorResult.Create("Invalid Bet"));
                     }
                     break;
                 case GameType.TossCoin:
                     if (model.Bet == null || model.Bet.Length != 1 || model.Bet.Single() < 0 || model.Bet.Single() > 1)
                     {
-                        return BadRequest(new Error()
-                        {
-                            Message = "Invalid Bet"
-                        });
+                        return BadRequest(ErrorResult.Create("Invalid Bet"));
                     }
                     break;
                 default:
                     throw new NotImplementedException();
             }
 
+            var commit = await randomContributorService.GenerateCommit(DateTime.UtcNow.Ticks.ToString());
+
             var list = new List<SignedItem>
             {
                 new SignedItem()
                 {
                     PubKey = model.PubKey,
-                    Nonce = model.Nonce,
+                    Nonce = model.Nonce.ToString(),
                     Sign = model.Sign
                 },
-                new SignedItem()
-                {
-                    PubKey = "0x4619284a395b3959bFDE0251207b92EFA53a8500",
-                    Nonce = 1,
-                    Sign = "0xd7856f3065716ec57f226caf2c8456fb86890244d6e2d153c90265a5c957ef5b6d7f3d544b38cef5bd9dda5ede58d63c7868cccab136caded72d06425264ef851c"
-                },
-                new SignedItem()
-                {
-
-                    PubKey = "0x492d0fd814940d1375225a7e10905585b72b0a8c",
-                    Nonce = 1,
-                    Sign = "0xe2f4cd56aaec60229ee9c53731f609aa8468bcae72bcc2ba82a1bafb9482f32e41c87e3f008f5dcc18eccc71fcdc6699990c9edb6fb100c165395983f50730741b",
-                },
+                commit
             };
+
+            var tx = await protocol.CreateTransaction(list, ChaosProtocolSettings.Default);
 
             var rs = new GameStartResponse()
             {
                 GameId = Guid.NewGuid().ToString("n"),
+                ValidationTx = tx.Id,
                 GameType = model.Type,
                 Bet = model.Bet,
                 BetAmount = model.BetAmount,
-                Items = list
+                Items = tx.Items,
+                IpfsHash = tx.Anchor.Data
             };
 
             var game = cache.Set(rs.GameId, rs);
@@ -99,7 +92,7 @@ namespace Sp8de.DemoGame.Web.Controllers
         [ProducesResponseType(404)]
         [Route("end")]
         [HttpPost]
-        public ActionResult<GameFinishResponse> End([FromBody]GameFinishRequest model)
+        public async Task<ActionResult<GameFinishResponse>> End([FromBody]GameFinishRequest model)
         {
             var game = cache.Get<GameStartResponse>(model.GameId);
 
@@ -107,34 +100,30 @@ namespace Sp8de.DemoGame.Web.Controllers
             {
                 return NotFound();
             }
+            var requesterCommit = game.Items.First(x => x.Type == UserType.Requester);
+
+            var revealItem = await randomContributorService.Reveal(requesterCommit);
 
             var list = new List<RevealItem>
             {
                 new RevealItem()
                 {
+                    Type = UserType.Contributor,
                     PubKey = model.PubKey,
-                    Nonce = model.Nonce,
+                    Nonce = model.Nonce.ToString(),
                     Seed = model.Seed,
                     Sign = model.Sign
                 },
-                new RevealItem()
-                {
-                    PubKey = "0x4619284a395b3959bFDE0251207b92EFA53a8500",
-                    Nonce = 1,
-                    Seed = 1,
-                    Sign = "0xd7856f3065716ec57f226caf2c8456fb86890244d6e2d153c90265a5c957ef5b6d7f3d544b38cef5bd9dda5ede58d63c7868cccab136caded72d06425264ef851c"
-                },
-                new RevealItem()
-                {
-
-                    PubKey = "0x492d0fd814940d1375225a7e10905585b72b0a8c",
-                    Nonce = 1,
-                    Seed = 1,
-                    Sign = "0xe2f4cd56aaec60229ee9c53731f609aa8468bcae72bcc2ba82a1bafb9482f32e41c87e3f008f5dcc18eccc71fcdc6699990c9edb6fb100c165395983f50730741b",
-                }
+                revealItem
             };
+            
+            var tx = await protocol.RevealTransaction(game.ValidationTx, list);
 
-            var seed = CreateSharedSeedByStrings(list.Select(x => x.Seed.ToString()).ToArray());
+            
+
+            var seedItems = tx.Items.Select(x => (x as RevealItem).Seed.ToString()).ToArray();
+
+            var seed = CreateSharedSeedByStrings(seedItems);
 
             DemoGameLogic(game, seed, out int[] winNumbers, out decimal winAmount, out bool isWinner);
 
@@ -143,11 +132,14 @@ namespace Sp8de.DemoGame.Web.Controllers
                 GameId = model.GameId,
                 SharedSeedArray = seed.seedArray,
                 SharedSeedHash = seed.seedHash,
-                ValidationTxHash = "0x1234567890", //TODO                
+                ValidationTxHash = tx.Id, //TODO                
                 Items = list,
+                
                 IsWinner = isWinner,
                 WinAmount = winAmount,
-                WinNumbers = winNumbers
+                WinNumbers = winNumbers,
+
+                IpfsHash = tx.Anchor.Data
             };
         }
 
