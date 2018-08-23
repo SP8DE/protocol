@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="table-container">
+    <table *ngIf="list.length">
+      <thead>
+      <tr>
+        <th>id</th>
+        <th>chainId</th>
+        <th>hash</th>
+        <th>previous Hash</th>
+        <th>transaction Root</th>
+        <th>signer</th>
+        <th>signature</th>
+        <th>timestamp</th>
+        <th>transactions Count</th>
+        <th>transactions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let line of list" (click)="open(line.id)">
+        <td>{{line.id}}</td>
+        <td>{{line.chainId}}</td>
+        <td>{{line.hash}}</td>
+        <td>{{line.previousHash}}</td>
+        <td>{{line.transactionRoot}}</td>
+        <td>{{line.signer}}</td>
+        <td>{{line.signature}}</td>
+        <td>{{line.timestamp}}</td>
+        <td>{{line.transactionsCount}}</td>
+        <td>
+          <ng-container *ngFor="let transaction of line.transactions">
+            {{transaction}},
+          </ng-container>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

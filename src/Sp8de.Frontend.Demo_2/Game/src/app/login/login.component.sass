@@ -1,0 +1,25 @@
+@import "../grid"
+.greeting
+  .join
+    font-size: 3rem
+  .join-input
+    width: 100%
+
+.games
+  display: flex
+  justify-content: center
+  align-items: center
+  .join
+    display: block
+  .game
+    text-align: center
+    width: auto
+
+input::placeholder
+  color: rgba(255, 255, 255, 0.1)
+
+input.ng-touched.ng-invalid
+  border: 1px solid rgba(222, 0, 8, 0.73)
+  box-shadow: 0 0 8px 0 rgba(222, 0, 8, 0.73)
+
+

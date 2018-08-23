@@ -1,0 +1,75 @@
+@import "../grid"
+.hide
+  height: 0
+.show
+  height: auto
+.table-block
+  max-height: 23rem
+  overflow: auto
+  .table
+    .advanced-container, .tr
+      width: 100%
+    .th, .td
+      //width: 23%
+      padding: 0.5rem
+    .thead, .tbody
+      width: 100%
+    .tr
+      display: flex
+      justify-content: space-between
+      flex-direction: row
+      align-items: center
+      margin-top: 0.1rem
+    .openAdvanced
+      background-color: rgba(255, 255, 255, 0.1)
+      border-radius: 0.3rem
+    .thead
+      .th
+        font-weight: 100
+        font-size: 1rem
+    .tbody
+      .td
+        font-weight: 300
+        font-size: 0.7rem
+      .hash-column
+        width: 12%
+        font-size: 0.5rem
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
+      .button-column
+        cursor: pointer
+        //width: 10% !important
+        .advanced-button
+          background: none
+          border: solid #aeaeae
+          border-width: 0 3px 3px 0
+          display: inline-block
+          padding: 3px
+          transform: rotateZ(-45deg)
+          vertical-align: text-top
+          box-shadow: none
+    //.player-column
+    //  min-width: 30%
+    //.result-column
+    //  width: 35%
+    //.bet-column
+    //  width: 35%
+    .item-cell
+      display: flex
+      justify-content: flex-start
+      align-items: center
+      align-content: center
+  div
+    // padding: 0 !important
+  img
+    width: 1.2rem
+    margin-left: 0.2rem
+    margin-right: 0.2rem
+  .statistic-bet
+    img
+      filter: invert(1) brightness(400%) saturate(0)
+  img.win
+    filter: invert(1) hue-rotate(320deg)
+  img.lose
+    filter: invert(1) hue-rotate(180deg)

@@ -1,0 +1,51 @@
+<div class="container">
+  <!--<div class="score">{{score}}</div>-->
+  <div *ngIf="!loaded" class="loading">
+    <img src="../../assets/images/loading.svg" alt="">
+  </div>
+  <div *ngIf="loaded" class="content-block">
+    <div class="back" routerLink="../">&lt; Back</div>
+
+    <div class="user ungle" *ngIf="user">
+      <div class="login" *ngIf="user.token === 'test'">
+        <button routerLink="../login">Log in</button>
+      </div>
+      <div class="head">
+        <div class="avatar"><img src="../../assets/images/TossCoin/1.png" alt=""></div>
+        <div class="name">{{user.name}}</div>
+      </div>
+      <div class="finance">
+        <div class="balance">
+          <div class="name">balance</div>
+          <div class="value">{{toFixed(user.balance)}} <span class="spx"> SPX</span></div>
+        </div>
+        <div class="deposit">
+          <div>
+            <button>Deposit</button>
+          </div>
+          <div class="quit" *ngIf="user.token !== 'test'">
+            <button (click)="logOut()">Log out</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="game column">
+      <app-preferences [type]="type"
+                       [items]="items"
+                       [bets]="bets"
+                       [started]="user?.history?.length || 0"
+                       [title]="title"
+                       (onStart)="start($event)"></app-preferences>
+    </div>
+    <div class="winners column" [ngClass]="{'hide': currentWin === undefined}">
+      <div class="column-block" *ngIf="currentWin!== undefined">
+        <app-result [result]="currentWin"></app-result>
+      </div>
+    </div>
+    <div class="statistics column" [ngClass]="{'hide': !user?.history?.length || 0}">
+      <div class="column-block">
+        <app-history [history]="user.history" [type]="type"></app-history>
+      </div>
+    </div>
+  </div>
+</div>
