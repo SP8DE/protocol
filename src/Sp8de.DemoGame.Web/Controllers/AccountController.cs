@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -15,7 +16,6 @@ using System.Threading.Tasks;
 
 namespace Sp8de.DemoGame.Web.Controllers
 {
-
     public class RegisterInputModel
     {
         [Required]
@@ -73,6 +73,7 @@ namespace Sp8de.DemoGame.Web.Controllers
         }
     }
 
+    [EnableCors("AllowAllOrigins")]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
