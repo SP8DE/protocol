@@ -32,13 +32,13 @@ namespace Sp8de.Random.Api.Services
                     Expire = DateTime.UtcNow.AddMonths(5),
                     TimeStamp = DateTime.UtcNow
                 },
-                Items = new List<CommitItem>()
-            };
-
-            seedData.Items.AddRange(items);
+                Items = new List<SeedItem>()
+            };          
+            
+            seedData.Items.AddRange(items.Select(x => new SeedItem() { PubKey = x.PubKey }).AsEnumerable());
 
             var contributorCommintItem = contributorService.GenerateCommit(DateTime.UtcNow.Ticks.ToString());
-            seedData.Items.Add(contributorCommintItem);
+            seedData.Items.Add(new SeedItem() { PubKey = contributorCommintItem.PubKey });
 
             dataStorage.Add(seedData);
 

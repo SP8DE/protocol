@@ -61,7 +61,7 @@ namespace Sp8de.Random.Api.Controllers
                 {
                     SharedSeedId = result.Id,
                     MetaData = result.MetaData,
-                    Items = result.Items,
+                    Items = result.Items.Select(x => new CommitItem() { PubKey = x.PubKey }).ToList(),
                     IsSuccess = true
                 }
             };

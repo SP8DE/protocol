@@ -16,11 +16,13 @@ namespace Sp8de.DemoGame.Web.Controllers
     {
         private readonly IMemoryCache cache;
         private readonly IPRNGRandomService prng;
+        private readonly ISignService signService;
 
-        public DemoGameController(IMemoryCache cache, IPRNGRandomService prng)
+        public DemoGameController(IMemoryCache cache, IPRNGRandomService prng, ISignService signService)
         {
             this.cache = cache;
             this.prng = prng;
+            this.signService = signService;
         }
 
         [ProducesResponseType(200, Type = typeof(GameStartResponse))]
