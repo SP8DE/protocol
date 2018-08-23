@@ -10,7 +10,7 @@ namespace Sp8de.Common.RandomModels
 
         public override string ToString()
         {
-            return $"${this.PubKey};${this.Nonce};${this.Seed}";
+            return $"{this.PubKey};{this.Seed};{this.Nonce}";
         }
 
         public CommitItem ToCommitItem()

@@ -5,7 +5,6 @@ using System;
 
 namespace Sp8de.DemoGame.Web.Controllers
 {
-    [EnableCors("AllowAllOrigins")]
     [Route("api/[controller]")]
     [ApiController]
     public class PingController : ControllerBase

@@ -148,13 +148,11 @@ namespace Sp8de.DemoGame.Web
             {
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
-            }
+            }          
 
             app.UseCors(builder =>
                 builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
             );
-
-            app.UseCors("AllowAllOrigins");
 
             app.UseSwagger(c =>
             {

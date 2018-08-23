@@ -121,7 +121,7 @@ namespace Sp8de.DemoGame.Web.Services
                 Items = items.Select(x => (SignedItem)x).ToList()
             };
 
-            await AddAnchors(tx);
+            await AddAnchors(finishTx);
 
             await storage.Add(finishTx.Id, finishTx);
 

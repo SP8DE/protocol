@@ -73,7 +73,6 @@ namespace Sp8de.DemoGame.Web.Controllers
         }
     }
 
-    [EnableCors("AllowAllOrigins")]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase

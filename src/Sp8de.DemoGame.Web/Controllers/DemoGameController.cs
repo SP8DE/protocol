@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 namespace Sp8de.DemoGame.Web.Controllers
 {
-    [EnableCors("AllowAllOrigins")]
     [ApiController]
     [Route("api/[controller]")]
     public class DemoGameController : Controller
@@ -81,7 +80,7 @@ namespace Sp8de.DemoGame.Web.Controllers
                 Bet = model.Bet,
                 BetAmount = model.BetAmount,
                 Items = tx.Items,
-                IpfsHash = tx.Anchor.Data
+                IpfsHash = tx.Anchor?.Data
             };
 
             var game = cache.Set(rs.GameId, rs);
@@ -121,8 +120,6 @@ namespace Sp8de.DemoGame.Web.Controllers
             
             var tx = await protocol.RevealTransaction(game.ValidationTx, list);
 
-            
-
             var seedItems = tx.Items.Select(x => (x as RevealItem).Seed.ToString()).ToArray();
 
             var seed = CreateSharedSeedByStrings(seedItems);
@@ -141,7 +138,7 @@ namespace Sp8de.DemoGame.Web.Controllers
                 WinAmount = winAmount,
                 WinNumbers = winNumbers,
 
-                IpfsHash = tx.Anchor.Data
+                IpfsHash = tx.Anchor?.Data
             };
         }
 

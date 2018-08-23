@@ -15,7 +15,7 @@ namespace Sp8de.EthServices
         {
             var signer = new EthereumMessageSigner();
             var account = signer.EncodeUTF8AndEcRecover(message, signature);
-            return account == pubKey;
+            return string.Equals(account, pubKey, System.StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }
