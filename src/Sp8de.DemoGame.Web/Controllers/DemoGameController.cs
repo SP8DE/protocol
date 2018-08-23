@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Sp8de.Common.Interfaces;
 using Sp8de.Common.RandomModels;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace Sp8de.DemoGame.Web.Controllers
 {
+    [EnableCors("AllowAllOrigins")]
     [ApiController]
     [Route("api/[controller]")]
     public class DemoGameController : Controller
