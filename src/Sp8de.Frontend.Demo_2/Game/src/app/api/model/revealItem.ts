@@ -13,7 +13,17 @@
 
 export interface RevealItem {
     seed?: number;
+    id?: string;
+    type?: RevealItem.TypeEnum;
     pubKey?: string;
-    nonce?: number;
+    nonce?: string;
     sign?: string;
+}
+export namespace RevealItem {
+    export type TypeEnum = 'Contributor' | 'Requester' | 'Validator';
+    export const TypeEnum = {
+        Contributor: 'Contributor' as TypeEnum,
+        Requester: 'Requester' as TypeEnum,
+        Validator: 'Validator' as TypeEnum
+    }
 }

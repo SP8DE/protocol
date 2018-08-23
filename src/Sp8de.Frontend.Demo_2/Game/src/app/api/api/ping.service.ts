@@ -26,7 +26,7 @@ import { Configuration }                                     from '../configurat
 @Injectable()
 export class PingService {
 
-    protected basePath = 'https://localhost:5001';
+    protected basePath = 'https://localhost:5002';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -54,6 +54,44 @@ export class PingService {
         return false;
     }
 
+
+    /**
+     * 
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiPingAutorizedGet(observe?: 'body', reportProgress?: boolean): Observable<string>;
+    public apiPingAutorizedGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
+    public apiPingAutorizedGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public apiPingAutorizedGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
+        ];
+        let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set("Accept", httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        let consumes: string[] = [
+        ];
+
+        return this.httpClient.get<string>(`${this.basePath}/api/ping/autorized`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
 
     /**
      * 

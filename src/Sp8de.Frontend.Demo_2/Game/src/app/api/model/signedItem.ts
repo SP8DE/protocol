@@ -12,7 +12,16 @@
 
 
 export interface SignedItem {
+    type?: SignedItem.TypeEnum;
     pubKey?: string;
-    nonce?: number;
+    nonce?: string;
     sign?: string;
+}
+export namespace SignedItem {
+    export type TypeEnum = 'Contributor' | 'Requester' | 'Validator';
+    export const TypeEnum = {
+        Contributor: 'Contributor' as TypeEnum,
+        Requester: 'Requester' as TypeEnum,
+        Validator: 'Validator' as TypeEnum
+    }
 }

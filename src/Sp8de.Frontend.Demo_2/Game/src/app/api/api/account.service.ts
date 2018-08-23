@@ -18,17 +18,15 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs/Observable';
 
-import { GameFinishRequest } from '../model/gameFinishRequest';
-import { GameFinishResponse } from '../model/gameFinishResponse';
-import { GameStartRequest } from '../model/gameStartRequest';
-import { GameStartResponse } from '../model/gameStartResponse';
+import { AccountInputModel } from '../model/accountInputModel';
+import { RegisterInputModel } from '../model/registerInputModel';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
 @Injectable()
-export class DemoGameService {
+export class AccountService {
 
     protected basePath = 'https://localhost:5002';
     public defaultHeaders = new HttpHeaders();
@@ -62,14 +60,14 @@ export class DemoGameService {
     /**
      * 
      * 
-     * @param model 
+     * @param input 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDemoGameEndPost(model?: GameFinishRequest, observe?: 'body', reportProgress?: boolean): Observable<GameFinishResponse>;
-    public apiDemoGameEndPost(model?: GameFinishRequest, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<GameFinishResponse>>;
-    public apiDemoGameEndPost(model?: GameFinishRequest, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<GameFinishResponse>>;
-    public apiDemoGameEndPost(model?: GameFinishRequest, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiAccountLoginPost(input?: AccountInputModel, observe?: 'body', reportProgress?: boolean): Observable<string>;
+    public apiAccountLoginPost(input?: AccountInputModel, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
+    public apiAccountLoginPost(input?: AccountInputModel, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public apiAccountLoginPost(input?: AccountInputModel, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -96,8 +94,8 @@ export class DemoGameService {
             headers = headers.set("Content-Type", httpContentTypeSelected);
         }
 
-        return this.httpClient.post<GameFinishResponse>(`${this.basePath}/api/demogame/end`,
-            model,
+        return this.httpClient.post<string>(`${this.basePath}/api/account/login`,
+            input,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -114,10 +112,10 @@ export class DemoGameService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDemoGameStartPost(model?: GameStartRequest, observe?: 'body', reportProgress?: boolean): Observable<GameStartResponse>;
-    public apiDemoGameStartPost(model?: GameStartRequest, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<GameStartResponse>>;
-    public apiDemoGameStartPost(model?: GameStartRequest, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<GameStartResponse>>;
-    public apiDemoGameStartPost(model?: GameStartRequest, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiAccountRegisterPost(model?: RegisterInputModel, observe?: 'body', reportProgress?: boolean): Observable<string>;
+    public apiAccountRegisterPost(model?: RegisterInputModel, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
+    public apiAccountRegisterPost(model?: RegisterInputModel, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public apiAccountRegisterPost(model?: RegisterInputModel, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -144,7 +142,7 @@ export class DemoGameService {
             headers = headers.set("Content-Type", httpContentTypeSelected);
         }
 
-        return this.httpClient.post<GameStartResponse>(`${this.basePath}/api/demogame/start`,
+        return this.httpClient.post<string>(`${this.basePath}/api/account/register`,
             model,
             {
                 withCredentials: this.configuration.withCredentials,

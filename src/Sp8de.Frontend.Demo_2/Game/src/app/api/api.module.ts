@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Configuration } from './configuration';
 
+import { AccountService } from './api/account.service';
 import { DemoGameService } from './api/demoGame.service';
 import { PingService } from './api/ping.service';
 
@@ -11,6 +12,7 @@ import { PingService } from './api/ping.service';
   declarations: [],
   exports:      [],
   providers: [
+    AccountService,
     DemoGameService,
     PingService ]
 })

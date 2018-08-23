@@ -18,6 +18,8 @@ export interface GameStartResponse {
     bet?: Array<number>;
     betAmount?: number;
     gameType?: GameStartResponse.GameTypeEnum;
+    validationTx?: string;
+    ipfsHash?: string;
 }
 export namespace GameStartResponse {
     export type GameTypeEnum = 'TossCoin' | 'Dice' | 'NumberRange' | 'SingleZeroWheel' | 'DoubleZeroWheel';

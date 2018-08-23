@@ -20,5 +20,7 @@ export interface GameFinishResponse {
     sharedSeedHash?: string;
     sharedSeedArray?: Array<number>;
     validationTxHash?: string;
+    validationLink?: string;
     isWinner?: boolean;
+    ipfsHash?: string;
 }
