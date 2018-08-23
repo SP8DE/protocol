@@ -1,0 +1,25 @@
+$radius: 1rem
+$padding: 1rem
+div, header, footer
+  outline: 0px solid black
+  box-sizing: border-box
+
+.container
+  padding: $padding
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: left
+  .title
+    h3
+      font-size: 2rem
+      margin: 0
+  div
+    padding: $padding
+  table
+    th,td
+      padding: $padding/2
+      font-size: 0.7rem
+    tr
+      td:first-child
+        font-weight: 500
