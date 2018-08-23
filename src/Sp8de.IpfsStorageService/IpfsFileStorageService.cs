@@ -19,8 +19,13 @@ namespace Sp8de.IpfsStorageService
         {
             this.config = config;
             this.logger = logger;
-            this.ipfs = new IpfsClient(config.IpfsHost);
+            if (config.IpfsHost != null)
+            {
+                this.ipfs = new IpfsClient(config.IpfsHost);
+            }
         }
+
+        public bool IsActive { get { return this.ipfs != null; } }
 
         public async Task<IEntity> Add<TEntity>(string key, TEntity data) where TEntity : class, IEntity
         {

@@ -42,7 +42,7 @@ namespace Sp8de.DemoGame.Web.Services
         private readonly IRandomNumberGenerator random;
         private readonly IGenericDataStorage storage;
         private readonly ISignService signService;
-        private readonly IGenericDataStorage ipfs;
+        private readonly IpfsFileStorageService ipfs;
         private readonly IKeySecret keySecret;
 
         public DemoProtocolService(ChaosProtocolConfig config, IRandomNumberGenerator random, IGenericDataStorage storage, ISignService signService, IKeySecretManager keySecretManager, IpfsFileStorageService ipfs)
@@ -87,14 +87,17 @@ namespace Sp8de.DemoGame.Web.Services
 
         private async Task AddAnchors(ProtocolTransaction tx)
         {
-            var rs = await ipfs.Add(tx.Id, tx);
-
-            tx.Anchor = new Anchor()
+            if (ipfs.IsActive)
             {
-                Type = "ipfs",
-                Data = rs.Id,
-                Timestamp = DateConverter.UtcNow
-            };
+                var rs = await ipfs.Add(tx.Id, tx);
+
+                tx.Anchor = new Anchor()
+                {
+                    Type = "ipfs",
+                    Data = rs.Id,
+                    Timestamp = DateConverter.UtcNow
+                };
+            }
         }
 
         public async Task<ProtocolTransaction> RevealTransaction(string transactionId, List<RevealItem> items)
