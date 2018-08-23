@@ -59,10 +59,10 @@ namespace Sp8de.DemoGame.Web.Services
 
             var revealItem = new RevealItem()
             {
-                Type = UserType.Requester,
-                Seed = random.NextLong(),
+                Type = UserType.Validator,
+                Seed = random.NextLong().ToString(),
                 Nonce = DateTime.UtcNow.Ticks.ToString(),
-                PubKey = keySecret.PublicAddress
+                PubKey = keySecret.PublicAddress.ToLowerInvariant()
             };
 
             revealItem.Sign = signService.SignMessage(revealItem.ToString(), keySecret.PrivateKey);
@@ -74,7 +74,7 @@ namespace Sp8de.DemoGame.Web.Services
             var tx = new ProtocolTransaction()
             {
                 Id = id,
-                Signer = keySecret.PublicAddress,
+                Signer = keySecret.PublicAddress.ToLowerInvariant(),
                 Items = items
             };
 
@@ -120,7 +120,7 @@ namespace Sp8de.DemoGame.Web.Services
             {
                 Id = TxIdHelper.GenerateId(),
                 DependsOn = transactionId,
-                Signer = keySecret.PublicAddress,
+                Signer = keySecret.PublicAddress.ToLowerInvariant(),
                 Items = items.Select(x => (SignedItem)x).ToList()
             };
 

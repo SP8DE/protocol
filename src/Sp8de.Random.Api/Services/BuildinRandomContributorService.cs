@@ -26,7 +26,7 @@ namespace Sp8de.Random.Api.Services
             var revealItem = new RevealItem()
             {
                 Type = UserType.Validator,
-                Seed = random.NextLong(),
+                Seed = random.NextLong().ToString(),
                 Nonce = nonce ?? DateTime.UtcNow.Ticks.ToString(),
                 PubKey = keySecret.PublicAddress
             };

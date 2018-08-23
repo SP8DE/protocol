@@ -63,6 +63,7 @@ namespace Sp8de.DemoGame.Web.Controllers
             {
                 new SignedItem()
                 {
+                    Type = UserType.Contributor,
                     PubKey = model.PubKey,
                     Nonce = model.Nonce.ToString(),
                     Sign = model.Sign
@@ -120,7 +121,7 @@ namespace Sp8de.DemoGame.Web.Controllers
             
             var tx = await protocol.RevealTransaction(game.ValidationTx, list);
 
-            var seedItems = tx.Items.Select(x => (x as RevealItem).Seed.ToString()).ToArray();
+            var seedItems = tx.Items.Select(x => (x as RevealItem).Seed).ToArray();
 
             var seed = CreateSharedSeedByStrings(seedItems);
 

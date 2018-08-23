@@ -19,7 +19,7 @@ namespace Sp8de.DemoGame.Web.Models
         public decimal BetAmount { get; set; }
         public string PubKey { get; set; }
         public string Sign { get; set; }
-        public long Nonce { get; set; }
+        public string Nonce { get; set; }
     }
 
     public class GameStartResponse
@@ -38,8 +38,8 @@ namespace Sp8de.DemoGame.Web.Models
         public string GameId { get; set; }
         public string PubKey { get; set; }
         public string Sign { get; set; }
-        public long Seed { get; set; }
-        public long Nonce { get; set; }
+        public string Seed { get; set; }
+        public string Nonce { get; set; }
     }
 
     public class GameFinishResponse
