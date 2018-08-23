@@ -2,3 +2,8 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+if (document.querySelector('.copy-btn')) {
+    document.querySelector('.copy-btn').addEventListener('click', () => {
+        navigator.clipboard.writeText(document.querySelector('.input-address').value)
+    });
+}

@@ -1,0 +1,430 @@
+﻿@{
+ViewData["Title"] = "Sp8de server API";
+}
+<div class="documentation">
+    <h1><a href="#sp8de-game-api" id="sp8de-game-api">Sp8de server API</a></h1>
+    <p><strong>Version:</strong> v1</p>
+    <h3><a href="#apidemogamestart" id="apidemogamestart">/api/demogame/start</a></h3>
+    <hr/>
+    <h5><a href="#post" id="post"><em><strong>POST</strong></em></a></h5>
+    <p><strong>Parameters</strong></p>
+    <table>
+        <thead>
+        <tr>
+            <th> Name</th>
+            <th> Located in</th>
+            <th> Description</th>
+            <th> Required</th>
+            <th> Schema</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td> model</td>
+            <td> body</td>
+            <td></td>
+            <td> No</td>
+            <td><a href="#gamestartrequest">GameStartRequest</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <p><strong>Responses</strong></p>
+    <table>
+        <thead>
+        <tr>
+            <th> Code</th>
+            <th> Description</th>
+            <th> Schema</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td> 200</td>
+            <td> Success</td>
+            <td><a href="#gamestartresponse">GameStartResponse</a></td>
+        </tr>
+        <tr>
+            <td> 400</td>
+            <td> Bad Request</td>
+            <td> [ <a href="#error">Error</a> ]</td>
+        </tr>
+        </tbody>
+    </table>
+    <h3><a href="#apidemogameend" id="apidemogameend">/api/demogame/end</a></h3>
+    <hr/>
+    <h5><a href="#post-1" id="post-1"><em><strong>POST</strong></em></a></h5>
+    <p><strong>Parameters</strong></p>
+    <table>
+        <thead>
+        <tr>
+            <th> Name</th>
+            <th> Located in</th>
+            <th> Description</th>
+            <th> Required</th>
+            <th> Schema</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td> model</td>
+            <td> body</td>
+            <td></td>
+            <td> No</td>
+            <td><a href="#gamefinishrequest">GameFinishRequest</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <p><strong>Responses</strong></p>
+    <table>
+        <thead>
+        <tr>
+            <th> Code</th>
+            <th> Description</th>
+            <th> Schema</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td> 200</td>
+            <td> Success</td>
+            <td><a href="#gamefinishresponse">GameFinishResponse</a></td>
+        </tr>
+        <tr>
+            <td> 400</td>
+            <td> Bad Request</td>
+            <td> [ <a href="#error">Error</a> ]</td>
+        </tr>
+        <tr>
+            <td> 404</td>
+            <td> Not Found</td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+    <h3><a href="#apiping" id="apiping">/api/ping</a></h3>
+    <hr/>
+    <h5><a href="#get" id="get"><em><strong>GET</strong></em></a></h5>
+    <p><strong>Parameters</strong></p>
+    <table>
+        <thead>
+        <tr>
+            <th> Name</th>
+            <th> Located in</th>
+            <th> Description</th>
+            <th> Required</th>
+            <th> Schema</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <p><strong>Responses</strong></p>
+    <table>
+        <thead>
+        <tr>
+            <th> Code</th>
+            <th> Description</th>
+            <th> Schema</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td> 200</td>
+            <td> Success</td>
+            <td> string</td>
+        </tr>
+        </tbody>
+    </table>
+    <h3><a href="#models" id="models">Models</a></h3>
+    <hr/>
+    <h3><a href="#gamestartrequest" id="gamestartrequest">GameStartRequest</a></h3>
+    <table>
+        <thead>
+        <tr>
+            <th> Name</th>
+            <th> Type</th>
+            <th> Description</th>
+            <th> Required</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td> type</td>
+            <td> string</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> bet</td>
+            <td><a href="integer"> integer </a></td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> betAmount</td>
+            <td> double</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> pubKey</td>
+            <td> string</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> sign</td>
+            <td> string</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> nonce</td>
+            <td> long</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        </tbody>
+    </table>
+    <h3><a href="#gamestartresponse" id="gamestartresponse">GameStartResponse</a></h3>
+    <table>
+        <thead>
+        <tr>
+            <th> Name</th>
+            <th> Type</th>
+            <th> Description</th>
+            <th> Required</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td> gameId</td>
+            <td> string</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> items</td>
+            <td> [ <a href="#signeditem">SignedItem</a> ]</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> bet</td>
+            <td><a href="integer"> integer </a></td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> betAmount</td>
+            <td> double</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> gameType</td>
+            <td> string</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        </tbody>
+    </table>
+    <h3><a href="#signeditem" id="signeditem">SignedItem</a></h3>
+    <table>
+        <thead>
+        <tr>
+            <th> Name</th>
+            <th> Type</th>
+            <th> Description</th>
+            <th> Required</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td> pubKey</td>
+            <td> string</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> nonce</td>
+            <td> long</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> sign</td>
+            <td> string</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        </tbody>
+    </table>
+    <h3><a href="#error" id="error">Error</a></h3>
+    <table>
+        <thead>
+        <tr>
+            <th> Name</th>
+            <th> Type</th>
+            <th> Description</th>
+            <th> Required</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td> name</td>
+            <td> string</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> message</td>
+            <td> string</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        </tbody>
+    </table>
+    <h3><a href="#gamefinishrequest" id="gamefinishrequest">GameFinishRequest</a></h3>
+    <table>
+        <thead>
+        <tr>
+            <th> Name</th>
+            <th> Type</th>
+            <th> Description</th>
+            <th> Required</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td> gameId</td>
+            <td> string</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> pubKey</td>
+            <td> string</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> sign</td>
+            <td> string</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> seed</td>
+            <td> long</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> nonce</td>
+            <td> long</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        </tbody>
+    </table>
+    <h3><a href="#gamefinishresponse" id="gamefinishresponse">GameFinishResponse</a></h3>
+    <table>
+        <thead>
+        <tr>
+            <th> Name</th>
+            <th> Type</th>
+            <th> Description</th>
+            <th> Required</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td> gameId</td>
+            <td> string</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> winNumbers</td>
+            <td><a href="integer"> integer </a></td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> winAmount</td>
+            <td> double</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> items</td>
+            <td> [ <a href="#revealitem">RevealItem</a> ]</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> sharedSeedHash</td>
+            <td> string</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> sharedSeedArray</td>
+            <td><a href="integer"> integer </a></td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> validationTxHash</td>
+            <td> string</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> isWinner</td>
+            <td> boolean</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        </tbody>
+    </table>
+    <h3><a href="#revealitem" id="revealitem">RevealItem</a></h3>
+    <table>
+        <thead>
+        <tr>
+            <th> Name</th>
+            <th> Type</th>
+            <th> Description</th>
+            <th> Required</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td> seed</td>
+            <td> long</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> pubKey</td>
+            <td> string</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> nonce</td>
+            <td> long</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        <tr>
+            <td> sign</td>
+            <td> string</td>
+            <td></td>
+            <td> No</td>
+        </tr>
+        </tbody>
+    </table>
+
+
+</div>

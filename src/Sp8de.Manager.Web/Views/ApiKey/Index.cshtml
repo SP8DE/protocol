@@ -2,28 +2,27 @@
 @{
     ViewData["Title"] = "Api Keys";
 }
-
-<h2>@ViewData["Title"]</h2>
-
-
 <p>
-    <a class="btn btn-primary" href="/ApiKey/Generate">Generate</a>
+    <a class="btn btn-info" href="/ApiKey/Generate">Generate</a>
 </p>
 
-<table class="table table-bordered">
-    <tr>
-        <td>Api Key</td>
-        <td>Api Secret</td>
-        <td></td>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+<div class="api-table-block">
+    <table class="api-table">
         <tr>
+            <td>Title</td>
+            <td>Api Key</td>
+            <td>Api Secret</td>
+            <td></td>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td></td>
             <td>@item.ApiKey</td>
             <td>@item.ApiSecret ...</td>
-            <td><a class="btn btn-primary" href="#revoke">Revoke</a></td>
+            <td><a class="btn btn-info btn-sm" href="#revoke">Revoke</a></td>
         </tr>
-    }
-</table>
-
+        }
+    </table>
+</div>

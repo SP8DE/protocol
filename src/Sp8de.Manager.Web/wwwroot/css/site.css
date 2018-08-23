@@ -1,39 +1,505 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\
 for details on configuring this project to bundle and minify static web assets. */
-body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,700,800,900&subset=cyrillic-ext');
+
+@media screen and (max-width: 992px) and (min-width: 576px) {
+    /*header {*/
+    /*flex-direction: column;*/
+    /*align-items: center;*/
+    /*background: #080a1d;*/
+    /*}*/
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}
+@media screen and (min-width: 576px) {
+    header {
+        background: #080a1d;
+    }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
-}
+    .login-container {
+        width: 100%;
+    }
 
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
-}
-
-/* QR code generator */
-#qrCode {
-    margin: 15px;
-}
-
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
+    content {
+        padding: 2rem;
     }
 }
 
+@media screen and (max-width: 576px) {
+    header {
+        background: #080a1d;
+    }
 
+    body {
+        overflow-x: hidden;
+    }
+
+}
+
+@media screen and (min-width: 992px) {
+    header {
+        flex-direction: row;
+        align-items: stretch;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    body, button, div {
+        font-size: 0.8rem;
+        font-weight: 300;
+    }
+
+    .table-transiction, .table-transiction button {
+        font-size: 0.6rem !important;
+    }
+
+    .container {
+        padding: 0.2rem;
+        margin: 0;
+        width: 100%;
+        max-width: none;
+    }
+
+    content {
+        padding: 0.5rem;
+    }
+
+    .history-title {
+        font-size: 0.9rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1rem;
+        word-wrap: break-word;
+    }
+
+    h4 {
+        font-size: 0.9rem;
+        word-wrap: break-word;
+    }
+
+    h1, h2, h3, h4 {
+        font-weight: 600;
+    }
+    .documentation table td, .documentation table th {
+        font-size: 0.6rem;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .history-title {
+        font-size: 1.2rem;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    h3 {
+        font-size: 1.75rem;
+    }
+    .documentation table td, .documentation table th {
+        padding: 0.4rem;
+    }
+}
+
+div, header, main, nav, footer {
+    outline: 0px solid #414141;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    background: fixed linear-gradient(to bottom, #584475 0%, #ddb1bf 36%, #a5a0af 71%, #3b5f6d 100%) no-repeat;
+}
+
+html, body, button, input {
+    font-family: 'Montserrat';
+    font-weight: 200;
+    color: #ccd8f4;
+}
+
+div {
+    box-sizing: border-box;
+}
+
+.body-container {
+    min-height: 100%;
+    height: 100%;
+    /*display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;*/
+}
+
+header {
+    height: 5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+main {
+    min-height: calc(100% - 5rem);
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+footer {
+    display: none;
+    /*position: absolute;*/
+    /*bottom: 0px;*/
+    /*width: 100%;*/
+}
+
+header, main, footer {
+    padding: 0rem
+}
+
+header > div {
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.login div {
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo svg {
+    width: 247px;
+    height: 48px;
+    margin-top: -6px;
+}
+
+.left-column {
+    min-width: 19rem;
+    max-width: 19rem;
+}
+
+.large-menu, content {
+    padding-top: 1.5rem;
+}
+
+nav > div {
+    padding: 1.5rem;
+
+}
+
+nav a {
+    /*color: #080a1d;*/
+    color: white;
+    font-weight: 400;
+    font-size: 1.2rem;
+}
+
+nav a:hover {
+    /*color: #080a1d;*/
+    color: white;
+    text-decoration: none;
+}
+
+.sand {
+    padding: 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.join {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.join i {
+    font-size: 2rem !important;
+    vertical-align: middle;
+}
+
+content {
+    min-height: 100%;
+    width: 100%;
+    background: #eaebff;
+    color: #080a1d;
+    overflow: hidden;
+}
+
+.login-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 0;
+}
+
+.title {
+    font-weight: 500;
+    font-size: 1.5rem;
+    padding: 1rem;
+}
+
+.hidden-login, .login-container {
+    background: #080a1d;
+}
+
+.info-blocks {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: flex-start;
+    color: black;
+    font-weight: 100;
+}
+
+.info-block {
+    height: 7rem;
+    background: white;
+    padding: 0.7rem;
+    margin: 0.2rem;
+}
+
+.inside-info {
+    height: 100%;
+    border: 1px solid #9aadb5;
+    padding: 0.5rem;
+}
+
+.inside-info .name {
+    font-weight: 400;
+    font-size: 0.8rem;
+}
+
+.inside-info .value {
+    font-weight: 500;
+    font-size: 1.8rem;
+}
+
+.qr-image {
+    /* min-width: 200px;
+     width: 30%;
+     max-width: 500px;*/
+}
+
+.qr-code-block {
+    padding-top: 2rem;
+}
+
+.titl {
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.qr-code-block .info {
+}
+
+.qr-code-block .info > div {
+    padding: 1rem;
+}
+
+.qr-code-block .info > div div {
+    padding: 0.5rem;
+}
+
+/* Transactions */
+
+.history-line {
+    padding: 1rem;
+}
+
+.transaction-table {
+    /*padding: 0 1rem 1rem 2rem;*/
+}
+
+.history-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.history-title div {
+    padding: 0.5rem;
+}
+
+.history-title .words {
+    font-weight: 400;
+}
+
+.table-transiction {
+    font-size: 0.9rem;
+    min-width: 30rem;
+}
+
+.transaction-wrapper {
+    overflow: auto;
+}
+
+.open-more-info-table {
+    text-align: center;
+}
+
+.history div {
+    /*
+
+    !!
+    !!
+    !!
+
+    */
+    outline: 0px solid #cccdde;
+}
+
+.main-table-line {
+    padding: 0.4rem;
+}
+
+.open-more-info-table {
+    padding-left: 2rem;
+}
+
+.table-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.1rem;
+}
+
+.table-line .toggle {
+    font-weight: 800;
+    color: #489045;
+    cursor: pointer;
+}
+
+.table-title-six > div, .table-data-six > div {
+    min-width: 19%;
+}
+
+.table-title-five > div, .table-data-five > div {
+    min-width: 25%;
+}
+
+.table-title-block, .table-main-block {
+    padding: 0.2rem;
+}
+
+.table-main-block {
+    overflow: hidden;
+    font-weight: 300;
+}
+
+.table-title-block {
+    opacity: 0.7;
+}
+
+.open-more-info-table > div:first-child, .table-transiction > div:first-child {
+    border-bottom: 1px solid #cccdde;
+}
+
+.desription-table {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.table-data-five .amount-table, .table-data-six .amount-table {
+    font-weight: 500;
+}
+
+.toggle::before {
+    content: '+';
+}
+
+.main-table-line-title {
+    cursor: pointer;
+}
+
+.main-table-line-title[aria-expanded="true"] .toggle::before {
+    content: '—';
+}
+
+/*Api*/
+.api-table-block {
+    overflow: auto;
+}
+
+.api-table {
+
+}
+
+.api-table td {
+    border-bottom: 1px solid #cccdde;
+    padding: 1rem;
+}
+
+.api-table tr:last-child td {
+    border-bottom: 0px solid #cccdde;
+}
+
+/*Manage profile*/
+
+.account-nav {
+    padding: 0.5rem;
+    max-width: 20rem;
+}
+
+.account-nav a {
+    text-wrap: none;
+    overflow: hidden;
+    word-wrap: normal;
+}
+
+.documentation {
+
+}
+
+.documentation h3 {
+    margin-top: 2rem;
+}
+
+.documentation a {
+    color: black;
+}
+.documentation a > h3{
+    color: #007bff;
+}
+
+.documentation table td, .documentation table th {
+    padding: 0.4rem;
+}
+
+.documentation table th {
+    border-bottom: 1px solid #dedede;
+}
+.documentation td,.documentation th  {
+}
