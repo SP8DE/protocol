@@ -1,0 +1,53 @@
+<div class="container" [ngClass]="{'open': open}">
+  <div class="side left">
+    <div class="info-line">
+      <div class="title">gameId:</div>
+      <div class="value">{{data.gameId}}</div>
+    </div>
+    <div class="info-line">
+      <div class="title">winNumbers:</div>
+      <div class="value">
+        {{data.winNumbers}}
+      </div>
+    </div>
+    <div class="info-line">
+      <div class="title">winAmount:</div>
+      <div class="value">{{data.winAmount}}</div>
+    </div>
+    <div class="info-line">
+      <div class="title">sharedSeedArray:</div>
+      <div class="value">
+        <div *ngFor="let seed of data.sharedSeedArray">
+          {{seed}}
+        </div>
+      </div>
+    </div>
+    <div class="info-line">
+      <div class="title">validationTxHash:</div>
+      <div class="value">{{data.validationTxHash}}</div>
+    </div>
+  </div>
+
+  <div class="side right">
+    <div class="info-line">
+      <div class="title">items:</div>
+      <div class="value">
+        <ng-container *ngFor="let item of data.items; let i=index">
+          <div class="title">{{i}}</div>
+          <div>nonce: {{item.nonce}}</div>
+          <div>pubKey: {{item.pubKey}}</div>
+          <div>seed: {{item.seed}}</div>
+          <div>sign: {{item.sign}}</div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="info-line">
+      <div class="title">sharedSeedHash:</div>
+      <div class="value">{{data.sharedSeedHash}}</div>
+    </div>
+    <div class="info-line">
+      <div class="title">isWinner:</div>
+      <div class="value">{{data.isWinner}}</div>
+    </div>
+  </div>
+</div>

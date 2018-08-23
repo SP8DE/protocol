@@ -1,0 +1,61 @@
+@import "root"
+$panel: 3.9rem
+header, footer
+  font-size: 1.5rem
+  font-weight: 100
+  height: $panel
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+  align-items: left
+  padding: $padding
+
+header
+  background-color: #508686
+  color: white
+  .search
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    align-items: center
+    align-content: center
+    div
+      display: flex
+      flex-direction: row
+      justify-content: center
+      align-items: center
+      align-content: center
+      padding: $padding/2
+      i, input
+        vertical-align: center
+      input
+        outline: 0
+        border: 0
+        border-radius: $radius/2
+        height: 1.5rem
+        width: 15rem
+        padding: $padding/3
+        &:focus
+          box-shadow: 0 0 4px rgba(255, 255, 255, 0.8)
+    .submit
+      cursor: pointer
+      opacity: 0.8
+      &:hover
+        opacity: 1
+      &:active
+        opacity: 0.6
+
+footer
+  background-color: #508686
+  color: white
+  position: absolute
+  bottom: 0
+  width: 100%
+
+main
+  display: flex
+  justify-content: start
+  flex-direction: column
+  align-items: center
+  height: calc(100% - #{$panel})
+  overflow: auto

@@ -1,0 +1,19 @@
+<div class="items">
+  <div class="title main">{{title}}</div>
+  <div class="items-pics" [ngClass]="{'started': started}">
+    <div class="item {{type}}" [ngClass]="{'choice':item.choice}" *ngFor="let item of items" (click)="choiceItem(item)">
+      <img
+        src="../../assets/images/{{type}}/{{item.src}}.png" alt=""></div>
+  </div>
+</div>
+<div class="bet">
+  <div class="title">Bet</div>
+  <div class="bets">
+    <ng-container *ngFor="let bet of bets">
+      <button [disabled]="bet===currentBetAmount" (click)="choiceBet(bet)">{{bet}}</button>
+    </ng-container>
+  </div>
+</div>
+<div class="controls">
+  <button (click)="start()" [disabled]="!currentBet.length || !currentBetAmount">Start</button>
+</div>

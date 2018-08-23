@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&subset=cyrillic-ext');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,700,800,900&subset=cyrillic-ext');
+
+html, body {
+  margin: 0px;
+  height: 100%;
+}
+
+html, body, button, input {
+  font-family: 'Montserrat';
+  font-weight: 300;
+}

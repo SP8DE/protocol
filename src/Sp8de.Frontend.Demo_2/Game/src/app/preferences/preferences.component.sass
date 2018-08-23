@@ -1,0 +1,51 @@
+@import "../grid"
+div
+  padding: 1rem
+
+.main
+  font-size: $mainTitle
+
+.items-pics
+  display: flex
+  flex-direction: row
+  justify-content: space-around
+  flex-wrap: wrap
+  .item
+    padding: 5px
+    cursor: pointer
+    img
+      filter: invert(1) brightness(200%) saturate(0)
+      width: 3.5rem
+      border-radius: 0.4rem
+      transition: 0.3s ease-in-out
+  .TossCoin
+    img
+      border-radius: 2rem
+  .choice
+    img
+      box-shadow: 0 0 0.5rem 3px rgba(0, 0, 0, 0.5)
+
+.started
+  img
+    width: 2rem !important
+    border-radius: 0.2rem !important
+  .TossCoin
+    img
+      border-radius: 1rem !important
+
+.bet
+  .bets
+    display: flex
+    flex-direction: row
+    justify-content: space-around
+    button:disabled
+      box-shadow: 0 0 0.5rem rgba(250, 250, 250, 0.5)
+      color: white
+
+.controls
+  display: flex
+  flex-direction: row
+  justify-content: space-around
+  button
+    font-size: 2rem
+

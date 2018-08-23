@@ -1,0 +1,53 @@
+<div class="title">Game history</div>
+<div class="table-block">
+  <div class="table">
+    <div class="thead">
+      <div class="tr">
+        <div class="th player-column">Player</div>
+        <div class="th bet-column">Bet</div>
+        <div class="th result-column">Result</div>
+        <div class="th hash-column">Hash</div>
+        <div class="th button-column">&nbsp;</div>
+      </div>
+    </div>
+    <div class="tbody">
+      <div *ngFor="let round of history" class="row" [ngClass]="{'openAdvanced': round.openAdvanced}">
+        <ng-container *ngIf="round.type === type">
+          <div class="tr">
+            <div class="td">{{round.player}}</div>
+            <div class="td bet-column">
+              <div class="statistic-bet item-cell">
+                <div>
+                  {{round.betAmount}}
+                </div>
+                <div *ngFor="let item of round.bet">
+                  <img src="../../assets/images/{{type}}/{{item}}.png">
+                </div>
+              </div>
+            </div>
+            <div class="td result-column">
+              <div class="item-cell">
+                <div *ngFor="let item of round.response.winNumbers">
+                  <img src="../../assets/images/{{type}}/{{item}}.png"
+                       [ngClass]="{'win':round.response.isWinner,'lose':!round.response.isWinner}">
+                </div>
+                <div>
+                  {{round.response.isWinner? (round.response.winAmount | number ) : '—'}}
+                </div>
+              </div>
+            </div>
+            <div class="td hash-column">
+              {{round.response.gameId}}
+            </div>
+            <div class="td button-column" (click)="round.openAdvanced=!round.openAdvanced">
+              <button class="advanced-button"></button>
+            </div>
+          </div>
+          <div class="advanced-container">
+            <app-advanced [data]="round.response" [open]="round.openAdvanced"></app-advanced>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

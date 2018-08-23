@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "ng test",
+    "test": "ng test --code-coverage",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -20,10 +20,14 @@
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
+    "browser-stream": "^0.1.10",
     "core-js": "^2.5.4",
+    "ethereumjs-util": "^5.2.0",
+    "ethers": "^3.0.26",
     "rxjs": "^6.0.0",
     "rxjs-compat": "^6.2.2",
-    "sp8de.crypto": "^1.2.1",
+    "sp8de-client-sdk": "^1.4.26",
+    "stream": "0.0.2",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {

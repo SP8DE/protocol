@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="content-block">
+    <div class="column greeting">
+      <div class="title main">Welcome</div>
+      <form [formGroup]="authForm">
+        <div class="name">
+          <input class="join join-input" type="email" placeholder="Name" formControlName="name">
+        </div>
+        <div class="name">
+          <input class="join join-input" type="password" placeholder="Password" formControlName="password">
+        </div>
+      </form>
+      <div class="games">
+        <div class="game">
+          <button class="join" [disabled]="authForm.invalid" (click)="joinGame()">Log in</button>
+        </div>
+        <div class="game">
+          <button class="join" routerLink="../">Demo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

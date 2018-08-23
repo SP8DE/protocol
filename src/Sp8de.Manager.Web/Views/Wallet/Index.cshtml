@@ -1,220 +1,878 @@
-﻿
-@{
-    ViewData["Title"] = "Wallet";
+﻿@{
+ViewData["Title"] = "Wallet";
 }
-
-<h2>@ViewData["Title"]</h2>
 
 @section Scripts{
-    <link rel="stylesheet" href="~/css/old.css" asp-append-version="true" />
 }
 
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-
-<div class="container">
-
-    <form class="index-form" novalidate="novalidate">
-        <div class="step-regestration form-section third-tab">
-            <div class="content-index-page">
-                <img src="https://ico.sp8de.com/static/img/general/bg-girl3.jpg" class="index-bg">
-                <span class="step-title unactive">
-                    <strong>Step 1.</strong> Buy SPX tokens with
-                </span>
-            </div>
-            <div class="content-of-page step-content">
-                <div class="single-input-lk">
-                    <div class="input-name-lk">SPX tokens will be sent to this wallet address.</div>
-                    <div class="tokens-will-be-sent">0x0B1Aaf610d85E7A150aB81073F859B3Fd1659113</div>
-                </div>
-            </div>
-            <span class="step-title unactive">
-                <strong>Step 2.</strong> Please review your ETH wallet address
-            </span>
-            <div class="red-line"></div>
-            <span class="step-title">
-                <strong>Step 3.</strong> Choose the digital currency of prefference
-            </span>
-            <div class="border-desc">
-                You can send funds from all types of wallets and
-                <br>cryptocurrency exchanges!
-            </div>
-            <div class="radio-row">
-                <div class="single-radio">
-                    <input name="paymentType" value="ADA" id="cardano" type="radio" class="radiobutton-input" checked="" data-parsley-group="block-2">
-                    <label for="cardano" class="value-label">
-                        <div class="radio-label"></div>
-                        <div class="title-value-label">CARDANO</div>
-                        <div class="short-title-value-label">ADA</div>
-                    </label>
-                </div>
-                <div class="single-radio">
-                    <input name="paymentType" value="ETH" id="ethereum" type="radio" class="radiobutton-input" data-parsley-group="block-2">
-                    <label for="ethereum" class="value-label">
-                        <div class="radio-label"></div>
-                        <div class="title-value-label">ETHEREUM</div>
-                        <div class="short-title-value-label">ETH</div>
-                    </label>
-                </div>
-                <div class="single-radio">
-                    <input name="paymentType" value="BTC" id="bitcoin" type="radio" class="radiobutton-input" data-parsley-group="block-2">
-                    <label for="bitcoin" class="value-label">
-                        <div class="radio-label"></div>
-                        <div class="title-value-label">BITCOIN</div>
-                        <div class="short-title-value-label">BTC</div>
-                    </label>
-                </div>
-                <div class="single-radio">
-                    <input name="paymentType" value="ALT" id="changelly" type="radio" class="radiobutton-input" data-parsley-group="block-2">
-                    <label for="changelly" class="value-label">
-                        <div class="radio-label"></div>
-                        <div class="title-value-label">Changelly</div>
-                        <div class="short-title-value-label">100+ digital currencies</div>
-                    </label>
-                </div>
-            </div>
-            <div class="nav-tabs double-nav form-navigation">
-                <div class="btn prev-btn previous" style="">BACK to step 2</div>
-                <div class="btn next-btn next" id="getAddress" style="display: none;">GET A WALLET ADDRESS</div>
-            </div>
+<div class="info-blocks d-block d-md-flex">
+    <div class="info-block col-12 col-md-4">
+        <div class="inside-info">
+            <div class="name">Token sale is</div>
+            <div class="value">Finished</div>
         </div>
-        <div class="step-regestration form-section fourth-tab current">
-            <div id="ADAWallet" class="wallet-block hidden-block">
-                <div class="content-index-page">
-                    <img src="/static/img/general/bg-girl4.jpg" class="index-bg">
-                </div>
-                <span class="title-last-step">Send your Cardano (ADA) to the address in the field below!</span>
-                <div class="content-of-page step-content qr-padd">
-                    <div style="text-align:center;margin:0 auto;">
-                        <p class="loadding">Loading ...</p>
-
-                        <div style="text-align: center; margin-bottom: 20px">
-                            <span class="payment-error" id="ADAError"></span>
-                        </div>
-
-                        <input type="submit" value="RETRY" id="ADARetry" style="display: none;" class="retry-button" data-currency="ADA" data-parsley-group="block-3">
-                    </div>
-                    <div class="qr-code-block hidden-block">
-                        <div id="ADAWalletCode" class="qr-wrap qr-image"></div>
-                        <div class="qr-wallet-info">
-                            <span class="current-rate">Current rate: <span class="color-red"><span class="exchange-rate"></span> ADA/ETH</span></span>
-                            <span class="current-rate-info">The actual rate will be determined at transaction time</span>
-                            <input type="text" id="ADAWalletText" class="wallet-number-div wallet-address" data-parsley-group="block-3">
-                            <div class="copy-btn" data-clipboard-target="#ADAWalletText">COPY ADRESS</div>
-                            <span class="qr-block-desc">Send any amount to the address. The system will calculate at the rate above, generate and send you tokens! It can take up to 3 hours untill you get SPX in your wallet.</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="nav-tabs double-nav form-navigation">
-                    <div class="btn prev-btn previous" style="">BACK to step 3</div>
-                </div>
-            </div>
-
-            <div id="ETHWallet" class="wallet-block">
-                <div class="content-index-page">
-                    <img src="/static/img/general/bg-girl4.jpg" class="index-bg">
-                </div>
-                <span class="title-last-step">Send your Sp8de (SPX) to the address in the field below!</span>
-                <div class="content-of-page step-content qr-padd">
-                    <div style="text-align:center;margin:0 auto;">
-                        <p class="loadding" style="display: none;">Loading ...</p>
-
-                        <div style="text-align: center; margin-bottom: 20px">
-                            <span class="payment-error" id="ETHError"></span>
-                        </div>
-
-                        <input type="submit" value="RETRY" id="ETHRetry" style="display: none;" class="retry-button" data-currency="ETH" data-parsley-group="block-3">
-                    </div>
-
-                    <div class="qr-code-block">
-                        <div id="ETHWalletCode" class="qr-wrap qr-image" title="0x23Ca5513d372D730be62159AB2Cd001C35A0b16c"><svg viewBox="0 0 41 41" width="100%" height="100%" fill="#ffffff" xmlns:xlink="http://www.w3.org/1999/xlink"><rect fill="#ffffff" width="100%" height="100%"></rect><rect fill="#000000" width="1" height="1" id="template"></rect><use x="0" y="0" xlink:href="#template"></use><use x="1" y="0" xlink:href="#template"></use><use x="2" y="0" xlink:href="#template"></use><use x="3" y="0" xlink:href="#template"></use><use x="4" y="0" xlink:href="#template"></use><use x="5" y="0" xlink:href="#template"></use><use x="6" y="0" xlink:href="#template"></use><use x="8" y="0" xlink:href="#template"></use><use x="9" y="0" xlink:href="#template"></use><use x="12" y="0" xlink:href="#template"></use><use x="13" y="0" xlink:href="#template"></use><use x="17" y="0" xlink:href="#template"></use><use x="21" y="0" xlink:href="#template"></use><use x="23" y="0" xlink:href="#template"></use><use x="27" y="0" xlink:href="#template"></use><use x="28" y="0" xlink:href="#template"></use><use x="29" y="0" xlink:href="#template"></use><use x="30" y="0" xlink:href="#template"></use><use x="31" y="0" xlink:href="#template"></use><use x="32" y="0" xlink:href="#template"></use><use x="34" y="0" xlink:href="#template"></use><use x="35" y="0" xlink:href="#template"></use><use x="36" y="0" xlink:href="#template"></use><use x="37" y="0" xlink:href="#template"></use><use x="38" y="0" xlink:href="#template"></use><use x="39" y="0" xlink:href="#template"></use><use x="40" y="0" xlink:href="#template"></use><use x="0" y="1" xlink:href="#template"></use><use x="6" y="1" xlink:href="#template"></use><use x="8" y="1" xlink:href="#template"></use><use x="12" y="1" xlink:href="#template"></use><use x="15" y="1" xlink:href="#template"></use><use x="16" y="1" xlink:href="#template"></use><use x="17" y="1" xlink:href="#template"></use><use x="19" y="1" xlink:href="#template"></use><use x="22" y="1" xlink:href="#template"></use><use x="23" y="1" xlink:href="#template"></use><use x="29" y="1" xlink:href="#template"></use><use x="34" y="1" xlink:href="#template"></use><use x="40" y="1" xlink:href="#template"></use><use x="0" y="2" xlink:href="#template"></use><use x="2" y="2" xlink:href="#template"></use><use x="3" y="2" xlink:href="#template"></use><use x="4" y="2" xlink:href="#template"></use><use x="6" y="2" xlink:href="#template"></use><use x="8" y="2" xlink:href="#template"></use><use x="9" y="2" xlink:href="#template"></use><use x="13" y="2" xlink:href="#template"></use><use x="14" y="2" xlink:href="#template"></use><use x="15" y="2" xlink:href="#template"></use><use x="16" y="2" xlink:href="#template"></use><use x="17" y="2" xlink:href="#template"></use><use x="18" y="2" xlink:href="#template"></use><use x="26" y="2" xlink:href="#template"></use><use x="28" y="2" xlink:href="#template"></use><use x="29" y="2" xlink:href="#template"></use><use x="30" y="2" xlink:href="#template"></use><use x="34" y="2" xlink:href="#template"></use><use x="36" y="2" xlink:href="#template"></use><use x="37" y="2" xlink:href="#template"></use><use x="38" y="2" xlink:href="#template"></use><use x="40" y="2" xlink:href="#template"></use><use x="0" y="3" xlink:href="#template"></use><use x="2" y="3" xlink:href="#template"></use><use x="3" y="3" xlink:href="#template"></use><use x="4" y="3" xlink:href="#template"></use><use x="6" y="3" xlink:href="#template"></use><use x="11" y="3" xlink:href="#template"></use><use x="12" y="3" xlink:href="#template"></use><use x="18" y="3" xlink:href="#template"></use><use x="19" y="3" xlink:href="#template"></use><use x="20" y="3" xlink:href="#template"></use><use x="23" y="3" xlink:href="#template"></use><use x="32" y="3" xlink:href="#template"></use><use x="34" y="3" xlink:href="#template"></use><use x="36" y="3" xlink:href="#template"></use><use x="37" y="3" xlink:href="#template"></use><use x="38" y="3" xlink:href="#template"></use><use x="40" y="3" xlink:href="#template"></use><use x="0" y="4" xlink:href="#template"></use><use x="2" y="4" xlink:href="#template"></use><use x="3" y="4" xlink:href="#template"></use><use x="4" y="4" xlink:href="#template"></use><use x="6" y="4" xlink:href="#template"></use><use x="9" y="4" xlink:href="#template"></use><use x="10" y="4" xlink:href="#template"></use><use x="11" y="4" xlink:href="#template"></use><use x="12" y="4" xlink:href="#template"></use><use x="13" y="4" xlink:href="#template"></use><use x="16" y="4" xlink:href="#template"></use><use x="17" y="4" xlink:href="#template"></use><use x="18" y="4" xlink:href="#template"></use><use x="21" y="4" xlink:href="#template"></use><use x="23" y="4" xlink:href="#template"></use><use x="24" y="4" xlink:href="#template"></use><use x="25" y="4" xlink:href="#template"></use><use x="26" y="4" xlink:href="#template"></use><use x="27" y="4" xlink:href="#template"></use><use x="28" y="4" xlink:href="#template"></use><use x="30" y="4" xlink:href="#template"></use><use x="31" y="4" xlink:href="#template"></use><use x="34" y="4" xlink:href="#template"></use><use x="36" y="4" xlink:href="#template"></use><use x="37" y="4" xlink:href="#template"></use><use x="38" y="4" xlink:href="#template"></use><use x="40" y="4" xlink:href="#template"></use><use x="0" y="5" xlink:href="#template"></use><use x="6" y="5" xlink:href="#template"></use><use x="8" y="5" xlink:href="#template"></use><use x="12" y="5" xlink:href="#template"></use><use x="13" y="5" xlink:href="#template"></use><use x="14" y="5" xlink:href="#template"></use><use x="17" y="5" xlink:href="#template"></use><use x="20" y="5" xlink:href="#template"></use><use x="21" y="5" xlink:href="#template"></use><use x="22" y="5" xlink:href="#template"></use><use x="23" y="5" xlink:href="#template"></use><use x="27" y="5" xlink:href="#template"></use><use x="30" y="5" xlink:href="#template"></use><use x="32" y="5" xlink:href="#template"></use><use x="34" y="5" xlink:href="#template"></use><use x="40" y="5" xlink:href="#template"></use><use x="0" y="6" xlink:href="#template"></use><use x="1" y="6" xlink:href="#template"></use><use x="2" y="6" xlink:href="#template"></use><use x="3" y="6" xlink:href="#template"></use><use x="4" y="6" xlink:href="#template"></use><use x="5" y="6" xlink:href="#template"></use><use x="6" y="6" xlink:href="#template"></use><use x="8" y="6" xlink:href="#template"></use><use x="10" y="6" xlink:href="#template"></use><use x="12" y="6" xlink:href="#template"></use><use x="14" y="6" xlink:href="#template"></use><use x="16" y="6" xlink:href="#template"></use><use x="18" y="6" xlink:href="#template"></use><use x="20" y="6" xlink:href="#template"></use><use x="22" y="6" xlink:href="#template"></use><use x="24" y="6" xlink:href="#template"></use><use x="26" y="6" xlink:href="#template"></use><use x="28" y="6" xlink:href="#template"></use><use x="30" y="6" xlink:href="#template"></use><use x="32" y="6" xlink:href="#template"></use><use x="34" y="6" xlink:href="#template"></use><use x="35" y="6" xlink:href="#template"></use><use x="36" y="6" xlink:href="#template"></use><use x="37" y="6" xlink:href="#template"></use><use x="38" y="6" xlink:href="#template"></use><use x="39" y="6" xlink:href="#template"></use><use x="40" y="6" xlink:href="#template"></use><use x="8" y="7" xlink:href="#template"></use><use x="9" y="7" xlink:href="#template"></use><use x="15" y="7" xlink:href="#template"></use><use x="16" y="7" xlink:href="#template"></use><use x="19" y="7" xlink:href="#template"></use><use x="23" y="7" xlink:href="#template"></use><use x="24" y="7" xlink:href="#template"></use><use x="25" y="7" xlink:href="#template"></use><use x="2" y="8" xlink:href="#template"></use><use x="3" y="8" xlink:href="#template"></use><use x="4" y="8" xlink:href="#template"></use><use x="6" y="8" xlink:href="#template"></use><use x="8" y="8" xlink:href="#template"></use><use x="9" y="8" xlink:href="#template"></use><use x="10" y="8" xlink:href="#template"></use><use x="11" y="8" xlink:href="#template"></use><use x="13" y="8" xlink:href="#template"></use><use x="17" y="8" xlink:href="#template"></use><use x="19" y="8" xlink:href="#template"></use><use x="20" y="8" xlink:href="#template"></use><use x="25" y="8" xlink:href="#template"></use><use x="26" y="8" xlink:href="#template"></use><use x="27" y="8" xlink:href="#template"></use><use x="28" y="8" xlink:href="#template"></use><use x="29" y="8" xlink:href="#template"></use><use x="30" y="8" xlink:href="#template"></use><use x="32" y="8" xlink:href="#template"></use><use x="33" y="8" xlink:href="#template"></use><use x="34" y="8" xlink:href="#template"></use><use x="35" y="8" xlink:href="#template"></use><use x="38" y="8" xlink:href="#template"></use><use x="39" y="8" xlink:href="#template"></use><use x="40" y="8" xlink:href="#template"></use><use x="3" y="9" xlink:href="#template"></use><use x="7" y="9" xlink:href="#template"></use><use x="10" y="9" xlink:href="#template"></use><use x="11" y="9" xlink:href="#template"></use><use x="15" y="9" xlink:href="#template"></use><use x="16" y="9" xlink:href="#template"></use><use x="19" y="9" xlink:href="#template"></use><use x="20" y="9" xlink:href="#template"></use><use x="23" y="9" xlink:href="#template"></use><use x="25" y="9" xlink:href="#template"></use><use x="31" y="9" xlink:href="#template"></use><use x="34" y="9" xlink:href="#template"></use><use x="36" y="9" xlink:href="#template"></use><use x="39" y="9" xlink:href="#template"></use><use x="1" y="10" xlink:href="#template"></use><use x="2" y="10" xlink:href="#template"></use><use x="3" y="10" xlink:href="#template"></use><use x="6" y="10" xlink:href="#template"></use><use x="11" y="10" xlink:href="#template"></use><use x="15" y="10" xlink:href="#template"></use><use x="16" y="10" xlink:href="#template"></use><use x="18" y="10" xlink:href="#template"></use><use x="20" y="10" xlink:href="#template"></use><use x="21" y="10" xlink:href="#template"></use><use x="22" y="10" xlink:href="#template"></use><use x="23" y="10" xlink:href="#template"></use><use x="24" y="10" xlink:href="#template"></use><use x="27" y="10" xlink:href="#template"></use><use x="28" y="10" xlink:href="#template"></use><use x="32" y="10" xlink:href="#template"></use><use x="34" y="10" xlink:href="#template"></use><use x="35" y="10" xlink:href="#template"></use><use x="40" y="10" xlink:href="#template"></use><use x="0" y="11" xlink:href="#template"></use><use x="1" y="11" xlink:href="#template"></use><use x="3" y="11" xlink:href="#template"></use><use x="4" y="11" xlink:href="#template"></use><use x="7" y="11" xlink:href="#template"></use><use x="8" y="11" xlink:href="#template"></use><use x="12" y="11" xlink:href="#template"></use><use x="16" y="11" xlink:href="#template"></use><use x="17" y="11" xlink:href="#template"></use><use x="19" y="11" xlink:href="#template"></use><use x="24" y="11" xlink:href="#template"></use><use x="25" y="11" xlink:href="#template"></use><use x="26" y="11" xlink:href="#template"></use><use x="28" y="11" xlink:href="#template"></use><use x="32" y="11" xlink:href="#template"></use><use x="33" y="11" xlink:href="#template"></use><use x="34" y="11" xlink:href="#template"></use><use x="36" y="11" xlink:href="#template"></use><use x="37" y="11" xlink:href="#template"></use><use x="39" y="11" xlink:href="#template"></use><use x="40" y="11" xlink:href="#template"></use><use x="5" y="12" xlink:href="#template"></use><use x="6" y="12" xlink:href="#template"></use><use x="9" y="12" xlink:href="#template"></use><use x="15" y="12" xlink:href="#template"></use><use x="18" y="12" xlink:href="#template"></use><use x="19" y="12" xlink:href="#template"></use><use x="21" y="12" xlink:href="#template"></use><use x="23" y="12" xlink:href="#template"></use><use x="24" y="12" xlink:href="#template"></use><use x="25" y="12" xlink:href="#template"></use><use x="27" y="12" xlink:href="#template"></use><use x="29" y="12" xlink:href="#template"></use><use x="30" y="12" xlink:href="#template"></use><use x="32" y="12" xlink:href="#template"></use><use x="34" y="12" xlink:href="#template"></use><use x="37" y="12" xlink:href="#template"></use><use x="38" y="12" xlink:href="#template"></use><use x="40" y="12" xlink:href="#template"></use><use x="2" y="13" xlink:href="#template"></use><use x="5" y="13" xlink:href="#template"></use><use x="7" y="13" xlink:href="#template"></use><use x="8" y="13" xlink:href="#template"></use><use x="10" y="13" xlink:href="#template"></use><use x="11" y="13" xlink:href="#template"></use><use x="16" y="13" xlink:href="#template"></use><use x="17" y="13" xlink:href="#template"></use><use x="18" y="13" xlink:href="#template"></use><use x="20" y="13" xlink:href="#template"></use><use x="21" y="13" xlink:href="#template"></use><use x="22" y="13" xlink:href="#template"></use><use x="23" y="13" xlink:href="#template"></use><use x="24" y="13" xlink:href="#template"></use><use x="27" y="13" xlink:href="#template"></use><use x="28" y="13" xlink:href="#template"></use><use x="33" y="13" xlink:href="#template"></use><use x="35" y="13" xlink:href="#template"></use><use x="36" y="13" xlink:href="#template"></use><use x="37" y="13" xlink:href="#template"></use><use x="40" y="13" xlink:href="#template"></use><use x="0" y="14" xlink:href="#template"></use><use x="3" y="14" xlink:href="#template"></use><use x="6" y="14" xlink:href="#template"></use><use x="7" y="14" xlink:href="#template"></use><use x="8" y="14" xlink:href="#template"></use><use x="9" y="14" xlink:href="#template"></use><use x="10" y="14" xlink:href="#template"></use><use x="12" y="14" xlink:href="#template"></use><use x="14" y="14" xlink:href="#template"></use><use x="17" y="14" xlink:href="#template"></use><use x="18" y="14" xlink:href="#template"></use><use x="24" y="14" xlink:href="#template"></use><use x="26" y="14" xlink:href="#template"></use><use x="29" y="14" xlink:href="#template"></use><use x="30" y="14" xlink:href="#template"></use><use x="32" y="14" xlink:href="#template"></use><use x="33" y="14" xlink:href="#template"></use><use x="37" y="14" xlink:href="#template"></use><use x="38" y="14" xlink:href="#template"></use><use x="39" y="14" xlink:href="#template"></use><use x="1" y="15" xlink:href="#template"></use><use x="5" y="15" xlink:href="#template"></use><use x="9" y="15" xlink:href="#template"></use><use x="11" y="15" xlink:href="#template"></use><use x="12" y="15" xlink:href="#template"></use><use x="14" y="15" xlink:href="#template"></use><use x="15" y="15" xlink:href="#template"></use><use x="16" y="15" xlink:href="#template"></use><use x="17" y="15" xlink:href="#template"></use><use x="18" y="15" xlink:href="#template"></use><use x="19" y="15" xlink:href="#template"></use><use x="20" y="15" xlink:href="#template"></use><use x="21" y="15" xlink:href="#template"></use><use x="22" y="15" xlink:href="#template"></use><use x="24" y="15" xlink:href="#template"></use><use x="25" y="15" xlink:href="#template"></use><use x="28" y="15" xlink:href="#template"></use><use x="30" y="15" xlink:href="#template"></use><use x="34" y="15" xlink:href="#template"></use><use x="36" y="15" xlink:href="#template"></use><use x="39" y="15" xlink:href="#template"></use><use x="2" y="16" xlink:href="#template"></use><use x="6" y="16" xlink:href="#template"></use><use x="9" y="16" xlink:href="#template"></use><use x="10" y="16" xlink:href="#template"></use><use x="12" y="16" xlink:href="#template"></use><use x="14" y="16" xlink:href="#template"></use><use x="18" y="16" xlink:href="#template"></use><use x="19" y="16" xlink:href="#template"></use><use x="23" y="16" xlink:href="#template"></use><use x="25" y="16" xlink:href="#template"></use><use x="29" y="16" xlink:href="#template"></use><use x="30" y="16" xlink:href="#template"></use><use x="32" y="16" xlink:href="#template"></use><use x="36" y="16" xlink:href="#template"></use><use x="37" y="16" xlink:href="#template"></use><use x="38" y="16" xlink:href="#template"></use><use x="0" y="17" xlink:href="#template"></use><use x="2" y="17" xlink:href="#template"></use><use x="3" y="17" xlink:href="#template"></use><use x="5" y="17" xlink:href="#template"></use><use x="9" y="17" xlink:href="#template"></use><use x="10" y="17" xlink:href="#template"></use><use x="11" y="17" xlink:href="#template"></use><use x="12" y="17" xlink:href="#template"></use><use x="13" y="17" xlink:href="#template"></use><use x="14" y="17" xlink:href="#template"></use><use x="17" y="17" xlink:href="#template"></use><use x="18" y="17" xlink:href="#template"></use><use x="22" y="17" xlink:href="#template"></use><use x="23" y="17" xlink:href="#template"></use><use x="25" y="17" xlink:href="#template"></use><use x="27" y="17" xlink:href="#template"></use><use x="31" y="17" xlink:href="#template"></use><use x="33" y="17" xlink:href="#template"></use><use x="34" y="17" xlink:href="#template"></use><use x="35" y="17" xlink:href="#template"></use><use x="36" y="17" xlink:href="#template"></use><use x="40" y="17" xlink:href="#template"></use><use x="0" y="18" xlink:href="#template"></use><use x="2" y="18" xlink:href="#template"></use><use x="6" y="18" xlink:href="#template"></use><use x="7" y="18" xlink:href="#template"></use><use x="8" y="18" xlink:href="#template"></use><use x="9" y="18" xlink:href="#template"></use><use x="10" y="18" xlink:href="#template"></use><use x="11" y="18" xlink:href="#template"></use><use x="12" y="18" xlink:href="#template"></use><use x="13" y="18" xlink:href="#template"></use><use x="14" y="18" xlink:href="#template"></use><use x="18" y="18" xlink:href="#template"></use><use x="20" y="18" xlink:href="#template"></use><use x="21" y="18" xlink:href="#template"></use><use x="23" y="18" xlink:href="#template"></use><use x="24" y="18" xlink:href="#template"></use><use x="27" y="18" xlink:href="#template"></use><use x="28" y="18" xlink:href="#template"></use><use x="30" y="18" xlink:href="#template"></use><use x="32" y="18" xlink:href="#template"></use><use x="35" y="18" xlink:href="#template"></use><use x="39" y="18" xlink:href="#template"></use><use x="0" y="19" xlink:href="#template"></use><use x="2" y="19" xlink:href="#template"></use><use x="4" y="19" xlink:href="#template"></use><use x="5" y="19" xlink:href="#template"></use><use x="7" y="19" xlink:href="#template"></use><use x="8" y="19" xlink:href="#template"></use><use x="12" y="19" xlink:href="#template"></use><use x="13" y="19" xlink:href="#template"></use><use x="15" y="19" xlink:href="#template"></use><use x="16" y="19" xlink:href="#template"></use><use x="17" y="19" xlink:href="#template"></use><use x="18" y="19" xlink:href="#template"></use><use x="22" y="19" xlink:href="#template"></use><use x="23" y="19" xlink:href="#template"></use><use x="36" y="19" xlink:href="#template"></use><use x="39" y="19" xlink:href="#template"></use><use x="2" y="20" xlink:href="#template"></use><use x="3" y="20" xlink:href="#template"></use><use x="4" y="20" xlink:href="#template"></use><use x="5" y="20" xlink:href="#template"></use><use x="6" y="20" xlink:href="#template"></use><use x="7" y="20" xlink:href="#template"></use><use x="10" y="20" xlink:href="#template"></use><use x="11" y="20" xlink:href="#template"></use><use x="13" y="20" xlink:href="#template"></use><use x="20" y="20" xlink:href="#template"></use><use x="21" y="20" xlink:href="#template"></use><use x="22" y="20" xlink:href="#template"></use><use x="23" y="20" xlink:href="#template"></use><use x="25" y="20" xlink:href="#template"></use><use x="27" y="20" xlink:href="#template"></use><use x="28" y="20" xlink:href="#template"></use><use x="30" y="20" xlink:href="#template"></use><use x="32" y="20" xlink:href="#template"></use><use x="33" y="20" xlink:href="#template"></use><use x="35" y="20" xlink:href="#template"></use><use x="36" y="20" xlink:href="#template"></use><use x="37" y="20" xlink:href="#template"></use><use x="38" y="20" xlink:href="#template"></use><use x="0" y="21" xlink:href="#template"></use><use x="5" y="21" xlink:href="#template"></use><use x="7" y="21" xlink:href="#template"></use><use x="8" y="21" xlink:href="#template"></use><use x="10" y="21" xlink:href="#template"></use><use x="11" y="21" xlink:href="#template"></use><use x="12" y="21" xlink:href="#template"></use><use x="14" y="21" xlink:href="#template"></use><use x="16" y="21" xlink:href="#template"></use><use x="17" y="21" xlink:href="#template"></use><use x="18" y="21" xlink:href="#template"></use><use x="19" y="21" xlink:href="#template"></use><use x="21" y="21" xlink:href="#template"></use><use x="23" y="21" xlink:href="#template"></use><use x="25" y="21" xlink:href="#template"></use><use x="26" y="21" xlink:href="#template"></use><use x="31" y="21" xlink:href="#template"></use><use x="34" y="21" xlink:href="#template"></use><use x="36" y="21" xlink:href="#template"></use><use x="40" y="21" xlink:href="#template"></use><use x="1" y="22" xlink:href="#template"></use><use x="5" y="22" xlink:href="#template"></use><use x="6" y="22" xlink:href="#template"></use><use x="10" y="22" xlink:href="#template"></use><use x="11" y="22" xlink:href="#template"></use><use x="12" y="22" xlink:href="#template"></use><use x="15" y="22" xlink:href="#template"></use><use x="16" y="22" xlink:href="#template"></use><use x="19" y="22" xlink:href="#template"></use><use x="20" y="22" xlink:href="#template"></use><use x="23" y="22" xlink:href="#template"></use><use x="26" y="22" xlink:href="#template"></use><use x="27" y="22" xlink:href="#template"></use><use x="29" y="22" xlink:href="#template"></use><use x="30" y="22" xlink:href="#template"></use><use x="33" y="22" xlink:href="#template"></use><use x="35" y="22" xlink:href="#template"></use><use x="36" y="22" xlink:href="#template"></use><use x="37" y="22" xlink:href="#template"></use><use x="39" y="22" xlink:href="#template"></use><use x="0" y="23" xlink:href="#template"></use><use x="1" y="23" xlink:href="#template"></use><use x="3" y="23" xlink:href="#template"></use><use x="8" y="23" xlink:href="#template"></use><use x="9" y="23" xlink:href="#template"></use><use x="11" y="23" xlink:href="#template"></use><use x="18" y="23" xlink:href="#template"></use><use x="22" y="23" xlink:href="#template"></use><use x="25" y="23" xlink:href="#template"></use><use x="26" y="23" xlink:href="#template"></use><use x="31" y="23" xlink:href="#template"></use><use x="34" y="23" xlink:href="#template"></use><use x="36" y="23" xlink:href="#template"></use><use x="39" y="23" xlink:href="#template"></use><use x="40" y="23" xlink:href="#template"></use><use x="3" y="24" xlink:href="#template"></use><use x="4" y="24" xlink:href="#template"></use><use x="5" y="24" xlink:href="#template"></use><use x="6" y="24" xlink:href="#template"></use><use x="7" y="24" xlink:href="#template"></use><use x="8" y="24" xlink:href="#template"></use><use x="9" y="24" xlink:href="#template"></use><use x="12" y="24" xlink:href="#template"></use><use x="15" y="24" xlink:href="#template"></use><use x="17" y="24" xlink:href="#template"></use><use x="18" y="24" xlink:href="#template"></use><use x="22" y="24" xlink:href="#template"></use><use x="25" y="24" xlink:href="#template"></use><use x="26" y="24" xlink:href="#template"></use><use x="27" y="24" xlink:href="#template"></use><use x="28" y="24" xlink:href="#template"></use><use x="29" y="24" xlink:href="#template"></use><use x="32" y="24" xlink:href="#template"></use><use x="33" y="24" xlink:href="#template"></use><use x="36" y="24" xlink:href="#template"></use><use x="37" y="24" xlink:href="#template"></use><use x="39" y="24" xlink:href="#template"></use><use x="40" y="24" xlink:href="#template"></use><use x="1" y="25" xlink:href="#template"></use><use x="5" y="25" xlink:href="#template"></use><use x="7" y="25" xlink:href="#template"></use><use x="8" y="25" xlink:href="#template"></use><use x="9" y="25" xlink:href="#template"></use><use x="11" y="25" xlink:href="#template"></use><use x="13" y="25" xlink:href="#template"></use><use x="15" y="25" xlink:href="#template"></use><use x="17" y="25" xlink:href="#template"></use><use x="18" y="25" xlink:href="#template"></use><use x="20" y="25" xlink:href="#template"></use><use x="23" y="25" xlink:href="#template"></use><use x="25" y="25" xlink:href="#template"></use><use x="26" y="25" xlink:href="#template"></use><use x="29" y="25" xlink:href="#template"></use><use x="30" y="25" xlink:href="#template"></use><use x="31" y="25" xlink:href="#template"></use><use x="34" y="25" xlink:href="#template"></use><use x="35" y="25" xlink:href="#template"></use><use x="36" y="25" xlink:href="#template"></use><use x="38" y="25" xlink:href="#template"></use><use x="0" y="26" xlink:href="#template"></use><use x="2" y="26" xlink:href="#template"></use><use x="5" y="26" xlink:href="#template"></use><use x="6" y="26" xlink:href="#template"></use><use x="9" y="26" xlink:href="#template"></use><use x="11" y="26" xlink:href="#template"></use><use x="18" y="26" xlink:href="#template"></use><use x="20" y="26" xlink:href="#template"></use><use x="22" y="26" xlink:href="#template"></use><use x="24" y="26" xlink:href="#template"></use><use x="27" y="26" xlink:href="#template"></use><use x="28" y="26" xlink:href="#template"></use><use x="30" y="26" xlink:href="#template"></use><use x="32" y="26" xlink:href="#template"></use><use x="33" y="26" xlink:href="#template"></use><use x="35" y="26" xlink:href="#template"></use><use x="36" y="26" xlink:href="#template"></use><use x="39" y="26" xlink:href="#template"></use><use x="0" y="27" xlink:href="#template"></use><use x="4" y="27" xlink:href="#template"></use><use x="9" y="27" xlink:href="#template"></use><use x="13" y="27" xlink:href="#template"></use><use x="14" y="27" xlink:href="#template"></use><use x="15" y="27" xlink:href="#template"></use><use x="16" y="27" xlink:href="#template"></use><use x="17" y="27" xlink:href="#template"></use><use x="20" y="27" xlink:href="#template"></use><use x="24" y="27" xlink:href="#template"></use><use x="25" y="27" xlink:href="#template"></use><use x="32" y="27" xlink:href="#template"></use><use x="36" y="27" xlink:href="#template"></use><use x="0" y="28" xlink:href="#template"></use><use x="2" y="28" xlink:href="#template"></use><use x="3" y="28" xlink:href="#template"></use><use x="5" y="28" xlink:href="#template"></use><use x="6" y="28" xlink:href="#template"></use><use x="7" y="28" xlink:href="#template"></use><use x="9" y="28" xlink:href="#template"></use><use x="13" y="28" xlink:href="#template"></use><use x="14" y="28" xlink:href="#template"></use><use x="15" y="28" xlink:href="#template"></use><use x="16" y="28" xlink:href="#template"></use><use x="18" y="28" xlink:href="#template"></use><use x="21" y="28" xlink:href="#template"></use><use x="25" y="28" xlink:href="#template"></use><use x="27" y="28" xlink:href="#template"></use><use x="28" y="28" xlink:href="#template"></use><use x="33" y="28" xlink:href="#template"></use><use x="37" y="28" xlink:href="#template"></use><use x="38" y="28" xlink:href="#template"></use><use x="39" y="28" xlink:href="#template"></use><use x="0" y="29" xlink:href="#template"></use><use x="1" y="29" xlink:href="#template"></use><use x="4" y="29" xlink:href="#template"></use><use x="5" y="29" xlink:href="#template"></use><use x="8" y="29" xlink:href="#template"></use><use x="12" y="29" xlink:href="#template"></use><use x="16" y="29" xlink:href="#template"></use><use x="17" y="29" xlink:href="#template"></use><use x="18" y="29" xlink:href="#template"></use><use x="19" y="29" xlink:href="#template"></use><use x="20" y="29" xlink:href="#template"></use><use x="21" y="29" xlink:href="#template"></use><use x="23" y="29" xlink:href="#template"></use><use x="25" y="29" xlink:href="#template"></use><use x="26" y="29" xlink:href="#template"></use><use x="27" y="29" xlink:href="#template"></use><use x="30" y="29" xlink:href="#template"></use><use x="32" y="29" xlink:href="#template"></use><use x="35" y="29" xlink:href="#template"></use><use x="36" y="29" xlink:href="#template"></use><use x="39" y="29" xlink:href="#template"></use><use x="40" y="29" xlink:href="#template"></use><use x="0" y="30" xlink:href="#template"></use><use x="2" y="30" xlink:href="#template"></use><use x="5" y="30" xlink:href="#template"></use><use x="6" y="30" xlink:href="#template"></use><use x="8" y="30" xlink:href="#template"></use><use x="9" y="30" xlink:href="#template"></use><use x="10" y="30" xlink:href="#template"></use><use x="12" y="30" xlink:href="#template"></use><use x="14" y="30" xlink:href="#template"></use><use x="16" y="30" xlink:href="#template"></use><use x="23" y="30" xlink:href="#template"></use><use x="24" y="30" xlink:href="#template"></use><use x="26" y="30" xlink:href="#template"></use><use x="27" y="30" xlink:href="#template"></use><use x="28" y="30" xlink:href="#template"></use><use x="30" y="30" xlink:href="#template"></use><use x="31" y="30" xlink:href="#template"></use><use x="33" y="30" xlink:href="#template"></use><use x="36" y="30" xlink:href="#template"></use><use x="37" y="30" xlink:href="#template"></use><use x="38" y="30" xlink:href="#template"></use><use x="0" y="31" xlink:href="#template"></use><use x="2" y="31" xlink:href="#template"></use><use x="3" y="31" xlink:href="#template"></use><use x="5" y="31" xlink:href="#template"></use><use x="7" y="31" xlink:href="#template"></use><use x="12" y="31" xlink:href="#template"></use><use x="13" y="31" xlink:href="#template"></use><use x="15" y="31" xlink:href="#template"></use><use x="16" y="31" xlink:href="#template"></use><use x="17" y="31" xlink:href="#template"></use><use x="18" y="31" xlink:href="#template"></use><use x="24" y="31" xlink:href="#template"></use><use x="27" y="31" xlink:href="#template"></use><use x="31" y="31" xlink:href="#template"></use><use x="32" y="31" xlink:href="#template"></use><use x="36" y="31" xlink:href="#template"></use><use x="40" y="31" xlink:href="#template"></use><use x="0" y="32" xlink:href="#template"></use><use x="2" y="32" xlink:href="#template"></use><use x="3" y="32" xlink:href="#template"></use><use x="6" y="32" xlink:href="#template"></use><use x="7" y="32" xlink:href="#template"></use><use x="10" y="32" xlink:href="#template"></use><use x="13" y="32" xlink:href="#template"></use><use x="18" y="32" xlink:href="#template"></use><use x="19" y="32" xlink:href="#template"></use><use x="21" y="32" xlink:href="#template"></use><use x="23" y="32" xlink:href="#template"></use><use x="25" y="32" xlink:href="#template"></use><use x="27" y="32" xlink:href="#template"></use><use x="29" y="32" xlink:href="#template"></use><use x="30" y="32" xlink:href="#template"></use><use x="31" y="32" xlink:href="#template"></use><use x="32" y="32" xlink:href="#template"></use><use x="33" y="32" xlink:href="#template"></use><use x="34" y="32" xlink:href="#template"></use><use x="35" y="32" xlink:href="#template"></use><use x="36" y="32" xlink:href="#template"></use><use x="37" y="32" xlink:href="#template"></use><use x="38" y="32" xlink:href="#template"></use><use x="39" y="32" xlink:href="#template"></use><use x="8" y="33" xlink:href="#template"></use><use x="9" y="33" xlink:href="#template"></use><use x="10" y="33" xlink:href="#template"></use><use x="11" y="33" xlink:href="#template"></use><use x="12" y="33" xlink:href="#template"></use><use x="16" y="33" xlink:href="#template"></use><use x="17" y="33" xlink:href="#template"></use><use x="18" y="33" xlink:href="#template"></use><use x="20" y="33" xlink:href="#template"></use><use x="21" y="33" xlink:href="#template"></use><use x="23" y="33" xlink:href="#template"></use><use x="24" y="33" xlink:href="#template"></use><use x="25" y="33" xlink:href="#template"></use><use x="26" y="33" xlink:href="#template"></use><use x="28" y="33" xlink:href="#template"></use><use x="29" y="33" xlink:href="#template"></use><use x="32" y="33" xlink:href="#template"></use><use x="36" y="33" xlink:href="#template"></use><use x="39" y="33" xlink:href="#template"></use><use x="0" y="34" xlink:href="#template"></use><use x="1" y="34" xlink:href="#template"></use><use x="2" y="34" xlink:href="#template"></use><use x="3" y="34" xlink:href="#template"></use><use x="4" y="34" xlink:href="#template"></use><use x="5" y="34" xlink:href="#template"></use><use x="6" y="34" xlink:href="#template"></use><use x="10" y="34" xlink:href="#template"></use><use x="13" y="34" xlink:href="#template"></use><use x="17" y="34" xlink:href="#template"></use><use x="18" y="34" xlink:href="#template"></use><use x="20" y="34" xlink:href="#template"></use><use x="21" y="34" xlink:href="#template"></use><use x="23" y="34" xlink:href="#template"></use><use x="25" y="34" xlink:href="#template"></use><use x="27" y="34" xlink:href="#template"></use><use x="29" y="34" xlink:href="#template"></use><use x="32" y="34" xlink:href="#template"></use><use x="34" y="34" xlink:href="#template"></use><use x="36" y="34" xlink:href="#template"></use><use x="0" y="35" xlink:href="#template"></use><use x="6" y="35" xlink:href="#template"></use><use x="10" y="35" xlink:href="#template"></use><use x="11" y="35" xlink:href="#template"></use><use x="12" y="35" xlink:href="#template"></use><use x="13" y="35" xlink:href="#template"></use><use x="15" y="35" xlink:href="#template"></use><use x="16" y="35" xlink:href="#template"></use><use x="17" y="35" xlink:href="#template"></use><use x="20" y="35" xlink:href="#template"></use><use x="24" y="35" xlink:href="#template"></use><use x="25" y="35" xlink:href="#template"></use><use x="26" y="35" xlink:href="#template"></use><use x="28" y="35" xlink:href="#template"></use><use x="29" y="35" xlink:href="#template"></use><use x="30" y="35" xlink:href="#template"></use><use x="31" y="35" xlink:href="#template"></use><use x="32" y="35" xlink:href="#template"></use><use x="36" y="35" xlink:href="#template"></use><use x="39" y="35" xlink:href="#template"></use><use x="40" y="35" xlink:href="#template"></use><use x="0" y="36" xlink:href="#template"></use><use x="2" y="36" xlink:href="#template"></use><use x="3" y="36" xlink:href="#template"></use><use x="4" y="36" xlink:href="#template"></use><use x="6" y="36" xlink:href="#template"></use><use x="8" y="36" xlink:href="#template"></use><use x="9" y="36" xlink:href="#template"></use><use x="12" y="36" xlink:href="#template"></use><use x="13" y="36" xlink:href="#template"></use><use x="14" y="36" xlink:href="#template"></use><use x="17" y="36" xlink:href="#template"></use><use x="21" y="36" xlink:href="#template"></use><use x="25" y="36" xlink:href="#template"></use><use x="27" y="36" xlink:href="#template"></use><use x="32" y="36" xlink:href="#template"></use><use x="33" y="36" xlink:href="#template"></use><use x="34" y="36" xlink:href="#template"></use><use x="35" y="36" xlink:href="#template"></use><use x="36" y="36" xlink:href="#template"></use><use x="37" y="36" xlink:href="#template"></use><use x="38" y="36" xlink:href="#template"></use><use x="39" y="36" xlink:href="#template"></use><use x="0" y="37" xlink:href="#template"></use><use x="2" y="37" xlink:href="#template"></use><use x="3" y="37" xlink:href="#template"></use><use x="4" y="37" xlink:href="#template"></use><use x="6" y="37" xlink:href="#template"></use><use x="8" y="37" xlink:href="#template"></use><use x="9" y="37" xlink:href="#template"></use><use x="10" y="37" xlink:href="#template"></use><use x="13" y="37" xlink:href="#template"></use><use x="15" y="37" xlink:href="#template"></use><use x="16" y="37" xlink:href="#template"></use><use x="17" y="37" xlink:href="#template"></use><use x="20" y="37" xlink:href="#template"></use><use x="21" y="37" xlink:href="#template"></use><use x="22" y="37" xlink:href="#template"></use><use x="23" y="37" xlink:href="#template"></use><use x="24" y="37" xlink:href="#template"></use><use x="27" y="37" xlink:href="#template"></use><use x="28" y="37" xlink:href="#template"></use><use x="30" y="37" xlink:href="#template"></use><use x="31" y="37" xlink:href="#template"></use><use x="33" y="37" xlink:href="#template"></use><use x="35" y="37" xlink:href="#template"></use><use x="37" y="37" xlink:href="#template"></use><use x="38" y="37" xlink:href="#template"></use><use x="39" y="37" xlink:href="#template"></use><use x="40" y="37" xlink:href="#template"></use><use x="0" y="38" xlink:href="#template"></use><use x="2" y="38" xlink:href="#template"></use><use x="3" y="38" xlink:href="#template"></use><use x="4" y="38" xlink:href="#template"></use><use x="6" y="38" xlink:href="#template"></use><use x="8" y="38" xlink:href="#template"></use><use x="10" y="38" xlink:href="#template"></use><use x="12" y="38" xlink:href="#template"></use><use x="15" y="38" xlink:href="#template"></use><use x="16" y="38" xlink:href="#template"></use><use x="18" y="38" xlink:href="#template"></use><use x="20" y="38" xlink:href="#template"></use><use x="21" y="38" xlink:href="#template"></use><use x="24" y="38" xlink:href="#template"></use><use x="25" y="38" xlink:href="#template"></use><use x="26" y="38" xlink:href="#template"></use><use x="27" y="38" xlink:href="#template"></use><use x="28" y="38" xlink:href="#template"></use><use x="31" y="38" xlink:href="#template"></use><use x="34" y="38" xlink:href="#template"></use><use x="36" y="38" xlink:href="#template"></use><use x="38" y="38" xlink:href="#template"></use><use x="39" y="38" xlink:href="#template"></use><use x="0" y="39" xlink:href="#template"></use><use x="6" y="39" xlink:href="#template"></use><use x="10" y="39" xlink:href="#template"></use><use x="11" y="39" xlink:href="#template"></use><use x="12" y="39" xlink:href="#template"></use><use x="16" y="39" xlink:href="#template"></use><use x="18" y="39" xlink:href="#template"></use><use x="20" y="39" xlink:href="#template"></use><use x="21" y="39" xlink:href="#template"></use><use x="24" y="39" xlink:href="#template"></use><use x="26" y="39" xlink:href="#template"></use><use x="27" y="39" xlink:href="#template"></use><use x="30" y="39" xlink:href="#template"></use><use x="31" y="39" xlink:href="#template"></use><use x="32" y="39" xlink:href="#template"></use><use x="37" y="39" xlink:href="#template"></use><use x="38" y="39" xlink:href="#template"></use><use x="39" y="39" xlink:href="#template"></use><use x="0" y="40" xlink:href="#template"></use><use x="1" y="40" xlink:href="#template"></use><use x="2" y="40" xlink:href="#template"></use><use x="3" y="40" xlink:href="#template"></use><use x="4" y="40" xlink:href="#template"></use><use x="5" y="40" xlink:href="#template"></use><use x="6" y="40" xlink:href="#template"></use><use x="11" y="40" xlink:href="#template"></use><use x="14" y="40" xlink:href="#template"></use><use x="20" y="40" xlink:href="#template"></use><use x="21" y="40" xlink:href="#template"></use><use x="22" y="40" xlink:href="#template"></use><use x="24" y="40" xlink:href="#template"></use><use x="25" y="40" xlink:href="#template"></use><use x="26" y="40" xlink:href="#template"></use><use x="27" y="40" xlink:href="#template"></use><use x="28" y="40" xlink:href="#template"></use><use x="29" y="40" xlink:href="#template"></use><use x="30" y="40" xlink:href="#template"></use><use x="33" y="40" xlink:href="#template"></use><use x="34" y="40" xlink:href="#template"></use><use x="36" y="40" xlink:href="#template"></use></svg></div>
-                        <div class="qr-wallet-info">
-                            <span class="current-rate"></span>
-                            <span class="current-rate-info"></span>
-                            <input type="text" id="ETHWalletText" class="wallet-number-div wallet-address" data-parsley-group="block-3">
-                            <div class="copy-btn" data-clipboard-target="#ETHWalletText">COPY ADRESS</div>
-                            <span class="qr-block-desc">Send any amount to the address. The system will calculate at the rate above, generate and send you tokens! It can take up to 3 hours untill you get SPX in your wallet.</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="nav-tabs double-nav form-navigation">
-                    <div class="btn prev-btn previous" style="">BACK to step 3</div>
-                </div>
-            </div>
-
-            <div id="BTCWallet" class="wallet-block hidden-block">
-                <div class="content-index-page">
-                    <img src="/static/img/general/bg-girl4.jpg" class="index-bg">
-                </div>
-                <span class="title-last-step">Send your Bitcoin (BTC) to the address in the field below!</span>
-                <div class="content-of-page step-content qr-padd">
-                    <div style="text-align:center;margin:0 auto;">
-                        <p class="loadding">Loading ...</p>
-
-                        <div style="text-align: center; margin-bottom: 20px">
-                            <span class="payment-error" id="ETHError"></span>
-                        </div>
-
-                        <input type="submit" value="RETRY" id="ETHRetry" style="display: none;" class="retry-button" data-currency="ETH" data-parsley-group="block-3">
-                    </div>
-
-                    <div class="qr-code-block hidden-block">
-                        <div id="BTCWalletCode" class="qr-wrap qr-image"></div>
-                        <div class="qr-wallet-info">
-                            <span class="current-rate">Current rate: <span class="color-red"><span class="exchange-rate"></span> BTC/ETH</span></span>
-                            <span class="current-rate-info">The actual rate will be determined at transaction time</span>
-                            <input type="text" id="BTCWalletText" class="wallet-number-div wallet-address" data-parsley-group="block-3">
-                            <div class="copy-btn" data-clipboard-target="#BTCWalletText">COPY ADRESS</div>
-                            <span class="qr-block-desc">Send any amount to the address. The system will calculate at the rate above, generate and send you tokens! It can take up to 3 hours untill you get SPX in your wallet.</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="nav-tabs double-nav form-navigation">
-                    <div class="btn prev-btn previous" style="">BACK to step 3</div>
-                </div>
-            </div>
-
-            <div id="ALTWallet" class="wallet-block hidden-block">
-
-                <script type="text/javascript">function open_widget(a, e) { e.preventDefault(); var link = a.href; window.open(link, 'Changelly', 'width=600,height=470,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=0,left=0,top=0'); return false; }</script>
-
-                <div class="content-index-page">
-                    <img src="/static/img/general/bg-girl4.jpg" class="index-bg">
-                </div>
-                <span class="title-last-step">Send your Altcoins via Changelly</span>
-                <div class="content-of-page step-content qr-padd">
-                    <div style="text-align:center;margin:0 auto;">
-                        <p class="loadding">Loading ...</p>
-
-                        <div style="text-align: center; margin-bottom: 20px">
-                            <span class="payment-error" id="ALTError" style="display: none;"></span>
-                        </div>
-
-                        <input type="submit" value="RETRY" id="ALTRetry" style="display: none;" class="retry-button" data-currency="ALT" data-parsley-group="block-3">
-                    </div>
-
-                    <div class="qr-code-block hidden-block">
-                        <div id="ALTWalletCode" class="qr-wrap qr-image"></div>
-                        <div class="qr-wallet-info">
-                            <span class="current-rate"></span>
-                            <span class="current-rate-info"></span>
-
-                            <div style="text-align:left">
-                                <a id="altWalletLink" onclick="open_widget(this, event);" href="https://changelly.com/widget/v1?auth=email&amp;from=LTC&amp;to=ETH&amp;merchant_id=8baa65bfb81e&amp;address=0x23Ca5513d372D730be62159AB2Cd001C35A0b16c&amp;amount=1&amp;ref_id=8baa65bfb81e&amp;color=00cf70">
-                                    <img src="https://changelly.com/pay_button.png" alt="Changelly">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="nav-tabs double-nav form-navigation">
-                    <div class="btn prev-btn previous" style="">BACK to step 3</div>
-                </div>
-            </div>
+    </div>
+    <div class="info-block col-12 col-md-4">
+        <div class="inside-info">
+            <div class="name">Token price</div>
+            <div class="value"></div>
         </div>
-    </form>
+    </div>
+    <div class="info-block col-12 col-md-4">
+        <div class="inside-info">
+            <div class="name">Raised:</div>
+            <div class="value">12333</div>
+        </div>
+    </div>
 </div>
+<div class="qr-code-block">
+    <div class="titl">
+        <div>
+            Send your Sp8de (SPX) to the address in the field bellow!
+        </div>
+    </div>
+    <div class="info row">
+        <div class="qr col-12 col-sm-4 col-md-6 col-lg-3">
+            <div id="ETHWalletCode" class="qr-wrap qr-image" title="0x23Ca5513d372D730be62159AB2Cd001C35A0b16c">
+                <svg viewBox="0 0 41 41" width="100%" height="100%" fill="#ffffff"
+                     xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <rect fill="#ffffff" width="100%" height="100%"></rect>
+                    <rect fill="#000000" width="1" height="1" id="template"></rect>
+                    <use x="0" y="0" xlink:href="#template"></use>
+                    <use x="1" y="0" xlink:href="#template"></use>
+                    <use x="2" y="0" xlink:href="#template"></use>
+                    <use x="3" y="0" xlink:href="#template"></use>
+                    <use x="4" y="0" xlink:href="#template"></use>
+                    <use x="5" y="0" xlink:href="#template"></use>
+                    <use x="6" y="0" xlink:href="#template"></use>
+                    <use x="8" y="0" xlink:href="#template"></use>
+                    <use x="9" y="0" xlink:href="#template"></use>
+                    <use x="12" y="0" xlink:href="#template"></use>
+                    <use x="13" y="0" xlink:href="#template"></use>
+                    <use x="17" y="0" xlink:href="#template"></use>
+                    <use x="21" y="0" xlink:href="#template"></use>
+                    <use x="23" y="0" xlink:href="#template"></use>
+                    <use x="27" y="0" xlink:href="#template"></use>
+                    <use x="28" y="0" xlink:href="#template"></use>
+                    <use x="29" y="0" xlink:href="#template"></use>
+                    <use x="30" y="0" xlink:href="#template"></use>
+                    <use x="31" y="0" xlink:href="#template"></use>
+                    <use x="32" y="0" xlink:href="#template"></use>
+                    <use x="34" y="0" xlink:href="#template"></use>
+                    <use x="35" y="0" xlink:href="#template"></use>
+                    <use x="36" y="0" xlink:href="#template"></use>
+                    <use x="37" y="0" xlink:href="#template"></use>
+                    <use x="38" y="0" xlink:href="#template"></use>
+                    <use x="39" y="0" xlink:href="#template"></use>
+                    <use x="40" y="0" xlink:href="#template"></use>
+                    <use x="0" y="1" xlink:href="#template"></use>
+                    <use x="6" y="1" xlink:href="#template"></use>
+                    <use x="8" y="1" xlink:href="#template"></use>
+                    <use x="12" y="1" xlink:href="#template"></use>
+                    <use x="15" y="1" xlink:href="#template"></use>
+                    <use x="16" y="1" xlink:href="#template"></use>
+                    <use x="17" y="1" xlink:href="#template"></use>
+                    <use x="19" y="1" xlink:href="#template"></use>
+                    <use x="22" y="1" xlink:href="#template"></use>
+                    <use x="23" y="1" xlink:href="#template"></use>
+                    <use x="29" y="1" xlink:href="#template"></use>
+                    <use x="34" y="1" xlink:href="#template"></use>
+                    <use x="40" y="1" xlink:href="#template"></use>
+                    <use x="0" y="2" xlink:href="#template"></use>
+                    <use x="2" y="2" xlink:href="#template"></use>
+                    <use x="3" y="2" xlink:href="#template"></use>
+                    <use x="4" y="2" xlink:href="#template"></use>
+                    <use x="6" y="2" xlink:href="#template"></use>
+                    <use x="8" y="2" xlink:href="#template"></use>
+                    <use x="9" y="2" xlink:href="#template"></use>
+                    <use x="13" y="2" xlink:href="#template"></use>
+                    <use x="14" y="2" xlink:href="#template"></use>
+                    <use x="15" y="2" xlink:href="#template"></use>
+                    <use x="16" y="2" xlink:href="#template"></use>
+                    <use x="17" y="2" xlink:href="#template"></use>
+                    <use x="18" y="2" xlink:href="#template"></use>
+                    <use x="26" y="2" xlink:href="#template"></use>
+                    <use x="28" y="2" xlink:href="#template"></use>
+                    <use x="29" y="2" xlink:href="#template"></use>
+                    <use x="30" y="2" xlink:href="#template"></use>
+                    <use x="34" y="2" xlink:href="#template"></use>
+                    <use x="36" y="2" xlink:href="#template"></use>
+                    <use x="37" y="2" xlink:href="#template"></use>
+                    <use x="38" y="2" xlink:href="#template"></use>
+                    <use x="40" y="2" xlink:href="#template"></use>
+                    <use x="0" y="3" xlink:href="#template"></use>
+                    <use x="2" y="3" xlink:href="#template"></use>
+                    <use x="3" y="3" xlink:href="#template"></use>
+                    <use x="4" y="3" xlink:href="#template"></use>
+                    <use x="6" y="3" xlink:href="#template"></use>
+                    <use x="11" y="3" xlink:href="#template"></use>
+                    <use x="12" y="3" xlink:href="#template"></use>
+                    <use x="18" y="3" xlink:href="#template"></use>
+                    <use x="19" y="3" xlink:href="#template"></use>
+                    <use x="20" y="3" xlink:href="#template"></use>
+                    <use x="23" y="3" xlink:href="#template"></use>
+                    <use x="32" y="3" xlink:href="#template"></use>
+                    <use x="34" y="3" xlink:href="#template"></use>
+                    <use x="36" y="3" xlink:href="#template"></use>
+                    <use x="37" y="3" xlink:href="#template"></use>
+                    <use x="38" y="3" xlink:href="#template"></use>
+                    <use x="40" y="3" xlink:href="#template"></use>
+                    <use x="0" y="4" xlink:href="#template"></use>
+                    <use x="2" y="4" xlink:href="#template"></use>
+                    <use x="3" y="4" xlink:href="#template"></use>
+                    <use x="4" y="4" xlink:href="#template"></use>
+                    <use x="6" y="4" xlink:href="#template"></use>
+                    <use x="9" y="4" xlink:href="#template"></use>
+                    <use x="10" y="4" xlink:href="#template"></use>
+                    <use x="11" y="4" xlink:href="#template"></use>
+                    <use x="12" y="4" xlink:href="#template"></use>
+                    <use x="13" y="4" xlink:href="#template"></use>
+                    <use x="16" y="4" xlink:href="#template"></use>
+                    <use x="17" y="4" xlink:href="#template"></use>
+                    <use x="18" y="4" xlink:href="#template"></use>
+                    <use x="21" y="4" xlink:href="#template"></use>
+                    <use x="23" y="4" xlink:href="#template"></use>
+                    <use x="24" y="4" xlink:href="#template"></use>
+                    <use x="25" y="4" xlink:href="#template"></use>
+                    <use x="26" y="4" xlink:href="#template"></use>
+                    <use x="27" y="4" xlink:href="#template"></use>
+                    <use x="28" y="4" xlink:href="#template"></use>
+                    <use x="30" y="4" xlink:href="#template"></use>
+                    <use x="31" y="4" xlink:href="#template"></use>
+                    <use x="34" y="4" xlink:href="#template"></use>
+                    <use x="36" y="4" xlink:href="#template"></use>
+                    <use x="37" y="4" xlink:href="#template"></use>
+                    <use x="38" y="4" xlink:href="#template"></use>
+                    <use x="40" y="4" xlink:href="#template"></use>
+                    <use x="0" y="5" xlink:href="#template"></use>
+                    <use x="6" y="5" xlink:href="#template"></use>
+                    <use x="8" y="5" xlink:href="#template"></use>
+                    <use x="12" y="5" xlink:href="#template"></use>
+                    <use x="13" y="5" xlink:href="#template"></use>
+                    <use x="14" y="5" xlink:href="#template"></use>
+                    <use x="17" y="5" xlink:href="#template"></use>
+                    <use x="20" y="5" xlink:href="#template"></use>
+                    <use x="21" y="5" xlink:href="#template"></use>
+                    <use x="22" y="5" xlink:href="#template"></use>
+                    <use x="23" y="5" xlink:href="#template"></use>
+                    <use x="27" y="5" xlink:href="#template"></use>
+                    <use x="30" y="5" xlink:href="#template"></use>
+                    <use x="32" y="5" xlink:href="#template"></use>
+                    <use x="34" y="5" xlink:href="#template"></use>
+                    <use x="40" y="5" xlink:href="#template"></use>
+                    <use x="0" y="6" xlink:href="#template"></use>
+                    <use x="1" y="6" xlink:href="#template"></use>
+                    <use x="2" y="6" xlink:href="#template"></use>
+                    <use x="3" y="6" xlink:href="#template"></use>
+                    <use x="4" y="6" xlink:href="#template"></use>
+                    <use x="5" y="6" xlink:href="#template"></use>
+                    <use x="6" y="6" xlink:href="#template"></use>
+                    <use x="8" y="6" xlink:href="#template"></use>
+                    <use x="10" y="6" xlink:href="#template"></use>
+                    <use x="12" y="6" xlink:href="#template"></use>
+                    <use x="14" y="6" xlink:href="#template"></use>
+                    <use x="16" y="6" xlink:href="#template"></use>
+                    <use x="18" y="6" xlink:href="#template"></use>
+                    <use x="20" y="6" xlink:href="#template"></use>
+                    <use x="22" y="6" xlink:href="#template"></use>
+                    <use x="24" y="6" xlink:href="#template"></use>
+                    <use x="26" y="6" xlink:href="#template"></use>
+                    <use x="28" y="6" xlink:href="#template"></use>
+                    <use x="30" y="6" xlink:href="#template"></use>
+                    <use x="32" y="6" xlink:href="#template"></use>
+                    <use x="34" y="6" xlink:href="#template"></use>
+                    <use x="35" y="6" xlink:href="#template"></use>
+                    <use x="36" y="6" xlink:href="#template"></use>
+                    <use x="37" y="6" xlink:href="#template"></use>
+                    <use x="38" y="6" xlink:href="#template"></use>
+                    <use x="39" y="6" xlink:href="#template"></use>
+                    <use x="40" y="6" xlink:href="#template"></use>
+                    <use x="8" y="7" xlink:href="#template"></use>
+                    <use x="9" y="7" xlink:href="#template"></use>
+                    <use x="15" y="7" xlink:href="#template"></use>
+                    <use x="16" y="7" xlink:href="#template"></use>
+                    <use x="19" y="7" xlink:href="#template"></use>
+                    <use x="23" y="7" xlink:href="#template"></use>
+                    <use x="24" y="7" xlink:href="#template"></use>
+                    <use x="25" y="7" xlink:href="#template"></use>
+                    <use x="2" y="8" xlink:href="#template"></use>
+                    <use x="3" y="8" xlink:href="#template"></use>
+                    <use x="4" y="8" xlink:href="#template"></use>
+                    <use x="6" y="8" xlink:href="#template"></use>
+                    <use x="8" y="8" xlink:href="#template"></use>
+                    <use x="9" y="8" xlink:href="#template"></use>
+                    <use x="10" y="8" xlink:href="#template"></use>
+                    <use x="11" y="8" xlink:href="#template"></use>
+                    <use x="13" y="8" xlink:href="#template"></use>
+                    <use x="17" y="8" xlink:href="#template"></use>
+                    <use x="19" y="8" xlink:href="#template"></use>
+                    <use x="20" y="8" xlink:href="#template"></use>
+                    <use x="25" y="8" xlink:href="#template"></use>
+                    <use x="26" y="8" xlink:href="#template"></use>
+                    <use x="27" y="8" xlink:href="#template"></use>
+                    <use x="28" y="8" xlink:href="#template"></use>
+                    <use x="29" y="8" xlink:href="#template"></use>
+                    <use x="30" y="8" xlink:href="#template"></use>
+                    <use x="32" y="8" xlink:href="#template"></use>
+                    <use x="33" y="8" xlink:href="#template"></use>
+                    <use x="34" y="8" xlink:href="#template"></use>
+                    <use x="35" y="8" xlink:href="#template"></use>
+                    <use x="38" y="8" xlink:href="#template"></use>
+                    <use x="39" y="8" xlink:href="#template"></use>
+                    <use x="40" y="8" xlink:href="#template"></use>
+                    <use x="3" y="9" xlink:href="#template"></use>
+                    <use x="7" y="9" xlink:href="#template"></use>
+                    <use x="10" y="9" xlink:href="#template"></use>
+                    <use x="11" y="9" xlink:href="#template"></use>
+                    <use x="15" y="9" xlink:href="#template"></use>
+                    <use x="16" y="9" xlink:href="#template"></use>
+                    <use x="19" y="9" xlink:href="#template"></use>
+                    <use x="20" y="9" xlink:href="#template"></use>
+                    <use x="23" y="9" xlink:href="#template"></use>
+                    <use x="25" y="9" xlink:href="#template"></use>
+                    <use x="31" y="9" xlink:href="#template"></use>
+                    <use x="34" y="9" xlink:href="#template"></use>
+                    <use x="36" y="9" xlink:href="#template"></use>
+                    <use x="39" y="9" xlink:href="#template"></use>
+                    <use x="1" y="10" xlink:href="#template"></use>
+                    <use x="2" y="10" xlink:href="#template"></use>
+                    <use x="3" y="10" xlink:href="#template"></use>
+                    <use x="6" y="10" xlink:href="#template"></use>
+                    <use x="11" y="10" xlink:href="#template"></use>
+                    <use x="15" y="10" xlink:href="#template"></use>
+                    <use x="16" y="10" xlink:href="#template"></use>
+                    <use x="18" y="10" xlink:href="#template"></use>
+                    <use x="20" y="10" xlink:href="#template"></use>
+                    <use x="21" y="10" xlink:href="#template"></use>
+                    <use x="22" y="10" xlink:href="#template"></use>
+                    <use x="23" y="10" xlink:href="#template"></use>
+                    <use x="24" y="10" xlink:href="#template"></use>
+                    <use x="27" y="10" xlink:href="#template"></use>
+                    <use x="28" y="10" xlink:href="#template"></use>
+                    <use x="32" y="10" xlink:href="#template"></use>
+                    <use x="34" y="10" xlink:href="#template"></use>
+                    <use x="35" y="10" xlink:href="#template"></use>
+                    <use x="40" y="10" xlink:href="#template"></use>
+                    <use x="0" y="11" xlink:href="#template"></use>
+                    <use x="1" y="11" xlink:href="#template"></use>
+                    <use x="3" y="11" xlink:href="#template"></use>
+                    <use x="4" y="11" xlink:href="#template"></use>
+                    <use x="7" y="11" xlink:href="#template"></use>
+                    <use x="8" y="11" xlink:href="#template"></use>
+                    <use x="12" y="11" xlink:href="#template"></use>
+                    <use x="16" y="11" xlink:href="#template"></use>
+                    <use x="17" y="11" xlink:href="#template"></use>
+                    <use x="19" y="11" xlink:href="#template"></use>
+                    <use x="24" y="11" xlink:href="#template"></use>
+                    <use x="25" y="11" xlink:href="#template"></use>
+                    <use x="26" y="11" xlink:href="#template"></use>
+                    <use x="28" y="11" xlink:href="#template"></use>
+                    <use x="32" y="11" xlink:href="#template"></use>
+                    <use x="33" y="11" xlink:href="#template"></use>
+                    <use x="34" y="11" xlink:href="#template"></use>
+                    <use x="36" y="11" xlink:href="#template"></use>
+                    <use x="37" y="11" xlink:href="#template"></use>
+                    <use x="39" y="11" xlink:href="#template"></use>
+                    <use x="40" y="11" xlink:href="#template"></use>
+                    <use x="5" y="12" xlink:href="#template"></use>
+                    <use x="6" y="12" xlink:href="#template"></use>
+                    <use x="9" y="12" xlink:href="#template"></use>
+                    <use x="15" y="12" xlink:href="#template"></use>
+                    <use x="18" y="12" xlink:href="#template"></use>
+                    <use x="19" y="12" xlink:href="#template"></use>
+                    <use x="21" y="12" xlink:href="#template"></use>
+                    <use x="23" y="12" xlink:href="#template"></use>
+                    <use x="24" y="12" xlink:href="#template"></use>
+                    <use x="25" y="12" xlink:href="#template"></use>
+                    <use x="27" y="12" xlink:href="#template"></use>
+                    <use x="29" y="12" xlink:href="#template"></use>
+                    <use x="30" y="12" xlink:href="#template"></use>
+                    <use x="32" y="12" xlink:href="#template"></use>
+                    <use x="34" y="12" xlink:href="#template"></use>
+                    <use x="37" y="12" xlink:href="#template"></use>
+                    <use x="38" y="12" xlink:href="#template"></use>
+                    <use x="40" y="12" xlink:href="#template"></use>
+                    <use x="2" y="13" xlink:href="#template"></use>
+                    <use x="5" y="13" xlink:href="#template"></use>
+                    <use x="7" y="13" xlink:href="#template"></use>
+                    <use x="8" y="13" xlink:href="#template"></use>
+                    <use x="10" y="13" xlink:href="#template"></use>
+                    <use x="11" y="13" xlink:href="#template"></use>
+                    <use x="16" y="13" xlink:href="#template"></use>
+                    <use x="17" y="13" xlink:href="#template"></use>
+                    <use x="18" y="13" xlink:href="#template"></use>
+                    <use x="20" y="13" xlink:href="#template"></use>
+                    <use x="21" y="13" xlink:href="#template"></use>
+                    <use x="22" y="13" xlink:href="#template"></use>
+                    <use x="23" y="13" xlink:href="#template"></use>
+                    <use x="24" y="13" xlink:href="#template"></use>
+                    <use x="27" y="13" xlink:href="#template"></use>
+                    <use x="28" y="13" xlink:href="#template"></use>
+                    <use x="33" y="13" xlink:href="#template"></use>
+                    <use x="35" y="13" xlink:href="#template"></use>
+                    <use x="36" y="13" xlink:href="#template"></use>
+                    <use x="37" y="13" xlink:href="#template"></use>
+                    <use x="40" y="13" xlink:href="#template"></use>
+                    <use x="0" y="14" xlink:href="#template"></use>
+                    <use x="3" y="14" xlink:href="#template"></use>
+                    <use x="6" y="14" xlink:href="#template"></use>
+                    <use x="7" y="14" xlink:href="#template"></use>
+                    <use x="8" y="14" xlink:href="#template"></use>
+                    <use x="9" y="14" xlink:href="#template"></use>
+                    <use x="10" y="14" xlink:href="#template"></use>
+                    <use x="12" y="14" xlink:href="#template"></use>
+                    <use x="14" y="14" xlink:href="#template"></use>
+                    <use x="17" y="14" xlink:href="#template"></use>
+                    <use x="18" y="14" xlink:href="#template"></use>
+                    <use x="24" y="14" xlink:href="#template"></use>
+                    <use x="26" y="14" xlink:href="#template"></use>
+                    <use x="29" y="14" xlink:href="#template"></use>
+                    <use x="30" y="14" xlink:href="#template"></use>
+                    <use x="32" y="14" xlink:href="#template"></use>
+                    <use x="33" y="14" xlink:href="#template"></use>
+                    <use x="37" y="14" xlink:href="#template"></use>
+                    <use x="38" y="14" xlink:href="#template"></use>
+                    <use x="39" y="14" xlink:href="#template"></use>
+                    <use x="1" y="15" xlink:href="#template"></use>
+                    <use x="5" y="15" xlink:href="#template"></use>
+                    <use x="9" y="15" xlink:href="#template"></use>
+                    <use x="11" y="15" xlink:href="#template"></use>
+                    <use x="12" y="15" xlink:href="#template"></use>
+                    <use x="14" y="15" xlink:href="#template"></use>
+                    <use x="15" y="15" xlink:href="#template"></use>
+                    <use x="16" y="15" xlink:href="#template"></use>
+                    <use x="17" y="15" xlink:href="#template"></use>
+                    <use x="18" y="15" xlink:href="#template"></use>
+                    <use x="19" y="15" xlink:href="#template"></use>
+                    <use x="20" y="15" xlink:href="#template"></use>
+                    <use x="21" y="15" xlink:href="#template"></use>
+                    <use x="22" y="15" xlink:href="#template"></use>
+                    <use x="24" y="15" xlink:href="#template"></use>
+                    <use x="25" y="15" xlink:href="#template"></use>
+                    <use x="28" y="15" xlink:href="#template"></use>
+                    <use x="30" y="15" xlink:href="#template"></use>
+                    <use x="34" y="15" xlink:href="#template"></use>
+                    <use x="36" y="15" xlink:href="#template"></use>
+                    <use x="39" y="15" xlink:href="#template"></use>
+                    <use x="2" y="16" xlink:href="#template"></use>
+                    <use x="6" y="16" xlink:href="#template"></use>
+                    <use x="9" y="16" xlink:href="#template"></use>
+                    <use x="10" y="16" xlink:href="#template"></use>
+                    <use x="12" y="16" xlink:href="#template"></use>
+                    <use x="14" y="16" xlink:href="#template"></use>
+                    <use x="18" y="16" xlink:href="#template"></use>
+                    <use x="19" y="16" xlink:href="#template"></use>
+                    <use x="23" y="16" xlink:href="#template"></use>
+                    <use x="25" y="16" xlink:href="#template"></use>
+                    <use x="29" y="16" xlink:href="#template"></use>
+                    <use x="30" y="16" xlink:href="#template"></use>
+                    <use x="32" y="16" xlink:href="#template"></use>
+                    <use x="36" y="16" xlink:href="#template"></use>
+                    <use x="37" y="16" xlink:href="#template"></use>
+                    <use x="38" y="16" xlink:href="#template"></use>
+                    <use x="0" y="17" xlink:href="#template"></use>
+                    <use x="2" y="17" xlink:href="#template"></use>
+                    <use x="3" y="17" xlink:href="#template"></use>
+                    <use x="5" y="17" xlink:href="#template"></use>
+                    <use x="9" y="17" xlink:href="#template"></use>
+                    <use x="10" y="17" xlink:href="#template"></use>
+                    <use x="11" y="17" xlink:href="#template"></use>
+                    <use x="12" y="17" xlink:href="#template"></use>
+                    <use x="13" y="17" xlink:href="#template"></use>
+                    <use x="14" y="17" xlink:href="#template"></use>
+                    <use x="17" y="17" xlink:href="#template"></use>
+                    <use x="18" y="17" xlink:href="#template"></use>
+                    <use x="22" y="17" xlink:href="#template"></use>
+                    <use x="23" y="17" xlink:href="#template"></use>
+                    <use x="25" y="17" xlink:href="#template"></use>
+                    <use x="27" y="17" xlink:href="#template"></use>
+                    <use x="31" y="17" xlink:href="#template"></use>
+                    <use x="33" y="17" xlink:href="#template"></use>
+                    <use x="34" y="17" xlink:href="#template"></use>
+                    <use x="35" y="17" xlink:href="#template"></use>
+                    <use x="36" y="17" xlink:href="#template"></use>
+                    <use x="40" y="17" xlink:href="#template"></use>
+                    <use x="0" y="18" xlink:href="#template"></use>
+                    <use x="2" y="18" xlink:href="#template"></use>
+                    <use x="6" y="18" xlink:href="#template"></use>
+                    <use x="7" y="18" xlink:href="#template"></use>
+                    <use x="8" y="18" xlink:href="#template"></use>
+                    <use x="9" y="18" xlink:href="#template"></use>
+                    <use x="10" y="18" xlink:href="#template"></use>
+                    <use x="11" y="18" xlink:href="#template"></use>
+                    <use x="12" y="18" xlink:href="#template"></use>
+                    <use x="13" y="18" xlink:href="#template"></use>
+                    <use x="14" y="18" xlink:href="#template"></use>
+                    <use x="18" y="18" xlink:href="#template"></use>
+                    <use x="20" y="18" xlink:href="#template"></use>
+                    <use x="21" y="18" xlink:href="#template"></use>
+                    <use x="23" y="18" xlink:href="#template"></use>
+                    <use x="24" y="18" xlink:href="#template"></use>
+                    <use x="27" y="18" xlink:href="#template"></use>
+                    <use x="28" y="18" xlink:href="#template"></use>
+                    <use x="30" y="18" xlink:href="#template"></use>
+                    <use x="32" y="18" xlink:href="#template"></use>
+                    <use x="35" y="18" xlink:href="#template"></use>
+                    <use x="39" y="18" xlink:href="#template"></use>
+                    <use x="0" y="19" xlink:href="#template"></use>
+                    <use x="2" y="19" xlink:href="#template"></use>
+                    <use x="4" y="19" xlink:href="#template"></use>
+                    <use x="5" y="19" xlink:href="#template"></use>
+                    <use x="7" y="19" xlink:href="#template"></use>
+                    <use x="8" y="19" xlink:href="#template"></use>
+                    <use x="12" y="19" xlink:href="#template"></use>
+                    <use x="13" y="19" xlink:href="#template"></use>
+                    <use x="15" y="19" xlink:href="#template"></use>
+                    <use x="16" y="19" xlink:href="#template"></use>
+                    <use x="17" y="19" xlink:href="#template"></use>
+                    <use x="18" y="19" xlink:href="#template"></use>
+                    <use x="22" y="19" xlink:href="#template"></use>
+                    <use x="23" y="19" xlink:href="#template"></use>
+                    <use x="36" y="19" xlink:href="#template"></use>
+                    <use x="39" y="19" xlink:href="#template"></use>
+                    <use x="2" y="20" xlink:href="#template"></use>
+                    <use x="3" y="20" xlink:href="#template"></use>
+                    <use x="4" y="20" xlink:href="#template"></use>
+                    <use x="5" y="20" xlink:href="#template"></use>
+                    <use x="6" y="20" xlink:href="#template"></use>
+                    <use x="7" y="20" xlink:href="#template"></use>
+                    <use x="10" y="20" xlink:href="#template"></use>
+                    <use x="11" y="20" xlink:href="#template"></use>
+                    <use x="13" y="20" xlink:href="#template"></use>
+                    <use x="20" y="20" xlink:href="#template"></use>
+                    <use x="21" y="20" xlink:href="#template"></use>
+                    <use x="22" y="20" xlink:href="#template"></use>
+                    <use x="23" y="20" xlink:href="#template"></use>
+                    <use x="25" y="20" xlink:href="#template"></use>
+                    <use x="27" y="20" xlink:href="#template"></use>
+                    <use x="28" y="20" xlink:href="#template"></use>
+                    <use x="30" y="20" xlink:href="#template"></use>
+                    <use x="32" y="20" xlink:href="#template"></use>
+                    <use x="33" y="20" xlink:href="#template"></use>
+                    <use x="35" y="20" xlink:href="#template"></use>
+                    <use x="36" y="20" xlink:href="#template"></use>
+                    <use x="37" y="20" xlink:href="#template"></use>
+                    <use x="38" y="20" xlink:href="#template"></use>
+                    <use x="0" y="21" xlink:href="#template"></use>
+                    <use x="5" y="21" xlink:href="#template"></use>
+                    <use x="7" y="21" xlink:href="#template"></use>
+                    <use x="8" y="21" xlink:href="#template"></use>
+                    <use x="10" y="21" xlink:href="#template"></use>
+                    <use x="11" y="21" xlink:href="#template"></use>
+                    <use x="12" y="21" xlink:href="#template"></use>
+                    <use x="14" y="21" xlink:href="#template"></use>
+                    <use x="16" y="21" xlink:href="#template"></use>
+                    <use x="17" y="21" xlink:href="#template"></use>
+                    <use x="18" y="21" xlink:href="#template"></use>
+                    <use x="19" y="21" xlink:href="#template"></use>
+                    <use x="21" y="21" xlink:href="#template"></use>
+                    <use x="23" y="21" xlink:href="#template"></use>
+                    <use x="25" y="21" xlink:href="#template"></use>
+                    <use x="26" y="21" xlink:href="#template"></use>
+                    <use x="31" y="21" xlink:href="#template"></use>
+                    <use x="34" y="21" xlink:href="#template"></use>
+                    <use x="36" y="21" xlink:href="#template"></use>
+                    <use x="40" y="21" xlink:href="#template"></use>
+                    <use x="1" y="22" xlink:href="#template"></use>
+                    <use x="5" y="22" xlink:href="#template"></use>
+                    <use x="6" y="22" xlink:href="#template"></use>
+                    <use x="10" y="22" xlink:href="#template"></use>
+                    <use x="11" y="22" xlink:href="#template"></use>
+                    <use x="12" y="22" xlink:href="#template"></use>
+                    <use x="15" y="22" xlink:href="#template"></use>
+                    <use x="16" y="22" xlink:href="#template"></use>
+                    <use x="19" y="22" xlink:href="#template"></use>
+                    <use x="20" y="22" xlink:href="#template"></use>
+                    <use x="23" y="22" xlink:href="#template"></use>
+                    <use x="26" y="22" xlink:href="#template"></use>
+                    <use x="27" y="22" xlink:href="#template"></use>
+                    <use x="29" y="22" xlink:href="#template"></use>
+                    <use x="30" y="22" xlink:href="#template"></use>
+                    <use x="33" y="22" xlink:href="#template"></use>
+                    <use x="35" y="22" xlink:href="#template"></use>
+                    <use x="36" y="22" xlink:href="#template"></use>
+                    <use x="37" y="22" xlink:href="#template"></use>
+                    <use x="39" y="22" xlink:href="#template"></use>
+                    <use x="0" y="23" xlink:href="#template"></use>
+                    <use x="1" y="23" xlink:href="#template"></use>
+                    <use x="3" y="23" xlink:href="#template"></use>
+                    <use x="8" y="23" xlink:href="#template"></use>
+                    <use x="9" y="23" xlink:href="#template"></use>
+                    <use x="11" y="23" xlink:href="#template"></use>
+                    <use x="18" y="23" xlink:href="#template"></use>
+                    <use x="22" y="23" xlink:href="#template"></use>
+                    <use x="25" y="23" xlink:href="#template"></use>
+                    <use x="26" y="23" xlink:href="#template"></use>
+                    <use x="31" y="23" xlink:href="#template"></use>
+                    <use x="34" y="23" xlink:href="#template"></use>
+                    <use x="36" y="23" xlink:href="#template"></use>
+                    <use x="39" y="23" xlink:href="#template"></use>
+                    <use x="40" y="23" xlink:href="#template"></use>
+                    <use x="3" y="24" xlink:href="#template"></use>
+                    <use x="4" y="24" xlink:href="#template"></use>
+                    <use x="5" y="24" xlink:href="#template"></use>
+                    <use x="6" y="24" xlink:href="#template"></use>
+                    <use x="7" y="24" xlink:href="#template"></use>
+                    <use x="8" y="24" xlink:href="#template"></use>
+                    <use x="9" y="24" xlink:href="#template"></use>
+                    <use x="12" y="24" xlink:href="#template"></use>
+                    <use x="15" y="24" xlink:href="#template"></use>
+                    <use x="17" y="24" xlink:href="#template"></use>
+                    <use x="18" y="24" xlink:href="#template"></use>
+                    <use x="22" y="24" xlink:href="#template"></use>
+                    <use x="25" y="24" xlink:href="#template"></use>
+                    <use x="26" y="24" xlink:href="#template"></use>
+                    <use x="27" y="24" xlink:href="#template"></use>
+                    <use x="28" y="24" xlink:href="#template"></use>
+                    <use x="29" y="24" xlink:href="#template"></use>
+                    <use x="32" y="24" xlink:href="#template"></use>
+                    <use x="33" y="24" xlink:href="#template"></use>
+                    <use x="36" y="24" xlink:href="#template"></use>
+                    <use x="37" y="24" xlink:href="#template"></use>
+                    <use x="39" y="24" xlink:href="#template"></use>
+                    <use x="40" y="24" xlink:href="#template"></use>
+                    <use x="1" y="25" xlink:href="#template"></use>
+                    <use x="5" y="25" xlink:href="#template"></use>
+                    <use x="7" y="25" xlink:href="#template"></use>
+                    <use x="8" y="25" xlink:href="#template"></use>
+                    <use x="9" y="25" xlink:href="#template"></use>
+                    <use x="11" y="25" xlink:href="#template"></use>
+                    <use x="13" y="25" xlink:href="#template"></use>
+                    <use x="15" y="25" xlink:href="#template"></use>
+                    <use x="17" y="25" xlink:href="#template"></use>
+                    <use x="18" y="25" xlink:href="#template"></use>
+                    <use x="20" y="25" xlink:href="#template"></use>
+                    <use x="23" y="25" xlink:href="#template"></use>
+                    <use x="25" y="25" xlink:href="#template"></use>
+                    <use x="26" y="25" xlink:href="#template"></use>
+                    <use x="29" y="25" xlink:href="#template"></use>
+                    <use x="30" y="25" xlink:href="#template"></use>
+                    <use x="31" y="25" xlink:href="#template"></use>
+                    <use x="34" y="25" xlink:href="#template"></use>
+                    <use x="35" y="25" xlink:href="#template"></use>
+                    <use x="36" y="25" xlink:href="#template"></use>
+                    <use x="38" y="25" xlink:href="#template"></use>
+                    <use x="0" y="26" xlink:href="#template"></use>
+                    <use x="2" y="26" xlink:href="#template"></use>
+                    <use x="5" y="26" xlink:href="#template"></use>
+                    <use x="6" y="26" xlink:href="#template"></use>
+                    <use x="9" y="26" xlink:href="#template"></use>
+                    <use x="11" y="26" xlink:href="#template"></use>
+                    <use x="18" y="26" xlink:href="#template"></use>
+                    <use x="20" y="26" xlink:href="#template"></use>
+                    <use x="22" y="26" xlink:href="#template"></use>
+                    <use x="24" y="26" xlink:href="#template"></use>
+                    <use x="27" y="26" xlink:href="#template"></use>
+                    <use x="28" y="26" xlink:href="#template"></use>
+                    <use x="30" y="26" xlink:href="#template"></use>
+                    <use x="32" y="26" xlink:href="#template"></use>
+                    <use x="33" y="26" xlink:href="#template"></use>
+                    <use x="35" y="26" xlink:href="#template"></use>
+                    <use x="36" y="26" xlink:href="#template"></use>
+                    <use x="39" y="26" xlink:href="#template"></use>
+                    <use x="0" y="27" xlink:href="#template"></use>
+                    <use x="4" y="27" xlink:href="#template"></use>
+                    <use x="9" y="27" xlink:href="#template"></use>
+                    <use x="13" y="27" xlink:href="#template"></use>
+                    <use x="14" y="27" xlink:href="#template"></use>
+                    <use x="15" y="27" xlink:href="#template"></use>
+                    <use x="16" y="27" xlink:href="#template"></use>
+                    <use x="17" y="27" xlink:href="#template"></use>
+                    <use x="20" y="27" xlink:href="#template"></use>
+                    <use x="24" y="27" xlink:href="#template"></use>
+                    <use x="25" y="27" xlink:href="#template"></use>
+                    <use x="32" y="27" xlink:href="#template"></use>
+                    <use x="36" y="27" xlink:href="#template"></use>
+                    <use x="0" y="28" xlink:href="#template"></use>
+                    <use x="2" y="28" xlink:href="#template"></use>
+                    <use x="3" y="28" xlink:href="#template"></use>
+                    <use x="5" y="28" xlink:href="#template"></use>
+                    <use x="6" y="28" xlink:href="#template"></use>
+                    <use x="7" y="28" xlink:href="#template"></use>
+                    <use x="9" y="28" xlink:href="#template"></use>
+                    <use x="13" y="28" xlink:href="#template"></use>
+                    <use x="14" y="28" xlink:href="#template"></use>
+                    <use x="15" y="28" xlink:href="#template"></use>
+                    <use x="16" y="28" xlink:href="#template"></use>
+                    <use x="18" y="28" xlink:href="#template"></use>
+                    <use x="21" y="28" xlink:href="#template"></use>
+                    <use x="25" y="28" xlink:href="#template"></use>
+                    <use x="27" y="28" xlink:href="#template"></use>
+                    <use x="28" y="28" xlink:href="#template"></use>
+                    <use x="33" y="28" xlink:href="#template"></use>
+                    <use x="37" y="28" xlink:href="#template"></use>
+                    <use x="38" y="28" xlink:href="#template"></use>
+                    <use x="39" y="28" xlink:href="#template"></use>
+                    <use x="0" y="29" xlink:href="#template"></use>
+                    <use x="1" y="29" xlink:href="#template"></use>
+                    <use x="4" y="29" xlink:href="#template"></use>
+                    <use x="5" y="29" xlink:href="#template"></use>
+                    <use x="8" y="29" xlink:href="#template"></use>
+                    <use x="12" y="29" xlink:href="#template"></use>
+                    <use x="16" y="29" xlink:href="#template"></use>
+                    <use x="17" y="29" xlink:href="#template"></use>
+                    <use x="18" y="29" xlink:href="#template"></use>
+                    <use x="19" y="29" xlink:href="#template"></use>
+                    <use x="20" y="29" xlink:href="#template"></use>
+                    <use x="21" y="29" xlink:href="#template"></use>
+                    <use x="23" y="29" xlink:href="#template"></use>
+                    <use x="25" y="29" xlink:href="#template"></use>
+                    <use x="26" y="29" xlink:href="#template"></use>
+                    <use x="27" y="29" xlink:href="#template"></use>
+                    <use x="30" y="29" xlink:href="#template"></use>
+                    <use x="32" y="29" xlink:href="#template"></use>
+                    <use x="35" y="29" xlink:href="#template"></use>
+                    <use x="36" y="29" xlink:href="#template"></use>
+                    <use x="39" y="29" xlink:href="#template"></use>
+                    <use x="40" y="29" xlink:href="#template"></use>
+                    <use x="0" y="30" xlink:href="#template"></use>
+                    <use x="2" y="30" xlink:href="#template"></use>
+                    <use x="5" y="30" xlink:href="#template"></use>
+                    <use x="6" y="30" xlink:href="#template"></use>
+                    <use x="8" y="30" xlink:href="#template"></use>
+                    <use x="9" y="30" xlink:href="#template"></use>
+                    <use x="10" y="30" xlink:href="#template"></use>
+                    <use x="12" y="30" xlink:href="#template"></use>
+                    <use x="14" y="30" xlink:href="#template"></use>
+                    <use x="16" y="30" xlink:href="#template"></use>
+                    <use x="23" y="30" xlink:href="#template"></use>
+                    <use x="24" y="30" xlink:href="#template"></use>
+                    <use x="26" y="30" xlink:href="#template"></use>
+                    <use x="27" y="30" xlink:href="#template"></use>
+                    <use x="28" y="30" xlink:href="#template"></use>
+                    <use x="30" y="30" xlink:href="#template"></use>
+                    <use x="31" y="30" xlink:href="#template"></use>
+                    <use x="33" y="30" xlink:href="#template"></use>
+                    <use x="36" y="30" xlink:href="#template"></use>
+                    <use x="37" y="30" xlink:href="#template"></use>
+                    <use x="38" y="30" xlink:href="#template"></use>
+                    <use x="0" y="31" xlink:href="#template"></use>
+                    <use x="2" y="31" xlink:href="#template"></use>
+                    <use x="3" y="31" xlink:href="#template"></use>
+                    <use x="5" y="31" xlink:href="#template"></use>
+                    <use x="7" y="31" xlink:href="#template"></use>
+                    <use x="12" y="31" xlink:href="#template"></use>
+                    <use x="13" y="31" xlink:href="#template"></use>
+                    <use x="15" y="31" xlink:href="#template"></use>
+                    <use x="16" y="31" xlink:href="#template"></use>
+                    <use x="17" y="31" xlink:href="#template"></use>
+                    <use x="18" y="31" xlink:href="#template"></use>
+                    <use x="24" y="31" xlink:href="#template"></use>
+                    <use x="27" y="31" xlink:href="#template"></use>
+                    <use x="31" y="31" xlink:href="#template"></use>
+                    <use x="32" y="31" xlink:href="#template"></use>
+                    <use x="36" y="31" xlink:href="#template"></use>
+                    <use x="40" y="31" xlink:href="#template"></use>
+                    <use x="0" y="32" xlink:href="#template"></use>
+                    <use x="2" y="32" xlink:href="#template"></use>
+                    <use x="3" y="32" xlink:href="#template"></use>
+                    <use x="6" y="32" xlink:href="#template"></use>
+                    <use x="7" y="32" xlink:href="#template"></use>
+                    <use x="10" y="32" xlink:href="#template"></use>
+                    <use x="13" y="32" xlink:href="#template"></use>
+                    <use x="18" y="32" xlink:href="#template"></use>
+                    <use x="19" y="32" xlink:href="#template"></use>
+                    <use x="21" y="32" xlink:href="#template"></use>
+                    <use x="23" y="32" xlink:href="#template"></use>
+                    <use x="25" y="32" xlink:href="#template"></use>
+                    <use x="27" y="32" xlink:href="#template"></use>
+                    <use x="29" y="32" xlink:href="#template"></use>
+                    <use x="30" y="32" xlink:href="#template"></use>
+                    <use x="31" y="32" xlink:href="#template"></use>
+                    <use x="32" y="32" xlink:href="#template"></use>
+                    <use x="33" y="32" xlink:href="#template"></use>
+                    <use x="34" y="32" xlink:href="#template"></use>
+                    <use x="35" y="32" xlink:href="#template"></use>
+                    <use x="36" y="32" xlink:href="#template"></use>
+                    <use x="37" y="32" xlink:href="#template"></use>
+                    <use x="38" y="32" xlink:href="#template"></use>
+                    <use x="39" y="32" xlink:href="#template"></use>
+                    <use x="8" y="33" xlink:href="#template"></use>
+                    <use x="9" y="33" xlink:href="#template"></use>
+                    <use x="10" y="33" xlink:href="#template"></use>
+                    <use x="11" y="33" xlink:href="#template"></use>
+                    <use x="12" y="33" xlink:href="#template"></use>
+                    <use x="16" y="33" xlink:href="#template"></use>
+                    <use x="17" y="33" xlink:href="#template"></use>
+                    <use x="18" y="33" xlink:href="#template"></use>
+                    <use x="20" y="33" xlink:href="#template"></use>
+                    <use x="21" y="33" xlink:href="#template"></use>
+                    <use x="23" y="33" xlink:href="#template"></use>
+                    <use x="24" y="33" xlink:href="#template"></use>
+                    <use x="25" y="33" xlink:href="#template"></use>
+                    <use x="26" y="33" xlink:href="#template"></use>
+                    <use x="28" y="33" xlink:href="#template"></use>
+                    <use x="29" y="33" xlink:href="#template"></use>
+                    <use x="32" y="33" xlink:href="#template"></use>
+                    <use x="36" y="33" xlink:href="#template"></use>
+                    <use x="39" y="33" xlink:href="#template"></use>
+                    <use x="0" y="34" xlink:href="#template"></use>
+                    <use x="1" y="34" xlink:href="#template"></use>
+                    <use x="2" y="34" xlink:href="#template"></use>
+                    <use x="3" y="34" xlink:href="#template"></use>
+                    <use x="4" y="34" xlink:href="#template"></use>
+                    <use x="5" y="34" xlink:href="#template"></use>
+                    <use x="6" y="34" xlink:href="#template"></use>
+                    <use x="10" y="34" xlink:href="#template"></use>
+                    <use x="13" y="34" xlink:href="#template"></use>
+                    <use x="17" y="34" xlink:href="#template"></use>
+                    <use x="18" y="34" xlink:href="#template"></use>
+                    <use x="20" y="34" xlink:href="#template"></use>
+                    <use x="21" y="34" xlink:href="#template"></use>
+                    <use x="23" y="34" xlink:href="#template"></use>
+                    <use x="25" y="34" xlink:href="#template"></use>
+                    <use x="27" y="34" xlink:href="#template"></use>
+                    <use x="29" y="34" xlink:href="#template"></use>
+                    <use x="32" y="34" xlink:href="#template"></use>
+                    <use x="34" y="34" xlink:href="#template"></use>
+                    <use x="36" y="34" xlink:href="#template"></use>
+                    <use x="0" y="35" xlink:href="#template"></use>
+                    <use x="6" y="35" xlink:href="#template"></use>
+                    <use x="10" y="35" xlink:href="#template"></use>
+                    <use x="11" y="35" xlink:href="#template"></use>
+                    <use x="12" y="35" xlink:href="#template"></use>
+                    <use x="13" y="35" xlink:href="#template"></use>
+                    <use x="15" y="35" xlink:href="#template"></use>
+                    <use x="16" y="35" xlink:href="#template"></use>
+                    <use x="17" y="35" xlink:href="#template"></use>
+                    <use x="20" y="35" xlink:href="#template"></use>
+                    <use x="24" y="35" xlink:href="#template"></use>
+                    <use x="25" y="35" xlink:href="#template"></use>
+                    <use x="26" y="35" xlink:href="#template"></use>
+                    <use x="28" y="35" xlink:href="#template"></use>
+                    <use x="29" y="35" xlink:href="#template"></use>
+                    <use x="30" y="35" xlink:href="#template"></use>
+                    <use x="31" y="35" xlink:href="#template"></use>
+                    <use x="32" y="35" xlink:href="#template"></use>
+                    <use x="36" y="35" xlink:href="#template"></use>
+                    <use x="39" y="35" xlink:href="#template"></use>
+                    <use x="40" y="35" xlink:href="#template"></use>
+                    <use x="0" y="36" xlink:href="#template"></use>
+                    <use x="2" y="36" xlink:href="#template"></use>
+                    <use x="3" y="36" xlink:href="#template"></use>
+                    <use x="4" y="36" xlink:href="#template"></use>
+                    <use x="6" y="36" xlink:href="#template"></use>
+                    <use x="8" y="36" xlink:href="#template"></use>
+                    <use x="9" y="36" xlink:href="#template"></use>
+                    <use x="12" y="36" xlink:href="#template"></use>
+                    <use x="13" y="36" xlink:href="#template"></use>
+                    <use x="14" y="36" xlink:href="#template"></use>
+                    <use x="17" y="36" xlink:href="#template"></use>
+                    <use x="21" y="36" xlink:href="#template"></use>
+                    <use x="25" y="36" xlink:href="#template"></use>
+                    <use x="27" y="36" xlink:href="#template"></use>
+                    <use x="32" y="36" xlink:href="#template"></use>
+                    <use x="33" y="36" xlink:href="#template"></use>
+                    <use x="34" y="36" xlink:href="#template"></use>
+                    <use x="35" y="36" xlink:href="#template"></use>
+                    <use x="36" y="36" xlink:href="#template"></use>
+                    <use x="37" y="36" xlink:href="#template"></use>
+                    <use x="38" y="36" xlink:href="#template"></use>
+                    <use x="39" y="36" xlink:href="#template"></use>
+                    <use x="0" y="37" xlink:href="#template"></use>
+                    <use x="2" y="37" xlink:href="#template"></use>
+                    <use x="3" y="37" xlink:href="#template"></use>
+                    <use x="4" y="37" xlink:href="#template"></use>
+                    <use x="6" y="37" xlink:href="#template"></use>
+                    <use x="8" y="37" xlink:href="#template"></use>
+                    <use x="9" y="37" xlink:href="#template"></use>
+                    <use x="10" y="37" xlink:href="#template"></use>
+                    <use x="13" y="37" xlink:href="#template"></use>
+                    <use x="15" y="37" xlink:href="#template"></use>
+                    <use x="16" y="37" xlink:href="#template"></use>
+                    <use x="17" y="37" xlink:href="#template"></use>
+                    <use x="20" y="37" xlink:href="#template"></use>
+                    <use x="21" y="37" xlink:href="#template"></use>
+                    <use x="22" y="37" xlink:href="#template"></use>
+                    <use x="23" y="37" xlink:href="#template"></use>
+                    <use x="24" y="37" xlink:href="#template"></use>
+                    <use x="27" y="37" xlink:href="#template"></use>
+                    <use x="28" y="37" xlink:href="#template"></use>
+                    <use x="30" y="37" xlink:href="#template"></use>
+                    <use x="31" y="37" xlink:href="#template"></use>
+                    <use x="33" y="37" xlink:href="#template"></use>
+                    <use x="35" y="37" xlink:href="#template"></use>
+                    <use x="37" y="37" xlink:href="#template"></use>
+                    <use x="38" y="37" xlink:href="#template"></use>
+                    <use x="39" y="37" xlink:href="#template"></use>
+                    <use x="40" y="37" xlink:href="#template"></use>
+                    <use x="0" y="38" xlink:href="#template"></use>
+                    <use x="2" y="38" xlink:href="#template"></use>
+                    <use x="3" y="38" xlink:href="#template"></use>
+                    <use x="4" y="38" xlink:href="#template"></use>
+                    <use x="6" y="38" xlink:href="#template"></use>
+                    <use x="8" y="38" xlink:href="#template"></use>
+                    <use x="10" y="38" xlink:href="#template"></use>
+                    <use x="12" y="38" xlink:href="#template"></use>
+                    <use x="15" y="38" xlink:href="#template"></use>
+                    <use x="16" y="38" xlink:href="#template"></use>
+                    <use x="18" y="38" xlink:href="#template"></use>
+                    <use x="20" y="38" xlink:href="#template"></use>
+                    <use x="21" y="38" xlink:href="#template"></use>
+                    <use x="24" y="38" xlink:href="#template"></use>
+                    <use x="25" y="38" xlink:href="#template"></use>
+                    <use x="26" y="38" xlink:href="#template"></use>
+                    <use x="27" y="38" xlink:href="#template"></use>
+                    <use x="28" y="38" xlink:href="#template"></use>
+                    <use x="31" y="38" xlink:href="#template"></use>
+                    <use x="34" y="38" xlink:href="#template"></use>
+                    <use x="36" y="38" xlink:href="#template"></use>
+                    <use x="38" y="38" xlink:href="#template"></use>
+                    <use x="39" y="38" xlink:href="#template"></use>
+                    <use x="0" y="39" xlink:href="#template"></use>
+                    <use x="6" y="39" xlink:href="#template"></use>
+                    <use x="10" y="39" xlink:href="#template"></use>
+                    <use x="11" y="39" xlink:href="#template"></use>
+                    <use x="12" y="39" xlink:href="#template"></use>
+                    <use x="16" y="39" xlink:href="#template"></use>
+                    <use x="18" y="39" xlink:href="#template"></use>
+                    <use x="20" y="39" xlink:href="#template"></use>
+                    <use x="21" y="39" xlink:href="#template"></use>
+                    <use x="24" y="39" xlink:href="#template"></use>
+                    <use x="26" y="39" xlink:href="#template"></use>
+                    <use x="27" y="39" xlink:href="#template"></use>
+                    <use x="30" y="39" xlink:href="#template"></use>
+                    <use x="31" y="39" xlink:href="#template"></use>
+                    <use x="32" y="39" xlink:href="#template"></use>
+                    <use x="37" y="39" xlink:href="#template"></use>
+                    <use x="38" y="39" xlink:href="#template"></use>
+                    <use x="39" y="39" xlink:href="#template"></use>
+                    <use x="0" y="40" xlink:href="#template"></use>
+                    <use x="1" y="40" xlink:href="#template"></use>
+                    <use x="2" y="40" xlink:href="#template"></use>
+                    <use x="3" y="40" xlink:href="#template"></use>
+                    <use x="4" y="40" xlink:href="#template"></use>
+                    <use x="5" y="40" xlink:href="#template"></use>
+                    <use x="6" y="40" xlink:href="#template"></use>
+                    <use x="11" y="40" xlink:href="#template"></use>
+                    <use x="14" y="40" xlink:href="#template"></use>
+                    <use x="20" y="40" xlink:href="#template"></use>
+                    <use x="21" y="40" xlink:href="#template"></use>
+                    <use x="22" y="40" xlink:href="#template"></use>
+                    <use x="24" y="40" xlink:href="#template"></use>
+                    <use x="25" y="40" xlink:href="#template"></use>
+                    <use x="26" y="40" xlink:href="#template"></use>
+                    <use x="27" y="40" xlink:href="#template"></use>
+                    <use x="28" y="40" xlink:href="#template"></use>
+                    <use x="29" y="40" xlink:href="#template"></use>
+                    <use x="30" y="40" xlink:href="#template"></use>
+                    <use x="33" y="40" xlink:href="#template"></use>
+                    <use x="34" y="40" xlink:href="#template"></use>
+                    <use x="36" y="40" xlink:href="#template"></use>
+                </svg>
+            </div>
+        </div>
+        <div class="instructions col-12  col-sm-8 col-md-6 col-lg-9">
+            <div class="input-div"><input type="text" class="form-control input-address" disabled value="0xsdfefdwe4r534ec342r2wdsa">
+            </div>
+            <div class="button-div">
+                <button class="btn btn-info copy-btn">Copy address
+                </button>
+            </div>
+            <div class="text">Send any amount to the address. The system will calculate at the rate above, generate and
+                send you tokens! It can take up to 3 hours until you get SPX in your wallet
+            </div>
+        </div>
+    </div>
+</div>
+

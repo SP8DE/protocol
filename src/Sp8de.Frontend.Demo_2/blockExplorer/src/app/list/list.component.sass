@@ -1,0 +1,19 @@
+@import "../root"
+.table-container
+  overflow: auto
+
+table
+  border-spacing: 0
+  td, th
+    padding: $padding/2
+    font-size: 0.7rem
+  td
+    border-bottom: 1px solid #ededed
+  th
+    border-bottom: 2px solid #ededed
+  tbody
+    tr
+      cursor: pointer
+    tr:last-child
+      > td
+        border-bottom: 0px solid #9b9b9b

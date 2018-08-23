@@ -1,0 +1,422 @@
+﻿@{
+ViewData["Title"] = "Sp8de client SDK";
+}
+<div class="documentation">
+    <h1 id="sp8de-crypto-client-sdk">Sp8de client SDK</h1>
+    <p>SDK for client</p>
+    <h2 id="install">Install</h2>
+    <h3 id="npm">NPM</h3>
+    <pre><code>npm install sp8de-client-sdk</code></pre>
+    <p>For angular2 + applications, you need to add references to cryptographic libraries to the index.html file:</p>
+    <pre><code>&lt;script src=&quot;https://www.mobilefish.com/scripts/ethereumjs/ethereumjs-util.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdn.ethers.io/scripts/ethers-v3.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+    <h3 id="cdn">CDN</h3>
+    <pre><code>&lt;script src=&quot;https:/*.js&quot;&gt;&lt;/script&gt;</code></pre>
+    <h2 id="npm-commands">NPM commands</h2>
+    <p><code>doc</code>: Run generate documentation from jsdoc</p>
+    <p><code>test</code>: Run karma test</p>
+    <p><code>watch</code>: Run watchify to autorun browserify for create single file</p>
+    <p><code>toCDN</code>: Create single file with browserify and minification</p>
+    <h2 id="usage">Usage</h2>
+    <h3 id="npm-1">NPM</h3>
+    <pre class="js"><code>import {Sp8deClientSDK} from &#39;sp8de-client-sdk&#39;;
+// or
+const Sp8deClientSDK = require(&#39;sp8de-client-sdk&#39;);
+
+const sp8deClientSDK = new Sp8deClientSDK.Methods();
+
+const seed = sp8deClientSDK.generateSeed();
+// returns seed</code></pre>
+    <h3 id="cdn-1">CDN</h3>
+    <pre class="js"><code>const seed = sp8deClientSDK.generateSeed();
+// returns seed</code></pre>
+    <h3 id="store-wallets-in-localstorage">Store wallets in localstorage</h3>
+    <p>Methods for storing wallet in the storage use the choice between <code>wallets</code> and <code>user</code> keys
+        in localstorage (for situations where the user-object in the application). If in localstorage has a
+        <code>user</code> key, then wallet will be added to him in key <code>wallets</code>.</p>
+    <h2 id="about">About</h2>
+    <p>A simple set of ... , mainly for frontend apps.</p>
+    <h2 id="examples">Examples</h2>
+    <h3 id="wallet-procedures">Wallet procedures</h3>
+    <h4 id="save-on-init">Save on init</h4>
+    <pre class="js"><code>public init() {
+    // Check wallets in storage
+    if (this.sp8deClientSDK.isWalletsInStorage()) {
+      // Get wallet and decript him
+      from(this.sp8deClientSDK.decryptWallet(this.sp8deClientSDK.getActiveWalletFromStorage(), this.password))
+        .pipe(
+          map(item =&gt; &lt;any&gt;item)
+        )
+        .subscribe(wallet =&gt; {
+          // Save private key
+          this.privateKey = wallet.privateKey;
+          // Generate public key
+          this.pubKey = this.sp8deClientSDK.getPubKey(this.privateKey);
+        });
+    } else {
+      // Generate wallet containing private key.
+      let wallet;
+      this.privateKey = wallet.privateKey;
+          // Generate public key from private key
+          this.pubKey = this.sp8deClientSDK.getPubKey(this.privateKey);
+          // Encrypting the wallet before uploading it to the storage for data security.
+          from(this.sp8deClientSDK.encryptWallet(this.sp8deClientSDK.generateWallet(), password))
+            .pipe(
+              map(item =&gt; &lt;any&gt;item)
+            )
+            .subscribe(res =&gt; {
+              // Save encrypted wallet to localstorage
+              this.sp8deClientSDK.addWalletToStorage(res);
+            });
+    }
+  }
+
+  public init() {
+    // Generate wallet containing private key.
+    const wallet = this.sp8deClientSDK.generateWallet();
+    this.privateKey = wallet.privateKey;
+    // Generate public key from private key
+    this.pubKey = this.sp8deClientSDK.getPubKey(this.privateKey);
+    // Encrypting the wallet before uploading it to the storage for data security.
+    from(this.sp8deClientSDK.encryptWallet(this.sp8deClientSDK.generateWallet(), password))
+      .pipe(
+        map(item =&gt; &lt;any&gt;item)
+      )
+      .subscribe(res =&gt; {
+        // Save encrypted wallet to localstorage
+        this.sp8deClientSDK.addWalletToStorage(res);
+      });
+  }</code></pre>
+    <h4 id="open-for-use">Open for use</h4>
+    <pre class="js"><code>    // Getting wallet from storage
+    let storageWallet = this.sp8deClientSDK.getActiveWalletFromStorage();
+    // Decrypt wallet for edxecute private key
+    this.sp8deClientSDK.decryptWallet(storageWallet, password).then(decryptRes =&gt; {
+        // Getting private key
+        this.privateKey = decryptRes.privateKey
+    })</code></pre>
+    <h3 id="signing">Signing</h3>
+    <pre class="js"><code>    // set current date in milliseconds as nonce
+    const nonce = +(new Date());
+    // generate seed
+    const seed = this.sp8deClientSDK.generateSeed();
+    // signing message
+    const sign = this.sp8deClientSDK.signMessage({privateKey: this.privateKey, seed: seed, nonce: nonce});</code></pre>
+    <h3 id="validate">Validate</h3>
+    <p>Validating random number from array-seed</p>
+    <pre class="js"><code>  public validateWin(array: number[], serverNumber: number[]): boolean {
+    // generate random number from array
+    const clientNumber = this.getRandomFromArray({array: array, min: 1, max: 6, length: winNumber.length});
+    if (!clientNumber) {
+      console.error(&#39;Server value invalid!&#39;);
+      return;
+    }
+    return clientNumber[0] === serverNumber[0];
+  }</code></pre>
+    <h2 id="api">API</h2>
+    <ul>
+        <li><a href="#Sp8deClientSDK">Sp8deClientSDK</a>
+            <ul>
+                <li><a href="#Sp8deClientSDK+generatePrivateKey">.generatePrivateKey()</a> ⇒ <code>number</code></li>
+                <li><a href="#Sp8deClientSDK+generateWallet">.generateWallet()</a> ⇒ <code>object</code></li>
+                <li><a href="#Sp8deClientSDK+encryptWallet">.encryptWallet(wallet, password)</a> ⇒ <code>promise</code>
+                </li>
+                <li><a href="#Sp8deClientSDK+decryptWallet">.decryptWallet(wallet, password)</a> ⇒ <code>promise</code>
+                </li>
+                <li><a href="#Sp8deClientSDK+getPubKey">.getPubKey(privateKey)</a> ⇒ <code>string</code></li>
+                <li><a href="#Sp8deClientSDK+getRandomFromArray">.getRandomFromArray(parameters)</a> ⇒ <code>Array.&lt;number&gt;</code>
+                </li>
+                <li><a href="#Sp8deClientSDK+generateSeed">.generateSeed()</a> ⇒ <code>number</code></li>
+                <li><a href="#Sp8deClientSDK+signMessage">.signMessage(parameters)</a> ⇒ <code>string</code></li>
+                <li><a href="#Sp8deClientSDK+validateSign">.validateSign(parameters)</a> ⇒ <code>boolean</code></li>
+                <li><a href="#Sp8deClientSDK+addWalletToStorage">.addWalletToStorage(value, storageWallets)</a></li>
+                <li>
+                    <a href="#Sp8deClientSDK+removeLastWalletFromStorage">.removeLastWalletFromStorage(storageWallets)</a>
+                </li>
+                <li><a href="#Sp8deClientSDK+clearWalletStorage">.clearWalletStorage(storageWallets)</a></li>
+                <li><a href="#Sp8deClientSDK+getActiveWalletFromStorage">.getActiveWalletFromStorage(array)</a> ⇒ <code>string</code>
+                </li>
+                <li><a href="#Sp8deClientSDK+getWalletsListFromStorage">.getWalletsListFromStorage(storageWallets)</a> ⇒
+                    <code>Array.&lt;string&gt;</code></li>
+                <li><a href="#Sp8deClientSDK+isWalletsInStorage">.isWalletsInStorage(storageWallets)</a> ⇒
+                    <code>boolean</code></li>
+            </ul>
+        </li>
+    </ul>
+    <p><a name="Sp8deClientSDK+generatePrivateKey"></a></p>
+    <h3 id="sp8declientsdk.generateprivatekey-number">sp8deClientSDK.generatePrivateKey() ⇒ <code>number</code></h3>
+    <p>Returns a new private key</p>
+    <p><strong>Returns</strong>: <code>number</code> - A public key of 66 characters long <a
+            name="Sp8deClientSDK+generateWallet"></a></p>
+    <h3 id="sp8declientsdk.generatewallet-object">sp8deClientSDK.generateWallet() ⇒ <code>object</code></h3>
+    <p>Returns a new wallet</p>
+    <p><strong>Returns</strong>: <code>object</code> - Object contains wallet <a
+            name="Sp8deClientSDK+encryptWallet"></a></p>
+    <h3 id="sp8declientsdk.encryptwalletwallet-password-promise">sp8deClientSDK.encryptWallet(wallet, password) ⇒ <code>promise</code>
+    </h3>
+    <p>Returns a new wallet</p>
+    <p><strong>Returns</strong>: <code>promise</code> - promise with json</p>
+    <table>
+        <thead>
+        <tr class="header">
+            <th align="left">Param</th>
+            <th align="left">Type</th>
+            <th align="left">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="odd">
+            <td align="left">wallet</td>
+            <td align="left"><code>object</code></td>
+            <td align="left">object with wallet</td>
+        </tr>
+        <tr class="even">
+            <td align="left">password</td>
+            <td align="left"><code>string</code></td>
+            <td align="left"></td>
+        </tr>
+        </tbody>
+    </table>
+    <p><a name="Sp8deClientSDK+decryptWallet"></a></p>
+    <h3 id="sp8declientsdk.decryptwalletwallet-password-promise">sp8deClientSDK.decryptWallet(wallet, password) ⇒ <code>promise</code>
+    </h3>
+    <p>Returns a new wallet</p>
+    <p><strong>Returns</strong>: <code>promise</code> - promise with json</p>
+    <table>
+        <thead>
+        <tr class="header">
+            <th align="left">Param</th>
+            <th align="left">Type</th>
+            <th align="left">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="odd">
+            <td align="left">wallet</td>
+            <td align="left"><code>string</code></td>
+            <td align="left">Encrypted JSON with wallet</td>
+        </tr>
+        <tr class="even">
+            <td align="left">password</td>
+            <td align="left"><code>string</code></td>
+            <td align="left"></td>
+        </tr>
+        </tbody>
+    </table>
+    <p><a name="Sp8deClientSDK+getPubKey"></a></p>
+    <h3 id="sp8declientsdk.getpubkeyprivatekey-string">sp8deClientSDK.getPubKey(privateKey) ⇒ <code>string</code></h3>
+    <p>Returns the public key obtains from the private key</p>
+    <p><strong>Returns</strong>: <code>string</code> - A public key of 42 characters long</p>
+    <table>
+        <thead>
+        <tr class="header">
+            <th align="left">Param</th>
+            <th align="left">Type</th>
+            <th align="left">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="odd">
+            <td align="left">privateKey</td>
+            <td align="left"><code>string</code></td>
+            <td align="left">private key</td>
+        </tr>
+        </tbody>
+    </table>
+    <p><a name="Sp8deClientSDK+getRandomFromArray"></a></p>
+    <h3 id="sp8declientsdk.getrandomfromarrayparameters-array.number">sp8deClientSDK.getRandomFromArray(parameters) ⇒
+        <code>Array.&lt;number&gt;</code></h3>
+    <p>Returns an array of random numbers from seed-array (use mt19937 algorithm)</p>
+    <p><strong>Returns</strong>: <code>Array.&lt;number&gt;</code> - An array of length given by a &quot;count&quot;
+        containing random numbers</p>
+    <table>
+        <thead>
+        <tr class="header">
+            <th align="left">Param</th>
+            <th align="left">Type</th>
+            <th align="left">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="odd">
+            <td align="left">parameters</td>
+            <td align="left"><code>Object</code></td>
+            <td align="left">{array: [], min: number, max: number, count: number}</td>
+        </tr>
+        </tbody>
+    </table>
+    <p><a name="Sp8deClientSDK+generateSeed"></a></p>
+    <h3 id="sp8declientsdk.generateseed-number">sp8deClientSDK.generateSeed() ⇒ <code>number</code></h3>
+    <p>Returns a random number to use as a seed</p>
+    <p><strong>Returns</strong>: <code>number</code> - Random seed number. Length 9-10 <a
+            name="Sp8deClientSDK+signMessage"></a></p>
+    <h3 id="sp8declientsdk.signmessageparameters-string">sp8deClientSDK.signMessage(parameters) ⇒ <code>string</code>
+    </h3>
+    <p>Signs a message from privateKey, seed, nonce. Returns message signed with private key.</p>
+    <p><strong>Returns</strong>: <code>string</code> - Message signed with private key</p>
+    <table>
+        <thead>
+        <tr class="header">
+            <th align="left">Param</th>
+            <th align="left">Type</th>
+            <th align="left">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="odd">
+            <td align="left">parameters</td>
+            <td align="left"><code>Object</code></td>
+            <td align="left">{privateKey: string, seed: number, nonce: number}</td>
+        </tr>
+        </tbody>
+    </table>
+    <p><a name="Sp8deClientSDK+validateSign"></a></p>
+    <h3 id="sp8declientsdk.validatesignparameters-boolean">sp8deClientSDK.validateSign(parameters) ⇒
+        <code>boolean</code></h3>
+    <p>Validates the message. Use sign, nonce, public key and seed. Returns true if the validation was successful.</p>
+    <p><strong>Returns</strong>: <code>boolean</code> - True if successful, false if unsuccessful</p>
+    <table>
+        <thead>
+        <tr class="header">
+            <th align="left">Param</th>
+            <th align="left">Type</th>
+            <th align="left">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="odd">
+            <td align="left">parameters</td>
+            <td align="left"><code>Object</code></td>
+            <td align="left">{sign: string, pubKey: string, seed: number, nonce: number}</td>
+        </tr>
+        </tbody>
+    </table>
+    <p><a name="Sp8deClientSDK+addWalletToStorage"></a></p>
+    <h3 id="sp8declientsdk.addwallettostoragevalue-storagewallets">sp8deClientSDK.addWalletToStorage(value,
+        storageWallets)</h3>
+    <p>Add to localstorage to key Wallets in key &quot;User&quot; or root. If user without field &quot;Wallets&quot; add
+        it.</p>
+    <table>
+        <thead>
+        <tr class="header">
+            <th align="left">Param</th>
+            <th align="left">Type</th>
+            <th align="left">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="odd">
+            <td align="left">value</td>
+            <td align="left"><code>string</code></td>
+            <td align="left">Private key</td>
+        </tr>
+        <tr class="even">
+            <td align="left">storageWallets</td>
+            <td align="left"><code>object</code> | <code>array</code></td>
+            <td align="left">Object wallet contained in storage</td>
+        </tr>
+        </tbody>
+    </table>
+    <p><a name="Sp8deClientSDK+removeLastWalletFromStorage"></a></p>
+    <h3 id="sp8declientsdk.removelastwalletfromstoragestoragewallets">
+        sp8deClientSDK.removeLastWalletFromStorage(storageWallets)</h3>
+    <p>Removing last private key from array in localstorage</p>
+    <table>
+        <thead>
+        <tr class="header">
+            <th align="left">Param</th>
+            <th align="left">Type</th>
+            <th align="left">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="odd">
+            <td align="left">storageWallets</td>
+            <td align="left"><code>object</code> | <code>array</code></td>
+            <td align="left">Object wallet contained in storage</td>
+        </tr>
+        </tbody>
+    </table>
+    <p><a name="Sp8deClientSDK+clearWalletStorage"></a></p>
+    <h3 id="sp8declientsdk.clearwalletstoragestoragewallets">sp8deClientSDK.clearWalletStorage(storageWallets)</h3>
+    <p>Clear array of private keys (delete key from localstorage</p>
+    <table>
+        <thead>
+        <tr class="header">
+            <th align="left">Param</th>
+            <th align="left">Type</th>
+            <th align="left">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="odd">
+            <td align="left">storageWallets</td>
+            <td align="left"><code>object</code> | <code>array</code></td>
+            <td align="left">Object wallet contained in storage)</td>
+        </tr>
+        </tbody>
+    </table>
+    <p><a name="Sp8deClientSDK+getActiveWalletFromStorage"></a></p>
+    <h3 id="sp8declientsdk.getactivewalletfromstoragearray-string">sp8deClientSDK.getActiveWalletFromStorage(array) ⇒
+        <code>string</code></h3>
+    <p>Returns active private key in localstorage</p>
+    <p><strong>Returns</strong>: <code>string</code> - Active private key or null if no array</p>
+    <table>
+        <thead>
+        <tr class="header">
+            <th align="left">Param</th>
+            <th align="left">Type</th>
+            <th align="left">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="odd">
+            <td align="left">array</td>
+            <td align="left"><code>array</code></td>
+            <td align="left">Array wallets contained in storage</td>
+        </tr>
+        </tbody>
+    </table>
+    <p><a name="Sp8deClientSDK+getWalletsListFromStorage"></a></p>
+    <h3 id="sp8declientsdk.getwalletslistfromstoragestoragewallets-array.string">
+        sp8deClientSDK.getWalletsListFromStorage(storageWallets) ⇒ <code>Array.&lt;string&gt;</code></h3>
+    <p>Returns array of string contains all private keys from localstorage</p>
+    <p><strong>Returns</strong>: <code>Array.&lt;string&gt;</code> - Array of private keys or null if no array</p>
+    <table>
+        <thead>
+        <tr class="header">
+            <th align="left">Param</th>
+            <th align="left">Type</th>
+            <th align="left">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="odd">
+            <td align="left">storageWallets</td>
+            <td align="left"><code>object</code> | <code>array</code></td>
+            <td align="left">Object wallet contained in storage</td>
+        </tr>
+        </tbody>
+    </table>
+    <p><a name="Sp8deClientSDK+isWalletsInStorage"></a></p>
+    <h3 id="sp8declientsdk.iswalletsinstoragestoragewallets-boolean">sp8deClientSDK.isWalletsInStorage(storageWallets) ⇒
+        <code>boolean</code></h3>
+    <p>Check if there are keys in vault</p>
+    <p><strong>Returns</strong>: <code>boolean</code> - True if there is, false is not</p>
+    <table>
+        <thead>
+        <tr class="header">
+            <th align="left">Param</th>
+            <th align="left">Type</th>
+            <th align="left">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="odd">
+            <td align="left">storageWallets</td>
+            <td align="left"><code>object</code></td>
+            <td align="left">User in storage, if it there is</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
