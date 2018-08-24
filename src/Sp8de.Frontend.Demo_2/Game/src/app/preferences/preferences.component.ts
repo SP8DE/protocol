@@ -12,7 +12,7 @@ export class PreferencesComponent implements OnInit {
   @Input() public items: any[] = [];
   @Input() public bets: number[] = [];
   @Output() public onStart = new EventEmitter<any>();
-  public currentBetAmount: number;
+  public currentBetAmount: number = 100;
   public currentBet: number[] = [];
 
   constructor() {

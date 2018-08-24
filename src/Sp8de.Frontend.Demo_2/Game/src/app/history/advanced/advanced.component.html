@@ -30,6 +30,10 @@
 
   <div class="side right">
     <div class="info-line">
+      <div class="title">IPFS:</div>
+      <div class="value"><a target="_blank" href="https://ipfs.io/ipfs/{{data.ipfsHash}}">IPFS hash </a></div>
+    </div>
+    <div class="info-line">
       <div class="title">items:</div>
       <div class="value">
         <ng-container *ngFor="let item of data.items; let i=index">
