@@ -10,15 +10,18 @@ import {Router} from "@angular/router";
 })
 export class UserComponent implements OnInit {
   @Input() public user: User;
+
   constructor(public userService: UserService,
-              public router: Router) { }
+              public router: Router) {
+  }
 
   ngOnInit() {
   }
 
   public toFixed(val: number): string {
-    return val? val.toFixed(2) : '0';
+    return val ? val.toFixed(2) : '0';
   }
+
   public logOut(): void {
     this.userService.logOut();
     this.router.navigate(['./login']);
