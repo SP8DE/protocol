@@ -1,0 +1,23 @@
+<div class="user">
+  <div class="log" *ngIf="user.token === 'test'">
+    <button routerLink="../login">Log in</button>
+  </div>
+  <div class="log" *ngIf="user.token !== 'test'">
+    <button (click)="logOut()">Log out</button>
+  </div>
+  <div class="head">
+    <div class="avatar"><img src="../../../assets/images/TossCoin/1.png" alt=""></div>
+    <div class="name">{{user.name}}</div>
+  </div>
+  <div class="finance">
+    <div class="balance">
+      <div class="name">balance</div>
+      <div class="value">{{toFixed(user.balance)}} <span class="spx"> SPX</span></div>
+    </div>
+    <div class="deposit">
+      <div>
+        <button>Deposit</button>
+      </div>
+    </div>
+  </div>
+</div>
