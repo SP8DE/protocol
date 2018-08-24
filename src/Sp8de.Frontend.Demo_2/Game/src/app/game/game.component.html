@@ -4,7 +4,16 @@
     <img src="../../assets/images/loading.svg" alt="">
   </div>
   <div *ngIf="loaded" class="content-block">
-    <div class="back" routerLink="../">&lt; Back</div>
+    <div class="back" routerLink="../">
+      <div>
+        <i class="material-icons">
+          keyboard_arrow_left
+        </i>
+      </div>
+      <div>
+        Back
+      </div>
+    </div>
 
     <div class="ungle">
       <app-user [user]="user" *ngIf="user"></app-user>

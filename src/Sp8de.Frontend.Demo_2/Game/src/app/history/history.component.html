@@ -14,7 +14,7 @@
       <div *ngFor="let round of history" class="row" [ngClass]="{'openAdvanced': round.openAdvanced}">
         <ng-container *ngIf="round.type === type">
           <div class="tr">
-            <div class="td">{{round.player}}</div>
+            <div class="td player-column">{{round.player}}</div>
             <div class="td bet-column">
               <div class="statistic-bet item-cell">
                 <div>
@@ -40,7 +40,9 @@
               {{round.response.gameId}}
             </div>
             <div class="td button-column" (click)="round.openAdvanced=!round.openAdvanced">
-              <button class="advanced-button"></button>
+              <i class="material-icons">
+                keyboard_arrow_right
+              </i>
             </div>
           </div>
           <div class="advanced-container">
