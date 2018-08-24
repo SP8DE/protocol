@@ -49,7 +49,7 @@ namespace Sp8de.DemoGame.Web.Infrastructure
             // https://tools.ietf.org/html/rfc7807
             var problem = new ProblemDetails
             {
-                Type = "https://yourdomain.com/errors/internal-server-error",
+                Type = "internal-server-error",
                 Title = "Internal Server Error",
                 Detail = exception.Message,
                 Instance = "",

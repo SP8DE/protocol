@@ -31,9 +31,9 @@ namespace Sp8de.DemoGame.Web.Services
             var revealItem = new RevealItem()
             {
                 Type = UserType.Requester,
-                Seed = random.NextLong(),
+                Seed = random.NextLong().ToString(),
                 Nonce = salt ?? DateTime.UtcNow.Ticks.ToString(),
-                PubKey = keySecret.PublicAddress
+                PubKey = keySecret.PublicAddress.ToLowerInvariant()
             };
 
             revealItem.Sign = signService.SignMessage(revealItem.ToString(), keySecret.PrivateKey);

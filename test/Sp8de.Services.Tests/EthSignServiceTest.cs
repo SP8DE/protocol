@@ -123,5 +123,18 @@ namespace Sp8de.Services.Tests
 
             Assert.Equal("0x12890d2cce102216644c59dae5baed380d84830c".ToLower(), account.EnsureHexPrefix().ToLower());
         }
+
+        [Fact]
+        public void test5()
+        {
+            var signature =
+                "0x7c87377d7a148ee69ec5ed9be2c87033639b6970acf9a8e165e81cf3dce4516d2bdcc6957eb435447ef9eaa34f541a81f999f0b967bfbfcca1850f58f4cdf5fe1c";
+            var text = "0x492d0fd814940d1375225a7e10905585b72b0a8c;-7440852294285764000;636706243532255384";
+            var hasher = new Sha3Keccack();
+            var hash = hasher.CalculateHash(text);
+            var signer = new EthereumMessageSigner();
+            var account = signer.EncodeUTF8AndEcRecover(text, signature);
+            Assert.Equal("0x492d0fd814940d1375225a7e10905585b72b0a8c".ToLower(), account.EnsureHexPrefix().ToLower());
+        }
     }
 }
