@@ -10,4 +10,9 @@ namespace Sp8de.Common.Models
 
         public string Message { get; set; }
     }
+
+    public static class ErrorResult
+    {
+        public static List<Error> Create(string message) => new List<Error> { new Error() { Message = message } };
+    }
 }

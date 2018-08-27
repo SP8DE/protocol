@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Sp8de.Common.Models;
+using Sp8de.DemoGame.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -119,17 +120,20 @@ namespace Sp8de.DemoGame.Web.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(AccountInputModel Input)
+        public async Task<ActionResult<string>> Login(AccountInputModel model)
         {
             if (ModelState.IsValid)
             {
+                var user = await userManager.FindByNameAsync(model.Email);
+                if (user == null)
+                    return BadRequest(ErrorResult.Create("Wrong email/password"));
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
 
                 if (result.Succeeded)
                 {
-                    var jwt = JwtTokenGenerator.Generate(Input.Email, configuration["AuthToken:Issuer"], configuration["AuthToken:Key"]);
+                    var jwt = JwtTokenGenerator.Generate(model.Email, configuration["AuthToken:Issuer"], configuration["AuthToken:Key"]);
                     logger.LogInformation("User logged in.");
                     return jwt;
                 }

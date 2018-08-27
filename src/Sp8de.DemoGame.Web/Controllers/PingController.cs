@@ -16,10 +16,17 @@ namespace Sp8de.DemoGame.Web.Controllers
         }
 
         [Authorize]
-        [HttpGet("autorized")]
+        [HttpGet("authorized")]
         public string AutorizedGet()
         {
-            return $"Autorized Pong {DateTime.UtcNow}";
+            return $"Authorized Pong {DateTime.UtcNow}";
         }
+
+        [HttpGet("error")]
+        [ProducesResponseType(500, Type = typeof(ProblemDetails))]
+        public string Error()
+        {
+            throw new NotImplementedException();
+        }       
     }
 }

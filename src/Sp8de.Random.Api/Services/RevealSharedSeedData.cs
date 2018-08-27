@@ -9,6 +9,6 @@ namespace Sp8de.Random.Api.Services
         public string Id { set; get; }
         public SharedSeedMetaData MetaData { get; set; }
         public List<RevealItem> Items { get; set; }
-        public List<int> SharedSeed { get; set; }
+        public List<uint> SharedSeed { get; set; }
     }
 }

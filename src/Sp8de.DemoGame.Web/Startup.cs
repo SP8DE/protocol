@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Sp8de.Common.Interfaces;
+using Sp8de.Common.Models;
 using Sp8de.DemoGame.Web.Data;
 using Sp8de.DemoGame.Web.Infrastructure;
 using Sp8de.DemoGame.Web.Models;
@@ -18,7 +20,9 @@ using Sp8de.EthServices;
 using Sp8de.IpfsStorageService;
 using Sp8de.RandomGenerators;
 using Sp8de.Storage;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -92,7 +96,25 @@ namespace Sp8de.DemoGame.Web
             {
                 c.DescribeAllParametersInCamelCase();
                 c.DescribeAllEnumsAsStrings();
+
+                
+                c.OperationFilter<DefaultValuesOperationFilter>();
+                c.OperationFilter<AuthorizationFilter>();
+
                 c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info() { Title = "Sp8de Game API", Version = "v1" });
+
+                c.AddSecurityDefinition("bearer-token", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header"
+                });
+
+                c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
+                {
+                    { "bearer-token", new string[] { } }
+                });
+
                 //c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
             });
         }
@@ -103,6 +125,10 @@ namespace Sp8de.DemoGame.Web
                 .AddJwtBearer(
                     options =>
                     {
+                        //options.RequireHttpsMetadata = false;
+                        //options.Authority = Configuration["AuthToken:Issuer"];
+                        //options.Audience = Configuration["AuthToken:Issuer"];
+
                         var tokenValidationParameters = new TokenValidationParameters
                         {
                             ValidIssuer = Configuration["AuthToken:Issuer"],
@@ -114,6 +140,7 @@ namespace Sp8de.DemoGame.Web
                     });
 
             services.AddIdentityCore<IdentityUser>(options =>
+            //services.AddDefaultIdentity<IdentityUser>(options =>
             {
                 options.Stores.MaxLengthForKeys = 128;
 
@@ -124,7 +151,7 @@ namespace Sp8de.DemoGame.Web
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireDigit = false;
                 options.SignIn.RequireConfirmedEmail = false;
-
+                
                 options.Lockout = new LockoutOptions
                 {
                     AllowedForNewUsers = true,
@@ -135,6 +162,13 @@ namespace Sp8de.DemoGame.Web
             }).AddEntityFrameworkStores<ApplicationDbContext>()
             .AddSignInManager()
             .AddDefaultTokenProviders();
+
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy(JwtBearerDefaults.AuthenticationScheme, new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                    .RequireAuthenticatedUser().Build());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

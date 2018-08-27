@@ -1,8 +1,7 @@
 ﻿using Sp8de.Common.Interfaces;
 using Sp8de.Common.RandomModels;
+using Sp8de.Common.Utils;
 using Sp8de.Random.Api.Models;
-using Sp8de.Services;
-using Sp8de.Services.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +60,7 @@ namespace Sp8de.Random.Api.Services
 
             var contributorReveal = contributorService.Reveal(commit).GetAwaiter().GetResult();
 
-            var sharedSeed = RandomHelpers.CreateSharedSeedByStrings(items.Select(x => x.Seed).AsEnumerable());
+            var sharedSeed = SharedSeedHelpers.CreateSharedSeed(items.Select(x => x.Seed).AsEnumerable());
 
             var list = new List<RevealItem>();
             list.AddRange(items);
@@ -71,7 +70,7 @@ namespace Sp8de.Random.Api.Services
             {
                 Id = sharedSeedId,
                 Items = list,
-                SharedSeed = sharedSeed.ToList()
+                SharedSeed = sharedSeed.seedArray.ToList()
             };
         }
 

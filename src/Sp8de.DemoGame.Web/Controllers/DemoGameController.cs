@@ -1,15 +1,14 @@
-﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Sp8de.Common.Interfaces;
+using Sp8de.Common.Models;
 using Sp8de.Common.RandomModels;
+using Sp8de.Common.Utils;
 using Sp8de.DemoGame.Web.Models;
 using Sp8de.DemoGame.Web.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Sp8de.DemoGame.Web.Controllers
@@ -35,6 +34,7 @@ namespace Sp8de.DemoGame.Web.Controllers
 
         [ProducesResponseType(200, Type = typeof(GameStartResponse))]
         [ProducesResponseType(400, Type = typeof(List<Error>))]
+        [ProducesResponseType(500, Type = typeof(ProblemDetails))]
         [Route("start")]
         [HttpPost]
         public async Task<ActionResult<GameStartResponse>> Start([FromBody]GameStartRequest model)
@@ -92,16 +92,17 @@ namespace Sp8de.DemoGame.Web.Controllers
         [ProducesResponseType(200, Type = typeof(GameFinishResponse))]
         [ProducesResponseType(400, Type = typeof(List<Error>))]
         [ProducesResponseType(404)]
+        [ProducesResponseType(500, Type = typeof(ProblemDetails))]
         [Route("end")]
         [HttpPost]
         public async Task<ActionResult<GameFinishResponse>> End([FromBody]GameFinishRequest model)
         {
             var game = cache.Get<GameStartResponse>(model.GameId);
-
             if (game == null)
             {
                 return NotFound();
             }
+
             var requesterCommit = game.Items.First(x => x.Type == UserType.Requester);
 
             var revealItem = await randomContributorService.Reveal(requesterCommit);
@@ -123,7 +124,7 @@ namespace Sp8de.DemoGame.Web.Controllers
 
             var seedItems = tx.Items.Select(x => (x as RevealItem).Seed).ToArray();
 
-            var seed = CreateSharedSeedByStrings(seedItems);
+            var seed = SharedSeedHelpers.CreateSharedSeed(seedItems);
 
             DemoGameLogic(game, seed, out int[] winNumbers, out decimal winAmount, out bool isWinner);
 
@@ -172,45 +173,6 @@ namespace Sp8de.DemoGame.Web.Controllers
             }
         }
 
-        public static (IList<uint> seedArray, string seedHash) CreateSharedSeedByStrings(IEnumerable<string> sharedSeedData)
-        {
-            var aggregated = string.Join(";", sharedSeedData);
-
-            using (var hasher = SHA384.Create())
-            {
-                var hashedBytes = hasher.ComputeHash(Encoding.ASCII.GetBytes(aggregated));
-                string hex = SeedToHex(hashedBytes);
-                var size = hashedBytes.Count() / sizeof(int);
-                var ints = new uint[size];
-                for (var index = 0; index < size; index++)
-                {
-                    ints[index] = BitConverter.ToUInt32(hashedBytes, index * sizeof(uint));
-                }
-
-                return (ints, hex);
-            }
-        }
-
-        public static string SeedToHex(byte[] bytes)
-        {
-            char[] c = new char[bytes.Length * 2 + 2];
-
-            byte b;
-
-            c[0] = '0';
-            c[1] = 'x';
-
-            for (int bx = 0, cx = 2; bx < bytes.Length; ++bx, ++cx)
-            {
-                b = ((byte)(bytes[bx] >> 4));
-                c[cx] = (char)(b > 9 ? b + 0x37 + 0x20 : b + 0x30);
-
-                b = ((byte)(bytes[bx] & 0x0F));
-                c[++cx] = (char)(b > 9 ? b + 0x37 + 0x20 : b + 0x30);
-            }
-
-            return new string(c);
-        }
     }
 
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Sp8de.Services
+namespace Sp8de.Common.Utils
 {
-    public class RandomHelpers
+    public class SharedSeedHelpers
     {
         public static IList<int> CreateSharedSeedByStrings(IEnumerable<string> sharedSeedData)
         {
@@ -24,6 +24,26 @@ namespace Sp8de.Services
                 }
 
                 return ints;
+            }
+        }
+
+        public static (IList<uint> seedArray, string seedHash) CreateSharedSeed(IEnumerable<string> sharedSeedData)
+        {
+            var aggregated = string.Join(";", sharedSeedData);
+
+            using (var hasher = SHA384.Create())
+            {
+                var hashedBytes = hasher.ComputeHash(Encoding.ASCII.GetBytes(aggregated));
+
+                string hex = HexConverter.ToHex(hashedBytes);
+                var size = hashedBytes.Count() / sizeof(int);
+                var ints = new uint[size];
+                for (var index = 0; index < size; index++)
+                {
+                    ints[index] = BitConverter.ToUInt32(hashedBytes, index * sizeof(uint));
+                }
+
+                return (ints, hex);
             }
         }
 
