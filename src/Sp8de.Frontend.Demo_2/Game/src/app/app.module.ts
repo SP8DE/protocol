@@ -16,6 +16,7 @@ import {PreferencesComponent} from './preferences/preferences.component';
 import {GameComponent} from './game/game.component';
 import {AdvancedComponent} from './history/advanced/advanced.component';
 import {LoginComponent} from './login/login.component';
+import { UserComponent } from './game/user/user.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {LoginComponent} from './login/login.component';
     PreferencesComponent,
     GameComponent,
     AdvancedComponent,
-    LoginComponent
+    LoginComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,

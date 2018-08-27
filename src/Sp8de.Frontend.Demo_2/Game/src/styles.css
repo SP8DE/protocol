@@ -11,6 +11,14 @@ html,body,button,input{
   color: white;
 }
 body{
+}
+div.background{
+  z-index: -1000;
+  position: fixed;
+  top:0;
+  bottom: 0;
+  right: 0;
+  left: 0;
   background: #508686;
   /* Old browsers */
   background: fixed -moz-linear-gradient(-45deg, #508686 0%, #7674ba 46%, #755084 100%) no-repeat;

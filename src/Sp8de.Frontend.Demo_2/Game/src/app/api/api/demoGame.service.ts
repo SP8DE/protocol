@@ -30,7 +30,7 @@ import { Configuration }                                     from '../configurat
 @Injectable()
 export class DemoGameService {
 
-    protected basePath = 'https://localhost:5002';
+    protected basePath = 'https://demo-api.sp8de.com';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 

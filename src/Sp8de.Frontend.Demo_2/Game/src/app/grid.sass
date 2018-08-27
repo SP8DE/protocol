@@ -12,18 +12,26 @@ $padding: 1rem
     align-items: flex-start !important
   .ungle, .back
     position: static
+    padding: $padding/4
     width: 100%
-    padding: 0
+  .head
+    .name
+      font-size: 1rem
   .back
-    padding: $padding/2
+    padding-bottom: $padding
+  .statistics
+    width: 100%
 
 @media screen and (min-width: 900px)
   .ungle, .back
     position: absolute
     padding: $padding/2
+  .head
+    .name
+      font-size: 1.5rem
 
 div
-  outline: 0px solid black
+  outline:  0px solid black
 
 div, input
   box-sizing: border-box
@@ -51,6 +59,7 @@ button
 
 .container
   height: 100%
+  width: 100%
   display: flex
   justify-content: center
   align-items: center
@@ -61,6 +70,10 @@ button
     left: $padding
     opacity: 0.7
     cursor: pointer
+    display: flex
+    flex-direction: row
+    justify-content: flex-start
+    align-items: center
   .hide
     width: 0
     opacity: 0

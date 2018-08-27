@@ -4,30 +4,19 @@
     <img src="../../assets/images/loading.svg" alt="">
   </div>
   <div *ngIf="loaded" class="content-block">
-    <div class="back" routerLink="../">&lt; Back</div>
+    <div class="back" routerLink="../">
+      <div>
+        <i class="material-icons">
+          keyboard_arrow_left
+        </i>
+      </div>
+      <div>
+        Back
+      </div>
+    </div>
 
-    <div class="user ungle" *ngIf="user">
-      <div class="login" *ngIf="user.token === 'test'">
-        <button routerLink="../login">Log in</button>
-      </div>
-      <div class="head">
-        <div class="avatar"><img src="../../assets/images/TossCoin/1.png" alt=""></div>
-        <div class="name">{{user.name}}</div>
-      </div>
-      <div class="finance">
-        <div class="balance">
-          <div class="name">balance</div>
-          <div class="value">{{toFixed(user.balance)}} <span class="spx"> SPX</span></div>
-        </div>
-        <div class="deposit">
-          <div>
-            <button>Deposit</button>
-          </div>
-          <div class="quit" *ngIf="user.token !== 'test'">
-            <button (click)="logOut()">Log out</button>
-          </div>
-        </div>
-      </div>
+    <div class="ungle">
+      <app-user [user]="user" *ngIf="user"></app-user>
     </div>
     <div class="game column">
       <app-preferences [type]="type"

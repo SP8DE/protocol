@@ -53,6 +53,7 @@ export class GameComponent implements OnInit {
   }
 
   public start(event): void {
+    this.currentWin=null;
     const cryptoParameters = this.cryptoService.generateCryptoParameters();
     this.gameService.startGame(
       {
@@ -78,7 +79,7 @@ export class GameComponent implements OnInit {
         console.group('End');
         const validWin = this.cryptoService.validateWin(res.sharedSeedArray, res.winNumbers),
           validItems = this.cryptoService.validatePlayers(res),
-          win = this.checkWin(res.winNumbers, event.currentBet);
+          win = this.checkWin(res.winNumbers[0], event.currentBet);
         console.warn('End response', res);
         console.log('Validate items:', validItems);
         // console.log('Validate win:', validWin);
@@ -102,16 +103,8 @@ export class GameComponent implements OnInit {
       });
   }
 
-  public logOut(): void {
-    this.userService.logOut();
-    this.router.navigate(['./login']);
-  }
-
-  public toFixed(val: number): string {
-    return val.toFixed(2);
-  }
-
-  private checkWin(result: number[], bet: any[]): boolean {
-    return !!bet.find(item => item === result[0]);
+  private checkWin(result: number, bet: any[]): boolean {
+    // return !!bet.find(item => item === result);
+    return !!~bet.indexOf(result);
   }
 }
