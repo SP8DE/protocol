@@ -9,7 +9,7 @@ namespace Sp8de.DemoGame.Web.Infrastructure
 {
     public class AuthorizationFilter : IOperationFilter
     {
-        public void Apply1(Operation operation, OperationFilterContext context)
+        public void ApplyByMethod(Operation operation, OperationFilterContext context)
         {
             var filterPipeline = context.ApiDescription.ActionDescriptor.FilterDescriptors;
             var isAuthorized = filterPipeline.Select(filterInfo => filterInfo.Filter).Any(filter => filter is AuthorizeFilter);

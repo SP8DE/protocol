@@ -33,18 +33,29 @@ namespace Sp8de.Common.Utils
 
             using (var hasher = SHA384.Create())
             {
+                
                 var hashedBytes = hasher.ComputeHash(Encoding.ASCII.GetBytes(aggregated));
 
                 string hex = HexConverter.ToHex(hashedBytes);
-                var size = hashedBytes.Count() / sizeof(int);
+                var size = hashedBytes.Count() / sizeof(uint);
                 var ints = new uint[size];
                 for (var index = 0; index < size; index++)
                 {
-                    ints[index] = BitConverter.ToUInt32(hashedBytes, index * sizeof(uint));
+                    ints[index] = ToUInt32(hashedBytes, index * sizeof(uint));
                 }
-
+                
                 return (ints, hex);
             }
+        }
+
+        public static UInt32 ToUInt32(byte[] data, int offset)
+        {
+            if (BitConverter.IsLittleEndian)
+            {
+                return BitConverter.ToUInt32(BitConverter.IsLittleEndian ? data.Skip(offset).Take(4).Reverse().ToArray() : data, 0);
+            }
+
+            return BitConverter.ToUInt32(data, offset);
         }
 
         public static IList<int> CreateSharedSeed(IEnumerable<long> sharedSeedData)
