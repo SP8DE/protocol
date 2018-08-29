@@ -1,6 +1,7 @@
 ﻿using Sp8de.Common.Interfaces;
 using Sp8de.Common.RandomModels;
 using Sp8de.Common.Utils;
+using Sp8de.EthServices;
 using Sp8de.Random.Api.Models;
 using System;
 using System.Collections.Generic;
@@ -60,7 +61,7 @@ namespace Sp8de.Random.Api.Services
 
             var contributorReveal = contributorService.Reveal(commit).GetAwaiter().GetResult();
 
-            var sharedSeed = SharedSeedHelpers.CreateSharedSeed(items.Select(x => x.Seed).AsEnumerable());
+            var sharedSeed = SharedSeedGenerator.CreateSharedSeed(items.Select(x => x.Seed).AsEnumerable());
 
             var list = new List<RevealItem>();
             list.AddRange(items);
