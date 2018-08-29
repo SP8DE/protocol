@@ -1,0 +1,119 @@
+﻿using Marten;
+using Marten.Linq;
+using Sp8de.Common.BlockModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Sp8de.Services.Explorer
+{
+    public class Sp8deTransactionStorage : ISp8deTransactionStorage
+    {
+        private readonly IDocumentStore store;
+
+        public Sp8deTransactionStorage(Sp8deTransactionStorageConfig config)
+        {
+            if (config is null)
+            {
+                throw new ArgumentNullException(nameof(config));
+            }
+
+            this.store = DocumentStore.For(config.ConnectionString);
+        }
+
+        public async Task<Sp8deTransaction> Get(string hash)
+        {
+            using (var session = store.QuerySession())
+            {
+                var item = await session.LoadAsync<Sp8deTransaction>(hash);
+
+                return item;
+            }
+        }
+
+        public Task<string> Add(Sp8deTransaction data)
+        {
+            using (var session = store.LightweightSession())
+            {
+                session.Store(data);
+                session.SaveChanges();
+
+                return Task.FromResult(data.Id);
+            }
+        }
+
+        public async Task<IReadOnlyList<Sp8deTransaction>> Search(string q, int limit = 25)
+        {
+            using (var session = store.QuerySession())
+            {
+                var items = await session.Query<Sp8deTransaction>()
+                    .Where(x => x.Id == q || x.Id.Contains(q))
+                    .OrderBy(x => x.Timestamp)
+                    .Take(limit)
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+
+                return items;
+            }
+        }
+
+        public async Task<(IReadOnlyList<Sp8deTransaction> items, long totalResults)> List(int offset = 0, int limit = 25)
+        {
+            using (var session = store.QuerySession())
+            {
+                var items = await session.Query<Sp8deTransaction>()
+                    .Stats(out QueryStatistics stats)
+                    .OrderBy(x => x.Timestamp)
+                    .Skip(offset)
+                    .Take(limit)
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+
+                return (items, stats.TotalResults);
+            }
+        }
+
+        public async Task<IReadOnlyList<Sp8deTransaction>> GetPending(int limit = 25)
+        {
+            using (var session = store.QuerySession())
+            {
+                var items = await session.Query<Sp8deTransaction>()
+                    .Where(x => x.Status == Sp8deTransactionStatus.New)
+                    .OrderBy(x => x.Timestamp)
+                    .Take(limit)
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+
+                return items;
+            }
+        }
+
+        public async Task<IReadOnlyList<Sp8deTransaction>> GetLatest(int limit = 25)
+        {
+            using (var session = store.QuerySession())
+            {
+                var items = await session.Query<Sp8deTransaction>()
+                    .OrderByDescending(x => x.Timestamp)
+                    .Take(limit)
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+
+                return items;
+            }
+        }
+
+        public async Task Update(IReadOnlyList<Sp8deTransaction> items)
+        {
+            using (var session = store.LightweightSession())
+            {
+                foreach (var item in items)
+                {
+                    session.Update(item);
+                }
+
+                await session.SaveChangesAsync();
+            }
+        }
+    }
+}

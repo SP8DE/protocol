@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Sp8de.Common.BlockModels;
+using Sp8de.Explorer.Api.Models;
+using Sp8de.Services.Explorer;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Sp8de.Common.BlockModels;
-using Sp8de.Explorer.Api.Models;
 
 namespace Sp8de.Explorer.Api.Controllers
 {
@@ -12,22 +12,49 @@ namespace Sp8de.Explorer.Api.Controllers
     [ApiController]
     public class BlocksController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult<IList<Sp8deBlock>> Get()
+        private readonly Sp8deBlockStorage blockStorage;
+
+        public BlocksController(Sp8deBlockStorage blockStorage)
         {
-            return new List<Sp8deBlock>();
+            this.blockStorage = blockStorage;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<PagedResult<Sp8deBlock>>> Get(int offset = 0, int limit = 25)
+        {
+            var (items, totalResults) = await blockStorage.List(offset, limit);
+
+            return new PagedResult<Sp8deBlock>()
+            {
+                Items = items,
+                TotalCount = totalResults
+            };
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Sp8deBlock> Get(int id)
+        public async Task<ActionResult<Sp8deBlock>> Get(long id)
         {
-            return new Sp8deBlock();
+            var rs = await blockStorage.Get(id);
+            if (rs == null)
+            {
+                return NotFound();
+            }
+
+            return rs;
         }
 
         [HttpGet("{id}/transactions")]
-        public ActionResult<IList<Sp8deTransaction>> GetTransactions(int id)
+        public async Task<ActionResult<IList<Sp8deTransaction>>> GetTransactions(int id)
         {
-            return new List<Sp8deTransaction>();
+            var rs = await blockStorage.Get(id);
+            if (rs == null)
+            {
+                return NotFound();
+            }
+
+            var transactions = await blockStorage.GetTransactions(rs.Id);
+
+            return transactions.ToList();
         }
     }
 }

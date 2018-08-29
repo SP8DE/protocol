@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Sp8de.Common.BlockModels;
-using Sp8de.Explorer.Api.Models;
+using Sp8de.Services.Explorer;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Sp8de.Explorer.Api.Controllers
 {
@@ -9,22 +11,32 @@ namespace Sp8de.Explorer.Api.Controllers
     [ApiController]
     public class LatestController : ControllerBase
     {
-        [HttpGet("blocks")]
-        public ActionResult<IList<Sp8deBlock>> GetLatestBlocks(int limit = 10)
+        private readonly Sp8deBlockStorage blockStorage;
+        private readonly ISp8deTransactionStorage transactionStorage;
+
+        public LatestController(Sp8deBlockStorage blockStorage, ISp8deTransactionStorage transactionStorage)
         {
-            return new List<Sp8deBlock>();
+            this.blockStorage = blockStorage;
+            this.transactionStorage = transactionStorage;
+        }
+
+        [HttpGet("block")]
+        public async Task<ActionResult<Sp8deBlock>> GetLatestBlock()
+        {
+            return await blockStorage.GetLatestBlock();
         }
 
         [HttpGet("transactions")]
-        public ActionResult<IList<Sp8deTransaction>> GetLatestTransactions(int limit = 10)
+        public async Task<ActionResult<IList<Sp8deTransaction>>> GetLatestTransactions(int limit = 10)
         {
-            return new List<Sp8deTransaction>();
+            var rs = await transactionStorage.GetLatest(limit);
+            return rs.ToList();
         }
 
         [HttpGet("blockNumber")]
-        public ActionResult<Sp8deBlock> GetLatestBlockNumber()
+        public async Task<ActionResult<long>> GetLatestBlockNumber()
         {
-            return new Sp8deBlock();
+            return (await blockStorage.GetLatestBlock())?.Id;
         }
     }
 }

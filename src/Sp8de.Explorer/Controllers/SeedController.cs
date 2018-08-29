@@ -20,9 +20,10 @@ namespace Sp8de.Explorer.Api.Controllers
         private readonly IKeySecret[] keys;
         private readonly PRNGRandomService prng;
         private readonly ISp8deTransactionStorage storage;
+        private readonly Sp8deBlockStorage blockStorage;
         private readonly Sp8deBlockService blockService;
 
-        public SeedController(ISp8deTransactionStorage storage)
+        public SeedController(ISp8deTransactionStorage storage, Sp8deBlockStorage blockStorage)
         {
             signService = new EthSignService();
             secretManager = new EthKeySecretManager();
@@ -36,9 +37,9 @@ namespace Sp8de.Explorer.Api.Controllers
             .Select(x => secretManager.LoadKeySecret(x))
             .ToArray();
 
-            //prng = new PRNGRandomService();
             this.storage = storage;
-            this.blockService = new Sp8deBlockService(new Sp8deNodeConfig() { Key = EthKeySecret.Load("d7d60dc1c9376fe0011a854fef00d62dbfb9c7224954c396d057d02223abd2ea") });
+            this.blockStorage = blockStorage;
+            this.blockService = new Sp8deBlockService(new Sp8deNodeConfig() { Key = keys.Last() });
         }
 
         [HttpGet("transactions")]
@@ -47,7 +48,7 @@ namespace Sp8de.Explorer.Api.Controllers
             Stopwatch sw = new Stopwatch();
             sw.Start();
             List<Sp8deTransaction> list = await SeedTransactions(limit);
-            
+
             foreach (var item in list)
             {
                 await storage.Add(item);
@@ -58,21 +59,32 @@ namespace Sp8de.Explorer.Api.Controllers
         }
 
         [HttpGet("blocks")]
-        public async Task<ActionResult> Blocks(int limit = 10)
+        public async Task<ActionResult<Sp8deBlock>> Blocks(int limit = 10)
         {
-            List<Sp8deTransaction> list = await SeedTransactions(limit);
+            int blockSize = 25;
 
-            var blocks = new List<Sp8deBlock>();
+            var block = await blockStorage.GetLatestBlock() ?? new Sp8deBlock();
 
-            var block = new Sp8deBlock();
             for (int i = 0; i < limit; i++)
             {
-                block = blockService.GenerateNewBlock(list.Skip(i * 10).Take(10).ToList(), block);
+                var transactions = await storage.GetPending(blockSize);
 
-                blocks.Add(block);
+                block = blockService.GenerateNewBlock(transactions, block);
+                await blockStorage.Add(block);
+
+                foreach (var item in transactions)
+                {
+                    item.Status = Sp8deTransactionStatus.Confirmed;
+                    item.Meta = new TransactionMeta()
+                    {
+                        BlockId = block.Id
+                    };
+                }
+
+                await storage.Update(transactions);
             }
 
-            return Ok();
+            return block;
         }
 
         private async Task<List<Sp8deTransaction>> SeedTransactions(int limit)

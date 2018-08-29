@@ -25,11 +25,16 @@ namespace Sp8de.Services.Explorer
             this.config = config;
         }
 
-        public string CalculateBlockHash(Sp8deBlock block)
-        {
-            byte[] inputBytes = Encoding.UTF8.GetBytes($"{block.Id};{block.ChainId};{block.Timestamp};{block.PreviousHash ?? ""};{block.TransactionRoot};{block.Signer};{block.TransactionsCount}");
+        public string CalculateBlockHash(byte[] inputBytes)
+        { 
             byte[] outputBytes = hasher.Hash(inputBytes);
             return HexConverter.ToHex(outputBytes);
+        }
+
+        public byte[] GetBytes(Sp8deBlock block)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes($"{block.Id};{block.ChainId};{block.Timestamp};{block.PreviousHash ?? ""};{block.TransactionRoot};{block.Signer};{block.TransactionsCount};{string.Join(';', block.Transactions)}");
+            return bytes;
         }
 
         public (string hash, byte[] bytes) CalculateTransactionHash(Sp8deTransaction transaction)
@@ -39,7 +44,7 @@ namespace Sp8de.Services.Explorer
             return (HexConverter.ToHex(outputBytes), outputBytes);
         }
 
-        public Sp8deBlock GenerateNewBlock(IList<Sp8deTransaction> list, Sp8deBlock prevBlock)
+        public Sp8deBlock GenerateNewBlock(IReadOnlyList<Sp8deTransaction> list, Sp8deBlock prevBlock)
         {
             var block = new Sp8deBlock()
             {
@@ -59,11 +64,11 @@ namespace Sp8de.Services.Explorer
 
             block.TransactionRoot = CalculateTransactionRootHash(list);
 
-            block.Hash = CalculateBlockHash(block);
+            var bytesArray = GetBytes(block);
+
+            block.Hash = CalculateBlockHash(bytesArray);
 
             block.Signature = signService.SignMessage(block.Hash, config.Key.PrivateKey);
-
-            //hasher.Hash()
 
             return block;
         }
@@ -111,7 +116,7 @@ namespace Sp8de.Services.Explorer
             return tx;
         }
 
-        public string CalculateTransactionRootHash(IList<Sp8deTransaction> list)
+        public string CalculateTransactionRootHash(IReadOnlyList<Sp8deTransaction> list)
         {
             var trie = new PatriciaTrie();
 

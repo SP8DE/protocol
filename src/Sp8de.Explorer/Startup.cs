@@ -44,7 +44,8 @@ namespace Sp8de.Explorer
             services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<Sp8deTransactionStorageConfig>>().Value);
 
             services.AddTransient<ISp8deTransactionStorage, Sp8deTransactionStorage>();
-
+            services.AddTransient<Sp8deBlockStorage>();
+            
             services.AddSwaggerGen(c =>
             {
                 c.DescribeAllParametersInCamelCase();
