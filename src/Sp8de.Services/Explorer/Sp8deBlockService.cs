@@ -5,12 +5,10 @@ using Stratis.Patricia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace Sp8de.Services.Explorer
 {
-
     //temp
     public class Sp8deBlockService
     {
