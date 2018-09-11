@@ -331,3 +331,6 @@ ASALocalRun/
 
 #Frontend demo_2 dependencies
 src/Sp8de.Frontend.Demo_2/Game/node_modules
+/src/Sp8de.Explorer/appsettings.Production.json
+/src/Sp8de.PaymentService/appsettings.Production.json
+/src/Sp8de.DataModel.MigrationsApp/appsettings.Production.json
