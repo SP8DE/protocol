@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -7,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Sp8de.Common.Models;
 using Sp8de.Services.Explorer;
+using System.Linq;
 
 namespace Sp8de.Explorer
 {
@@ -22,7 +22,10 @@ namespace Sp8de.Explorer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(options =>
+            {
+                options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+            });
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -45,7 +48,7 @@ namespace Sp8de.Explorer
 
             services.AddTransient<ISp8deTransactionStorage, Sp8deTransactionStorage>();
             services.AddTransient<Sp8deBlockStorage>();
-            
+
             services.AddSwaggerGen(c =>
             {
                 c.DescribeAllParametersInCamelCase();
@@ -68,6 +71,9 @@ namespace Sp8de.Explorer
                 app.UseHsts();
             }
 
+            app.UseDeveloperExceptionPage();
+            app.UseDatabaseErrorPage();
+
             app.UseCors(builder =>
                 builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
             );
@@ -84,6 +90,8 @@ namespace Sp8de.Explorer
                     }
                 });
             });
+
+            app.UseStaticFiles();
 
             app.UseHttpsRedirection();
 

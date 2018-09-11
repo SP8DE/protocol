@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Sp8de.Common.BlockModels
 {
-    public class Sp8deBlock : IEntity
+    public class Sp8deBlock : IEntity<long>
     {
         public long Id { get; set; }
         public long ChainId { get; set; }
@@ -16,6 +16,10 @@ namespace Sp8de.Common.BlockModels
         public int TransactionsCount => Transactions?.Count ?? 0;
         public IList<string> Transactions { get; set; }
         public IList<Anchor> Anchors { get; set; }
-        string IEntity.Id { get => Id.ToString(); set => throw new System.NotImplementedException(); }
+
+        public string GeteDataForSing()
+        {
+            return $"{this.Id};{this.ChainId};{this.Timestamp};{this.PreviousHash ?? ""};{this.TransactionRoot};{this.Signer};{this.TransactionsCount};{string.Join(';', this.Transactions)}";
+        }
     }
 }

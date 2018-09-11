@@ -19,7 +19,16 @@ namespace Sp8de.Services.Explorer
                 throw new ArgumentNullException(nameof(config));
             }
 
-            this.store = DocumentStore.For(config.ConnectionString);
+            this.store = DocumentStore.For(s =>
+            {
+                s.Connection(config.ConnectionString);
+
+                s.Schema.For<Sp8deBlock>().Identity(x => x.Id);
+                s.Schema.For<Sp8deBlock>().Duplicate(x => x.ChainId);
+                s.Schema.For<Sp8deBlock>().Duplicate(x => x.Hash);
+                s.Schema.For<Sp8deBlock>().Duplicate(x => x.PreviousHash);
+                s.Schema.For<Sp8deBlock>().Duplicate(x => x.Signer);
+            });
         }
 
         public async Task<Sp8deBlock> Get(long id)
@@ -60,7 +69,7 @@ namespace Sp8de.Services.Explorer
         {
             using (var session = store.LightweightSession())
             {
-                session.Store(data);
+                session.Insert(data);
                 session.SaveChanges();
 
                 return Task.FromResult(data.Id);

@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Sp8de.Common.Interfaces;
 using Sp8de.DataModel;
-using Sp8de.PaymentService.Controllers;
 using Sp8de.PaymentService.Models;
 using Sp8de.PaymentService.Service;
 
@@ -31,12 +24,9 @@ namespace Sp8de.PaymentService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration["DbContextSettings:ConnectionString"];
-
             services.AddEntityFrameworkNpgsql()
-                    .AddDbContext<Sp8deDbContext>(x => x.UseNpgsql(connectionString));
+                    .AddDbContext<Sp8deDbContext>(x => x.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddMvc();
             services.AddTransient<IPaymentTransactionService, PaymentTransactionService>();
 
             services.Configure<PaymentGatewayConfig>(Configuration.GetSection(nameof(PaymentGatewayConfig)));
@@ -57,7 +47,7 @@ namespace Sp8de.PaymentService
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseMvc();
         }
     }

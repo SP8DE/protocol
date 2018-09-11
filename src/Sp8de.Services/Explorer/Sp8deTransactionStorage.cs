@@ -19,7 +19,16 @@ namespace Sp8de.Services.Explorer
                 throw new ArgumentNullException(nameof(config));
             }
 
-            this.store = DocumentStore.For(config.ConnectionString);
+            this.store = DocumentStore.For(s =>
+            {
+                s.Connection(config.ConnectionString);
+
+                s.Schema.For<Sp8deTransaction>().Identity(x => x.Id);
+
+                s.Schema.For<Sp8deTransaction>().Duplicate(x => x.Type);
+                s.Schema.For<Sp8deTransaction>().Duplicate(x => x.Status);
+                s.Schema.For<Sp8deTransaction>().Duplicate(x => x.DependsOn);
+            });
         }
 
         public async Task<Sp8deTransaction> Get(string hash)
@@ -36,7 +45,7 @@ namespace Sp8de.Services.Explorer
         {
             using (var session = store.LightweightSession())
             {
-                session.Store(data);
+                session.Insert(data);
                 session.SaveChanges();
 
                 return Task.FromResult(data.Id);
@@ -107,11 +116,7 @@ namespace Sp8de.Services.Explorer
         {
             using (var session = store.LightweightSession())
             {
-                foreach (var item in items)
-                {
-                    session.Update(item);
-                }
-
+                session.Update(items.ToArray());
                 await session.SaveChangesAsync();
             }
         }

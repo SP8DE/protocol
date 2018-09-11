@@ -23,21 +23,15 @@ namespace Sp8de.Services.Explorer
             this.config = config;
         }
 
-        public string CalculateBlockHash(byte[] inputBytes)
-        { 
+        public string CalculateHash(byte[] inputBytes)
+        {
             byte[] outputBytes = hasher.Hash(inputBytes);
             return HexConverter.ToHex(outputBytes);
         }
 
-        public byte[] GetBytes(Sp8deBlock block)
-        {
-            byte[] bytes = Encoding.UTF8.GetBytes($"{block.Id};{block.ChainId};{block.Timestamp};{block.PreviousHash ?? ""};{block.TransactionRoot};{block.Signer};{block.TransactionsCount};{string.Join(';', block.Transactions)}");
-            return bytes;
-        }
-
         public (string hash, byte[] bytes) CalculateTransactionHash(Sp8deTransaction transaction)
         {
-            byte[] inputBytes = Encoding.UTF8.GetBytes($"{transaction.Type};{transaction.Timestamp};{transaction.InternalRoot};{transaction.Signer ?? ""};;{transaction?.InputData?.Hash ?? ""};{transaction?.OutputData?.Hash ?? ""}");
+            byte[] inputBytes = Encoding.UTF8.GetBytes($"{transaction.Type};{transaction.Timestamp};{transaction.InternalRoot};{transaction.Signer ?? ""};{transaction.DependsOn ?? ""};{transaction.InputData?.Hash ?? ""};{transaction.OutputData?.Hash ?? ""}");
             byte[] outputBytes = hasher.Hash(inputBytes);
             return (HexConverter.ToHex(outputBytes), outputBytes);
         }
@@ -53,8 +47,8 @@ namespace Sp8de.Services.Explorer
                 Signer = config.Key.PublicAddress,
                 Anchors = new List<Anchor>() {
                     new Anchor(){
-                        Type = "ipfs",
-                        Data = "link",
+                        Type = "IPFS",
+                        Data = "QmPTptErGpze3kzx84nyoEpYyK3caWdUThRbcpi2tYdCmi",
                         Timestamp = DateConverter.UtcNow
                     }
                 }
@@ -62,35 +56,28 @@ namespace Sp8de.Services.Explorer
 
             block.TransactionRoot = CalculateTransactionRootHash(list);
 
-            var bytesArray = GetBytes(block);
+            var blockContent = block.GeteDataForSing();
 
-            block.Hash = CalculateBlockHash(bytesArray);
+            block.Signature = signService.SignMessage(blockContent, config.Key.PrivateKey);
 
-            block.Signature = signService.SignMessage(block.Hash, config.Key.PrivateKey);
+            block.Hash = CalculateHash(Encoding.UTF8.GetBytes(block.Signature));
 
             return block;
         }
 
-        public Sp8deTransaction GenerateNewTransaction(IList<InternalTransaction> inner, Sp8deTransactionType transactionType)
+        public Sp8deTransaction GenerateNewTransaction(IList<InternalTransaction> inner, Sp8deTransactionType transactionType, string dependsOn = null)
         {
             var tx = new Sp8deTransaction()
             {
                 Timestamp = DateConverter.UtcNow,
                 Expiration = DateConverter.UtcNow,
                 CompleatedAt = DateConverter.UtcNow,
+                DependsOn = dependsOn,
                 InputData = new TransactionData()
                 {
                     Items = new Dictionary<string, IList<string>> {
-                        { "GameType", new List<string>{ "Dice" } }
-                    },
-                    Hash = "0x"
-                },
-                OutputData = new TransactionData()
-                {
-                    Items = new Dictionary<string, IList<string>> {
-                        { "SharedSeed",new List<string>{ "1", "2", "3" } }
-                    },
-                    Hash = "0x"
+                        { "randomType", new List<string>{ "Dice" } }
+                    }
                 },
                 Type = transactionType,
                 Status = Sp8deTransactionStatus.New
@@ -103,11 +90,27 @@ namespace Sp8de.Services.Explorer
             tx.Anchors.Add(new Anchor()
             {
                 Type = "IPFS",
-                Data = "0x",
+                Data = "QmPTptErGpze3kzx84nyoEpYyK3caWdUThRbcpi2tYdCmi",
                 Timestamp = DateConverter.UtcNow,
             });
 
             tx.InternalRoot = CalculateInternalTransactionRootHash(inner);
+
+            tx.InputData.Hash = CalculateHash(tx.InputData.GetBytes());
+
+            if (transactionType == Sp8deTransactionType.AggregatedReveal)
+            {
+                var (seedArray, seedHash) = SharedSeedGenerator.CreateSharedSeed(inner.Select(x => x.Data));
+
+                tx.OutputData = new TransactionData()
+                {
+                    Items = new Dictionary<string, IList<string>> {
+                        { "sharedSeedArray", seedArray.Select(x=>x.ToString()).ToArray() },
+                        { "sharedSeedHash", new List<string> { seedHash } }
+                    }
+                };
+                tx.OutputData.Hash = CalculateHash(tx.OutputData.GetBytes());
+            }
 
             tx.Id = CalculateTransactionHash(tx).hash;
 

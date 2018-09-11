@@ -6,10 +6,15 @@
         public Sp8deTransactionType Type { get; set; }
         public string From { get; set; }
         public string Sign { get; set; }
-        public long Nonce { get; set; }
+        public string Nonce { get; set; }
         /// <summary>
         /// Seed Item
         /// </summary>
-        public long? Data { get; set; }
+        public string Data { get; set; }
+
+        public string GetDataForSign()
+        {
+            return $"{From.ToLower()};{Data};{Nonce}";
+        }
     }
 }

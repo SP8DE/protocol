@@ -12,5 +12,12 @@ namespace Sp8de.Services
             RandomNumberGenerator.Fill(arr);
             return BitConverter.ToInt64(arr);
         }
+
+        public int NextInt()
+        {
+            Span<byte> arr = new byte[4];
+            RandomNumberGenerator.Fill(arr);
+            return BitConverter.ToInt32(arr);
+        }
     }
 }

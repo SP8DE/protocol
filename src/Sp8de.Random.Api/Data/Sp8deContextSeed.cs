@@ -39,24 +39,6 @@ namespace Sp8de.Manager.Web.Data
                 await context.SaveChangesAsync();
             }
 
-            if (!context.RandomTransactions.Any())
-            {
-                context.RandomTransactions.Add(new RandomTransaction()
-                {
-                    Id = Guid.NewGuid(),
-                    Version = 1,
-                    Type = 1,
-                    DateCreated = DateTime.UtcNow,
-                    UserApiKeyId = context.UserApiKeys.First(x => x.UserId == userId).Id,
-                    Status = RandomTransactionStatus.New,
-                    Secret ="SECRET",
-                    CommitBody = "CommitBody",
-                    RevealBody = "RevealBody",
-
-                });
-                await context.SaveChangesAsync();
-            }
-
             if (!context.BlockchainTransactions.Any())
             {
                 context.BlockchainTransactions.Add(new BlockchainTransaction()
@@ -74,7 +56,6 @@ namespace Sp8de.Manager.Web.Data
 
                 await context.SaveChangesAsync();
             }
-
 
             if (!context.WalletTransactions.Any())
             {
