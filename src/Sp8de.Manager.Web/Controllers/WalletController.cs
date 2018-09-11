@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Sp8de.Common.Enums;
 using Sp8de.DataModel;
+using Sp8de.Manager.Web.Models;
 using Sp8de.Manager.Web.Services;
 using Sp8de.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,62 +16,64 @@ namespace Sp8de.Manager.Web.Controllers
         private readonly IBlockchainDepositAddressService addressService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IFinService finService;
+        private readonly Sp8deDbContext context;
 
         private Guid CurrentUserId { get { return User.GetUserId(); } }
 
-        public WalletController(IBlockchainDepositAddressService addressService, UserManager<ApplicationUser> userManager, IFinService finService)
+        public WalletController(IBlockchainDepositAddressService addressService, UserManager<ApplicationUser> userManager, IFinService finService, Sp8deDbContext context)
         {
             this.addressService = addressService;
             this.userManager = userManager;
             this.finService = finService;
+            this.context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
+            var vm = await CreateWallet(Currency.SPX);
 
+            var wallet = context.Wallets.Where(x => x.UserId == CurrentUserId && x.Currency == vm.Currency).FirstOrDefault();
+
+            vm.Balance = wallet?.Amount ?? 0;
+
+            return View(vm);
+        }
 
         private ApplicationUser GetCurrentUser()
         {
             if (!User.Identity.IsAuthenticated || string.IsNullOrEmpty(User.Identity?.Name))
                 return null;
 
-            //if (appUser != null)
-            //    return appUser;
-
             var appUser = userManager.FindByNameAsync(User.Identity?.Name).Result;
             return appUser;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateWallet([FromBody] WalletAddressRequest request)
+        private async Task<WalletViewModel> CreateWallet(Currency currency)
         {
-            if (request.Currency == Currency.Undefined)
+            if (currency == Currency.Undefined)
             {
-                return BadRequest("invalid currency");
+                throw new ArgumentException(nameof(currency));
             }
 
+            //var addresses = await addressService.GetAddresses(CurrentUserId);
+            //if (addresses.Any(x => x.Currency == currency))
+            //{
+            //    var rs = addresses.FirstOrDefault(x => x.Currency == currency);
 
-            var addresses = await addressService.GetAddresses(CurrentUserId);
-            if (addresses.Any(x => x.Currency == request.Currency))
+            //    return new WalletViewModel()
+            //    {
+            //        Currency = currency,
+            //        Address = rs.Address
+            //    };
+            //}
+
+            var address = await addressService.GenerateAddress(currency, CurrentUserId);
+
+            return new WalletViewModel()
             {
-                var rs = addresses.FirstOrDefault(x => x.Currency == request.Currency);
-
-                return Ok(new WalletViewModel()
-                {
-                    Currency = request.Currency.ToString(),
-                    Address = rs.Address
-                });
-            }
-
-            var address = await addressService.GenerateAddress(request.Currency, CurrentUserId);
-
-            return Ok(new WalletViewModel()
-            {
-                Currency = request.Currency.ToString(),
+                Currency = currency,
                 Address = address.Address
-            });
+            };
         }
 
         public static string ClearCode(string code)
@@ -93,7 +94,7 @@ namespace Sp8de.Manager.Web.Controllers
             if (!is2faTokenValid)
                 return BadRequest("Verification code is invalid");
 
-            var result = finService.CreateWithdrawalRequest(model);
+            //var result = finService.CreateWithdrawalRequest(model);
 
             //if (!result.IsSuccess)
             //    return BadRequest(ErrorResult.GetResult(result));

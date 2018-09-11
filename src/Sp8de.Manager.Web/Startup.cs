@@ -40,14 +40,15 @@ namespace Sp8de.Manager.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
+            
+            /*
             services.AddDbContext<Sp8deDbContext>(c =>
                 c.UseInMemoryDatabase("Sp8de"));
+            */
 
-            /*
             services.AddDbContext<Sp8deDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
-            );*/
+            );
 
             services.AddDefaultIdentity<ApplicationUser>(o => {
                 o.Password.RequireNonAlphanumeric = false;
