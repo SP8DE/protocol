@@ -57,7 +57,7 @@ ViewData["Title"] = "Wallet";
         <div class="instructions col-12">
             <form class="withdrawForm" asp-page="/Wallet/CreateWithdrawalRequest" >
                 <div class=" row">
-                        <div class="input-div col-4">
+                        <div class="input-div col-12 col-md-4">
                             <div>Amount</div>
                             <input type="number"
                                    name="Amount"
@@ -68,7 +68,7 @@ ViewData["Title"] = "Wallet";
                                    name="Currency"
                                    value="SPX">
                         </div>
-                        <div class="input-div col-4">
+                        <div class="input-div col-12 col-md-4">
                             <div>Wallet</div>
                             <input type="text"
                                    name="Wallet"
@@ -76,7 +76,7 @@ ViewData["Title"] = "Wallet";
                                    placeholder="Wallet"
                                    value="0xsdfefdwe4r534ec342r2wdsa">
                         </div>
-                        <div class="input-div col-4">
+                        <div class="input-div col-12 col-md-4">
                             <div>Google 2FA</div>
                             <input type="text"
                                    class="tfa form-control input-address"
