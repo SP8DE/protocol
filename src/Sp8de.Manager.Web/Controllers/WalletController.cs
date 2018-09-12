@@ -57,17 +57,17 @@ namespace Sp8de.Manager.Web.Controllers
                 throw new ArgumentException(nameof(currency));
             }
 
-            //var addresses = await addressService.GetAddresses(CurrentUserId);
-            //if (addresses.Any(x => x.Currency == currency))
-            //{
-            //    var rs = addresses.FirstOrDefault(x => x.Currency == currency);
+            var addresses = await addressService.GetAddresses(CurrentUserId);
+            if (addresses.Any(x => x.Currency == currency))
+            {
+                var rs = addresses.FirstOrDefault(x => x.Currency == currency);
 
-            //    return new WalletViewModel()
-            //    {
-            //        Currency = currency,
-            //        Address = rs.Address
-            //    };
-            //}
+                return new WalletViewModel()
+                {
+                    Currency = currency,
+                    Address = rs.Address
+                };
+            }
 
             var address = await addressService.GenerateAddress(currency, CurrentUserId);
 
