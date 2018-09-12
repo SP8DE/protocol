@@ -32,7 +32,7 @@ ViewData["Title"] = "Wallet";
             Send your Sp8de (SPX) to the address in the field bellow!
         </div>
     </div>
-    <div class="info row">
+    <div class="info row address">
         <div class="qr col-12 col-sm-4 col-md-6 col-lg-3">
             <div id="ETHWalletCode" class="qr-wrap qr-image" title="@Model.Address">
             </div>
@@ -46,11 +46,52 @@ ViewData["Title"] = "Wallet";
                     </button>
                 </div>
                 <div>
-                    <button  class="CreateWithdrawalRequest btn btn-info">Withdraw your SPX tokens
+                    <button  class="toogleWithdraw btn btn-info">Withdraw your SPX tokens
                     </button>
                 </div>
             </div>
             <div class="text">Send any amount of SPX to the address.</div>
+        </div>
+    </div>
+    <div class="info row withdraw">
+        <div class="instructions col-12">
+            <form class="withdrawForm" asp-page="/Wallet/CreateWithdrawalRequest" >
+                <div class=" row">
+                        <div class="input-div col-4">
+                            <div>Amount</div>
+                            <input type="number"
+                                   name="Amount"
+                                   class="amount form-control input-address"
+                                   placeholder="Amount"
+                                   value="0">
+                            <input type="hidden"
+                                   name="Currency"
+                                   value="SPX">
+                        </div>
+                        <div class="input-div col-4">
+                            <div>Wallet</div>
+                            <input type="text"
+                                   name="Wallet"
+                                   class="wallet form-control input-address"
+                                   placeholder="Wallet"
+                                   value="0xsdfefdwe4r534ec342r2wdsa">
+                        </div>
+                        <div class="input-div col-4">
+                            <div>Google 2FA</div>
+                            <input type="text"
+                                   class="tfa form-control input-address"
+                                   name="TwoFactorCode"
+                                   placeholder="Google 2FA"
+                                   value="">
+                        </div>
+                </div>
+            </form>
+                <div class="button-div row">
+                    <div class="col-6">
+                        <button class="btn btn-info copy-btn CreateWithdrawalRequest">Withdraw your SPX tokens
+                        </button>
+                    </div>
+                </div>
         </div>
     </div>
 </div>

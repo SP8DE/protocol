@@ -506,3 +506,10 @@ content {
 }
 .documentation td,.documentation th  {
 }
+
+.button-div{
+
+}
+.withdraw{
+    display: none;
+}
