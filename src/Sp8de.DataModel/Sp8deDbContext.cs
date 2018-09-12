@@ -14,7 +14,6 @@ namespace Sp8de.DataModel
         public virtual DbSet<BlockchainAddress> BlockchainAddresses { get; set; }
         public virtual DbSet<BlockchainTransaction> BlockchainTransactions { get; set; }
         public virtual DbSet<WalletTransaction> WalletTransactions { get; set; }
-        public virtual DbSet<RandomTransaction> RandomTransactions { get; set; }
 
         public Sp8deDbContext(DbContextOptions<Sp8deDbContext> options) : base(options)
         {

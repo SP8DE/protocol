@@ -50,7 +50,7 @@ namespace Sp8de.Services
                 new KeyValuePair<string, string>("Nonce", DateTime.UtcNow.ToString("R"))
             };
 
-            var requestContent = string.Join("&", requestItems.OrderBy(x => x.Key).Select(p => $"{p.Key}={Uri.EscapeDataString(p.Value)}"));
+            var requestContent = string.Join("&", requestItems.OrderBy(x => x.Key).Select(p => $"{p.Key}={Uri.EscapeDataString(p.Value ?? "")}"));
 
             try
             {

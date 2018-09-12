@@ -1,4 +1,5 @@
 ﻿using Sp8de.Manager.Web.Controllers;
+using Sp8de.Manager.Web.Models;
 using System;
 using System.Threading.Tasks;
 

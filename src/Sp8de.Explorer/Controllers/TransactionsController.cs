@@ -23,12 +23,12 @@ namespace Sp8de.Explorer.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<PagedResult<Sp8deTransaction>>> Get(int offset = 0, int limit = 25)
         {
-            var rs = await storage.List(offset, limit);
+            var (items, totalResults) = await storage.List(offset, limit);
 
             return new PagedResult<Sp8deTransaction>()
             {
-                Items = rs.Item1,
-                TotalCount = rs.totalResults
+                Items = items,
+                TotalCount = totalResults
             };
         }
 

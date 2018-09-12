@@ -6,6 +6,7 @@ using Sp8de.Common.RandomModels;
 using Sp8de.Common.Utils;
 using Sp8de.DemoGame.Web.Models;
 using Sp8de.DemoGame.Web.Services;
+using Sp8de.EthServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -124,7 +125,7 @@ namespace Sp8de.DemoGame.Web.Controllers
 
             var seedItems = tx.Items.Select(x => (x as RevealItem).Seed).ToArray();
 
-            var seed = SharedSeedHelpers.CreateSharedSeed(seedItems);
+            var seed = SharedSeedGenerator.CreateSharedSeed(seedItems);
 
             DemoGameLogic(game, seed, out int[] winNumbers, out decimal winAmount, out bool isWinner);
 

@@ -140,7 +140,6 @@ namespace Sp8de.DemoGame.Web
                     });
 
             services.AddIdentityCore<IdentityUser>(options =>
-            //services.AddDefaultIdentity<IdentityUser>(options =>
             {
                 options.Stores.MaxLengthForKeys = 128;
 

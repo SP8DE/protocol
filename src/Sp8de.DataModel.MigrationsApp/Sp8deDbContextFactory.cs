@@ -30,6 +30,7 @@ namespace Sp8de.DataModel.MigrationsApp
         {
             var builder = new ConfigurationBuilder();
             builder.AddJsonFile("appsettings.json", optional: false);
+            builder.AddJsonFile("appsettings.Production.json", optional: false);
 
             var configuration = builder.Build();
 

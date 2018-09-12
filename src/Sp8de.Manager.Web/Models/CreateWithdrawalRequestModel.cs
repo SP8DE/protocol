@@ -1,7 +1,7 @@
 ﻿using Sp8de.Common.Enums;
 using System;
 
-namespace Sp8de.Manager.Web.Controllers
+namespace Sp8de.Manager.Web.Models
 {
     public class CreateWithdrawalRequestModel
     {

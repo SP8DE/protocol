@@ -5,6 +5,11 @@
         string Id { get; set; }
     }
 
+    public interface IEntity<T>
+    {
+        T Id { get; set; }
+    }
+
     public class BaseEntity : IEntity
     {
         public string Id { get; set; }

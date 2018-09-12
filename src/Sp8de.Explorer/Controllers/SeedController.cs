@@ -2,8 +2,9 @@
 using Sp8de.Common.BlockModels;
 using Sp8de.Common.Interfaces;
 using Sp8de.EthServices;
-using Sp8de.RandomGenerators;
+using Sp8de.Services;
 using Sp8de.Services.Explorer;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,11 +19,12 @@ namespace Sp8de.Explorer.Api.Controllers
         private readonly EthSignService signService;
         private readonly EthKeySecretManager secretManager;
         private readonly IKeySecret[] keys;
-        private readonly PRNGRandomService prng;
         private readonly ISp8deTransactionStorage storage;
+        private readonly Sp8deBlockStorage blockStorage;
+        private readonly Sp8deTransactionStorageConfig config;
         private readonly Sp8deBlockService blockService;
 
-        public SeedController(ISp8deTransactionStorage storage)
+        public SeedController(ISp8deTransactionStorage storage, Sp8deBlockStorage blockStorage, Sp8deTransactionStorageConfig config)
         {
             signService = new EthSignService();
             secretManager = new EthKeySecretManager();
@@ -36,9 +38,10 @@ namespace Sp8de.Explorer.Api.Controllers
             .Select(x => secretManager.LoadKeySecret(x))
             .ToArray();
 
-            //prng = new PRNGRandomService();
             this.storage = storage;
-            this.blockService = new Sp8deBlockService(new Sp8deNodeConfig() { Key = EthKeySecret.Load("d7d60dc1c9376fe0011a854fef00d62dbfb9c7224954c396d057d02223abd2ea") });
+            this.blockStorage = blockStorage;
+            this.config = config;
+            this.blockService = new Sp8deBlockService(new Sp8deNodeConfig() { Key = keys.Last() });
         }
 
         [HttpGet("transactions")]
@@ -47,7 +50,7 @@ namespace Sp8de.Explorer.Api.Controllers
             Stopwatch sw = new Stopwatch();
             sw.Start();
             List<Sp8deTransaction> list = await SeedTransactions(limit);
-            
+
             foreach (var item in list)
             {
                 await storage.Add(item);
@@ -58,49 +61,88 @@ namespace Sp8de.Explorer.Api.Controllers
         }
 
         [HttpGet("blocks")]
-        public async Task<ActionResult> Blocks(int limit = 10)
+        public async Task<ActionResult<Sp8deBlock>> Blocks(int limit = 10)
         {
-            List<Sp8deTransaction> list = await SeedTransactions(limit);
+            int blockSize = 25;
 
-            var blocks = new List<Sp8deBlock>();
+            var block = await blockStorage.GetLatestBlock() ?? new Sp8deBlock();
 
-            var block = new Sp8deBlock();
             for (int i = 0; i < limit; i++)
             {
-                block = blockService.GenerateNewBlock(list.Skip(i * 10).Take(10).ToList(), block);
+                var transactions = await storage.GetPending(blockSize);
 
-                blocks.Add(block);
+                block = blockService.GenerateNewBlock(transactions, block);
+                await blockStorage.Add(block);
+
+                foreach (var item in transactions)
+                {
+                    item.Status = Sp8deTransactionStatus.Confirmed;
+                    item.Meta = new TransactionMeta()
+                    {
+                        BlockId = block.Id
+                    };
+                }
+
+                await storage.Update(transactions);
             }
 
-            return Ok();
+            return block;
         }
 
         private async Task<List<Sp8deTransaction>> SeedTransactions(int limit)
         {
             var list = new List<Sp8deTransaction>();
-            for (int secret = 10000; secret < 10000 + limit; secret++)
+
+            var rnd = new CRNGRandom();
+
+            int start = rnd.NextInt();
+
+            for (int secret = start; secret < start + limit; secret++)
             {
-                var innerItems = new List<InternalTransaction>();
-                for (int i = 0; i < keys.Length; i++)
-                {
-                    var key = keys[i];
-
-                    var tx = new InternalTransaction()
-                    {
-                        Type = Sp8deTransactionType.InternalReveal,
-                        Nonce = 1,
-                        From = key.PublicAddress,
-                        Data = secret + i
-                    };
-
-                    tx.Sign = signService.SignMessage($"{tx.From.ToLower()};{tx.Nonce};{tx.Data}", key.PrivateKey);
-
-                    innerItems.Add(tx);
-                }
-                list.Add(blockService.GenerateNewTransaction(innerItems, Sp8deTransactionType.AggregatedReveal));
+                var tx1 = CreateTransaction(secret, Sp8deTransactionType.AggregatedCommit);
+                list.Add(tx1);
+                var tx2 = CreateTransaction(secret, Sp8deTransactionType.AggregatedReveal, tx1.Id);
+                list.Add(tx2);
             }
 
             return list;
+        }
+
+        private Sp8deTransaction CreateTransaction(int secret, Sp8deTransactionType type, string dependsOn = null)
+        {
+            var innerItems = new List<InternalTransaction>();
+            for (int i = 0; i < keys.Length; i++)
+            {
+                var key = keys[i];
+
+                var internalTx = new InternalTransaction()
+                {
+                    Nonce = ((secret + i) * 3).ToString(),
+                    From = key.PublicAddress,
+                    Data = (secret + i).ToString()
+                };
+
+                internalTx.Sign = signService.SignMessage(internalTx.GetDataForSign(), key.PrivateKey);
+
+                switch (type)
+                {
+                    case Sp8deTransactionType.AggregatedCommit:
+                        internalTx.Type = Sp8deTransactionType.InternalCommit;
+                        internalTx.Data = null; //cleanup secret data
+                        break;
+                    case Sp8deTransactionType.AggregatedReveal:
+                        internalTx.Type = Sp8deTransactionType.InternalReveal;
+                        break;
+                    default:
+                        throw new ArgumentException(nameof(type));
+                }
+
+                innerItems.Add(internalTx);
+            }
+
+            var tx = blockService.GenerateNewTransaction(innerItems, type, dependsOn);
+
+            return tx;
         }
     }
 }

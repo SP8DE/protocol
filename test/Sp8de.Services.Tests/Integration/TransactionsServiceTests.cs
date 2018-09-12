@@ -52,9 +52,9 @@ namespace Sp8de.Services.Tests.Integration
                     var tx = new InternalTransaction()
                     {
                         Type = Sp8deTransactionType.InternalReveal,
-                        Nonce = 1,
+                        Nonce = (1).ToString(),
                         From = key.PublicAddress,
-                        Data = secret + i
+                        Data = (secret + i).ToString()
                     };
 
                     tx.Sign = signService.SignMessage($"{tx.From.ToLower()};{tx.Nonce};{tx.Data}", key.PrivateKey);

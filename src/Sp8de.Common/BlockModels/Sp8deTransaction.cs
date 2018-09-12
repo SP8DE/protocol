@@ -10,6 +10,7 @@ namespace Sp8de.Common.BlockModels
         public Sp8deTransactionType Type { get; set; }
         public string Signer { get; set; }
         public string Signature { get; set; }
+        public string Requester { get; set; }
         public Sp8deTransactionStatus Status { get; set; }
         public string DependsOn { get; set; }
 

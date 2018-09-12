@@ -5,12 +5,10 @@ using Stratis.Patricia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace Sp8de.Services.Explorer
 {
-
     //temp
     public class Sp8deBlockService
     {
@@ -25,21 +23,20 @@ namespace Sp8de.Services.Explorer
             this.config = config;
         }
 
-        public string CalculateBlockHash(Sp8deBlock block)
+        public string CalculateHash(byte[] inputBytes)
         {
-            byte[] inputBytes = Encoding.UTF8.GetBytes($"{block.Id};{block.ChainId};{block.Timestamp};{block.PreviousHash ?? ""};{block.TransactionRoot};{block.Signer};{block.TransactionsCount}");
             byte[] outputBytes = hasher.Hash(inputBytes);
             return HexConverter.ToHex(outputBytes);
         }
 
         public (string hash, byte[] bytes) CalculateTransactionHash(Sp8deTransaction transaction)
         {
-            byte[] inputBytes = Encoding.UTF8.GetBytes($"{transaction.Type};{transaction.Timestamp};{transaction.InternalRoot};{transaction.Signer ?? ""};;{transaction?.InputData?.Hash ?? ""};{transaction?.OutputData?.Hash ?? ""}");
+            byte[] inputBytes = Encoding.UTF8.GetBytes($"{transaction.Type};{transaction.Timestamp};{transaction.InternalRoot};{transaction.Signer ?? ""};{transaction.DependsOn ?? ""};{transaction.InputData?.Hash ?? ""};{transaction.OutputData?.Hash ?? ""}");
             byte[] outputBytes = hasher.Hash(inputBytes);
             return (HexConverter.ToHex(outputBytes), outputBytes);
         }
 
-        public Sp8deBlock GenerateNewBlock(IList<Sp8deTransaction> list, Sp8deBlock prevBlock)
+        public Sp8deBlock GenerateNewBlock(IReadOnlyList<Sp8deTransaction> list, Sp8deBlock prevBlock)
         {
             var block = new Sp8deBlock()
             {
@@ -50,8 +47,8 @@ namespace Sp8de.Services.Explorer
                 Signer = config.Key.PublicAddress,
                 Anchors = new List<Anchor>() {
                     new Anchor(){
-                        Type = "ipfs",
-                        Data = "link",
+                        Type = "IPFS",
+                        Data = "QmPTptErGpze3kzx84nyoEpYyK3caWdUThRbcpi2tYdCmi",
                         Timestamp = DateConverter.UtcNow
                     }
                 }
@@ -59,35 +56,28 @@ namespace Sp8de.Services.Explorer
 
             block.TransactionRoot = CalculateTransactionRootHash(list);
 
-            block.Hash = CalculateBlockHash(block);
+            var blockContent = block.GeteDataForSing();
 
-            block.Signature = signService.SignMessage(block.Hash, config.Key.PrivateKey);
+            block.Signature = signService.SignMessage(blockContent, config.Key.PrivateKey);
 
-            //hasher.Hash()
+            block.Hash = CalculateHash(Encoding.UTF8.GetBytes(block.Signature));
 
             return block;
         }
 
-        public Sp8deTransaction GenerateNewTransaction(IList<InternalTransaction> inner, Sp8deTransactionType transactionType)
+        public Sp8deTransaction GenerateNewTransaction(IList<InternalTransaction> inner, Sp8deTransactionType transactionType, string dependsOn = null)
         {
             var tx = new Sp8deTransaction()
             {
                 Timestamp = DateConverter.UtcNow,
                 Expiration = DateConverter.UtcNow,
                 CompleatedAt = DateConverter.UtcNow,
+                DependsOn = dependsOn,
                 InputData = new TransactionData()
                 {
                     Items = new Dictionary<string, IList<string>> {
-                        { "GameType", new List<string>{ "Dice" } }
-                    },
-                    Hash = "0x"
-                },
-                OutputData = new TransactionData()
-                {
-                    Items = new Dictionary<string, IList<string>> {
-                        { "SharedSeed",new List<string>{ "1", "2", "3" } }
-                    },
-                    Hash = "0x"
+                        { "randomType", new List<string>{ "Dice" } }
+                    }
                 },
                 Type = transactionType,
                 Status = Sp8deTransactionStatus.New
@@ -100,18 +90,34 @@ namespace Sp8de.Services.Explorer
             tx.Anchors.Add(new Anchor()
             {
                 Type = "IPFS",
-                Data = "0x",
+                Data = "QmPTptErGpze3kzx84nyoEpYyK3caWdUThRbcpi2tYdCmi",
                 Timestamp = DateConverter.UtcNow,
             });
 
             tx.InternalRoot = CalculateInternalTransactionRootHash(inner);
+
+            tx.InputData.Hash = CalculateHash(tx.InputData.GetBytes());
+
+            if (transactionType == Sp8deTransactionType.AggregatedReveal)
+            {
+                var (seedArray, seedHash) = SharedSeedGenerator.CreateSharedSeed(inner.Select(x => x.Data));
+
+                tx.OutputData = new TransactionData()
+                {
+                    Items = new Dictionary<string, IList<string>> {
+                        { "sharedSeedArray", seedArray.Select(x=>x.ToString()).ToArray() },
+                        { "sharedSeedHash", new List<string> { seedHash } }
+                    }
+                };
+                tx.OutputData.Hash = CalculateHash(tx.OutputData.GetBytes());
+            }
 
             tx.Id = CalculateTransactionHash(tx).hash;
 
             return tx;
         }
 
-        public string CalculateTransactionRootHash(IList<Sp8deTransaction> list)
+        public string CalculateTransactionRootHash(IReadOnlyList<Sp8deTransaction> list)
         {
             var trie = new PatriciaTrie();
 

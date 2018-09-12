@@ -80,10 +80,17 @@
 			}
 
 			function generateSeed() {
-				var rnd = new Uint32Array(2);
-				window.crypto.getRandomValues(rnd);
-				return rnd[0] * rnd[1];
+				var byteArray = new Uint8Array(8);
+				window.crypto.getRandomValues(byteArray);
+
+				var value = 0;
+				for (var i = byteArray.length - 1; i >= 0; i--) {
+					value = (value * 256) + byteArray[i];
+				}
+
+				return value;
 			}
+
 
 			function getPubKey(privateKey) {
 				return EthJS.Util.addHexPrefix(EthJS.Util.privateToAddress(privateKey).toString('hex'));

@@ -25,41 +25,7 @@ namespace Sp8de.Manager.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var transactions = await GetTransactions();
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
-            transactions.AddRange(await GetTransactions());
+
             var vm = new WalletTransactionsViewModel()
             {
                 Transactions = transactions
