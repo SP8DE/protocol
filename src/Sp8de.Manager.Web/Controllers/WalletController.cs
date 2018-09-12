@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Sp8de.Common.Enums;
 using Sp8de.DataModel;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Sp8de.Manager.Web.Controllers
 {
+    [Authorize]
     public class WalletController : Controller
     {
         private readonly IBlockchainDepositAddressService addressService;
