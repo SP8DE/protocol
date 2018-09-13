@@ -32,6 +32,14 @@ namespace Sp8de.Manager.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //HACK
+            return View(new WalletViewModel()
+            {
+                Address = "0x618033684Dfedb6ce9b70744567E9E761A1c82F3",
+                Balance = 1000,
+                Currency = Currency.SPX
+            });
+
             var vm = await CreateWallet(Currency.SPX);
 
             var wallet = context.Wallets.Where(x => x.UserId == CurrentUserId && x.Currency == vm.Currency).FirstOrDefault();
