@@ -55,15 +55,17 @@ ViewData["Title"] = "Wallet";
     </div>
     <div class="info row withdraw">
         <div class="instructions col-12">
-            <form class="withdrawForm" asp-page="/Wallet/CreateWithdrawalRequest" >
+            <form class="withdrawForm"
+                  asp-page="/Wallet/CreateWithdrawalRequest"
+                    onsubmit="return CreateWithdrawalRequest();">
                 <div class=" row">
                         <div class="input-div col-12 col-md-4">
                             <div>Amount</div>
                             <input type="number"
+                                   required
                                    name="Amount"
                                    class="amount form-control input-address"
-                                   placeholder="Amount"
-                                   value="0">
+                                   placeholder="Amount">
                             <input type="hidden"
                                    name="Currency"
                                    value="SPX">
@@ -71,6 +73,8 @@ ViewData["Title"] = "Wallet";
                         <div class="input-div col-12 col-md-4">
                             <div>Wallet</div>
                             <input type="text"
+                                   required
+                                   pattern="^(0x)?[0-9a-f]{40}$"
                                    name="Wallet"
                                    class="wallet form-control input-address"
                                    placeholder="Wallet"
@@ -78,20 +82,21 @@ ViewData["Title"] = "Wallet";
                         </div>
                         <div class="input-div col-12 col-md-4">
                             <div>Google 2FA</div>
-                            <input type="text"
+                            <input type="number"
+                                   required
                                    class="tfa form-control input-address"
                                    name="TwoFactorCode"
                                    placeholder="Google 2FA"
                                    value="">
                         </div>
                 </div>
-            </form>
                 <div class="button-div row">
                     <div class="col-6">
-                        <button class="btn btn-info copy-btn CreateWithdrawalRequest">Withdraw your SPX tokens
+                        <button type="submit" class="btn btn-info copy-btn CreateWithdrawalRequest">Withdraw your SPX tokens
                         </button>
                     </div>
                 </div>
+            </form>
         </div>
     </div>
 </div>

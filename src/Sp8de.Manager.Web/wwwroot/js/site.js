@@ -8,7 +8,7 @@ var toogleWithdraw = function (amount, wallet) {
     address.style.display = 'none';
     withdraw.style.display = 'block';
 };
-var CreateWithdrawalRequest = function () {
+function CreateWithdrawalRequest() {
     var headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-Type', 'application/json');
@@ -31,7 +31,8 @@ var CreateWithdrawalRequest = function () {
     fetch('https://localhost:5001/Wallet/CreateWithdrawalRequest', options)
         .then(res => {
             console.log(res);
-        })
+        });
+    return false;
 };
 document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector('.copy-btn')) {
