@@ -81,7 +81,7 @@ namespace Sp8de.Services.Explorer
             using (var session = store.QuerySession())
             {
                 var items = await session.Query<Sp8deBlock>()
-                    .Where(x => x.Hash.Contains(q))
+                    .Where(x => x.Hash == q || x.Hash.Contains(q))
                     .OrderBy(x => x.Timestamp)
                     .Take(limit)
                     .ToListAsync()

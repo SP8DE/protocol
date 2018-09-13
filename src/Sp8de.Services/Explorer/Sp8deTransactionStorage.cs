@@ -57,7 +57,7 @@ namespace Sp8de.Services.Explorer
             using (var session = store.QuerySession())
             {
                 var items = await session.Query<Sp8deTransaction>()
-                    .Where(x => x.Id == q || x.Id.Contains(q))
+                    .Where(x => x.Id == q || x.Id.Contains(q) || x.DependsOn == q || (x.DependsOn != null && x.DependsOn.Contains(q)))
                     .OrderBy(x => x.Timestamp)
                     .Take(limit)
                     .ToListAsync()

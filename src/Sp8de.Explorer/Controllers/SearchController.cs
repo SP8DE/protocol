@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Sp8de.Common.BlockModels;
 using Sp8de.Explorer.Api.Models;
 using Sp8de.Services.Explorer;
 using System.Collections.Generic;
@@ -11,22 +12,18 @@ namespace Sp8de.Explorer.Api.Controllers
     [ApiController]
     public class SearchController : ControllerBase
     {
-        private readonly ISp8deTransactionStorage storage;
+        private readonly ISp8deSearchService searchService;
 
-        public SearchController(ISp8deTransactionStorage storage)
+        public SearchController(ISp8deSearchService searchService)
         {
-            this.storage = storage;
+            this.searchService = searchService;
         }
 
         [HttpGet()]
         public async Task<ActionResult<IList<SearchItem>>> Get(string q)
         {
-            var rs = await storage.Search(q);
-            return rs.Select(x => new SearchItem()
-            {
-                Hash = x.Id,
-                Type = SearchItemType.Transaction
-            }).ToArray();
+            var rs = await searchService.Search(q);
+            return rs;
         }
     }
 }

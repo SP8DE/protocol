@@ -20,11 +20,11 @@ namespace Sp8de.Explorer.Api.Controllers
         private readonly EthKeySecretManager secretManager;
         private readonly IKeySecret[] keys;
         private readonly ISp8deTransactionStorage storage;
-        private readonly Sp8deBlockStorage blockStorage;
+        private readonly ISp8deBlockStorage blockStorage;
         private readonly Sp8deTransactionStorageConfig config;
         private readonly Sp8deBlockService blockService;
 
-        public SeedController(ISp8deTransactionStorage storage, Sp8deBlockStorage blockStorage, Sp8deTransactionStorageConfig config)
+        public SeedController(ISp8deTransactionStorage storage, ISp8deBlockStorage blockStorage)
         {
             signService = new EthSignService();
             secretManager = new EthKeySecretManager();
@@ -40,7 +40,6 @@ namespace Sp8de.Explorer.Api.Controllers
 
             this.storage = storage;
             this.blockStorage = blockStorage;
-            this.config = config;
             this.blockService = new Sp8deBlockService(new Sp8deNodeConfig() { Key = keys.Last() });
         }
 
