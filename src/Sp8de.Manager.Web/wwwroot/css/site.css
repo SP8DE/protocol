@@ -506,3 +506,13 @@ content {
 }
 .documentation td,.documentation th  {
 }
+
+.button-div{
+
+}
+.withdraw{
+    display: none;
+}
+input:valid{
+    border: 1px solid #489045;
+}
