@@ -1,0 +1,42 @@
+@model WalletViewModel
+@{
+ViewData["Title"] = "Your Wallet";
+}
+
+@section Scripts{
+}
+<div class="main-content">
+<h1>@ViewData["Title"]</h1>
+<div class="breadcrumbs">
+    <a href="#">Home</a>
+    <span>SPX WALLET</span>
+</div>
+@{await Html.RenderPartialAsync("_Wallet");}
+<div class="flex-line line-btns">
+    <a href="#" class="main-btn green-btn icon-green-down">DEPOSIT YOUR SPX TOKENS</a>
+    <a href="#" class="main-btn white-btn icon-white-up">WITHDRAW YOUR SPX TOKENS</a>
+</div>
+</div>
+<!-- <div class="qr-code-block">
+    <div class="titl">
+        <div>
+            Send your Sp8de (SPX) to the address in the field bellow!
+        </div>
+    </div>
+    <div class="info row">
+        <div class="qr col-12 col-sm-4 col-md-6 col-lg-3">
+            <div id="ETHWalletCode" class="qr-wrap qr-image" title="@Model.Address">
+            </div>
+        </div>
+        <div class="instructions col-12  col-sm-8 col-md-6 col-lg-9">
+            <div class="input-div"><input type="text" class="form-control input-address" disabled value="@Model.Address">
+            </div>
+            <div class="button-div">
+                <button class="btn btn-info copy-btn">Copy address
+                </button>
+            </div>
+            <div class="text">Send any amount of SPX to the address.</div>
+        </div>
+    </div>
+</div> -->
+

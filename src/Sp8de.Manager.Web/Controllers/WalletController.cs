@@ -49,6 +49,17 @@ namespace Sp8de.Manager.Web.Controllers
             return View(vm);
         }
 
+
+        public IActionResult Deposit()
+        {
+            return View();
+        }
+
+        public IActionResult Withdraw()
+        {
+            return View();
+        }
+
         private ApplicationUser GetCurrentUser()
         {
             if (!User.Identity.IsAuthenticated || string.IsNullOrEmpty(User.Identity?.Name))
