@@ -1,9 +1,9 @@
-﻿using SecurityDriven.Inferno;
-using System;
+﻿using System;
+using System.Security.Cryptography;
 
 namespace Sp8de.Services
 {
-    static class RandomUtils
+    internal static class RandomUtils
     {
         public static string GetRandomString(int length)
         {
@@ -12,8 +12,10 @@ namespace Sp8de.Services
                     "abcdefghijklmnopqrstuvwxyz" +
                     "0123456789";
             var characterArray = characterSet.ToCharArray();
+
             var bytes = new byte[length * 8];
-            new CryptoRandom().NextBytes(bytes);
+            RandomNumberGenerator.Fill(bytes);
+
             var result = new char[length];
             for (int i = 0; i < length; i++)
             {
@@ -21,12 +23,6 @@ namespace Sp8de.Services
                 result[i] = characterArray[value % (uint)characterArray.Length];
             }
             return new string(result);
-        }
-
-        public static long RandomLong()
-        {
-            var rnd = new CryptoRandom();
-            return rnd.NextLong();
         }
     }
 }
