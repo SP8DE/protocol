@@ -2,12 +2,30 @@
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
-<div class="nav flex-column nav-pills account-nav">
-    <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" asp-page="./Index">Profile</a>
-    <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a>
-    @if (hasExternalLogins) {
-        <a class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" id="external-login" asp-page="./ExternalLogins">External logins</a>
-    }
-    <a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" asp-page="./TwoFactorAuthentication">Two-factor authentication</a>
-    <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" asp-page="./PersonalData">Personal data</a>
+
+<div class="account-nav">
+    <a class="account-nav-single @ManageNavPages.IndexNavClass(ViewContext)" asp-page="./Index">
+        <div class="account-nav-img-wrapper">
+            <img src="~/img/pers.svg" alt="icon">
+        </div>
+        <span class="account-nav-title">Profile information</span>
+    </a>
+    <a class="account-nav-single @ManageNavPages.ChangePasswordNavClass(ViewContext)" asp-page="./ChangePassword">
+        <div class="account-nav-img-wrapper">
+            <img src="~/img/lock.svg" alt="icon">
+        </div>
+        <span class="account-nav-title">Change password</span>
+    </a>
+    <a class="account-nav-single @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" asp-page="./TwoFactorAuthentication">
+        <div class="account-nav-img-wrapper">
+            <img src="~/img/key.svg" alt="icon">
+        </div>
+        <span class="account-nav-title">Two-factor authentication</span>
+    </a>
+    <a class="account-nav-single @ManageNavPages.PersonalDataNavClass(ViewContext)" asp-page="./PersonalData">
+        <div class="account-nav-img-wrapper">
+            <img src="~/img/trash.svg" alt="icon">
+        </div>
+        <span class="account-nav-title">DELETE YOUR ACCOUNT</span>
+    </a>
 </div>

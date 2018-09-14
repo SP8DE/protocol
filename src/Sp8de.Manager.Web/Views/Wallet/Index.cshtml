@@ -1,32 +1,23 @@
 ﻿@model WalletViewModel
 @{
-ViewData["Title"] = "Wallet";
+ViewData["Title"] = "Your Wallet";
 }
 
 @section Scripts{
 }
-
-<div class="info-blocks d-block d-md-flex">
-    <div class="info-block col-12 col-md-4">
-        <div class="inside-info">
-            <div class="name">Current balance</div>
-			<div class="value">@Model.Balance SPX</div>
-        </div>
-    </div>
-    <div class="info-block col-12 col-md-4">
-        <div class="inside-info">
-            <div class="name"></div>
-            <div class="value"></div>
-        </div>
-    </div>
-    <div class="info-block col-12 col-md-4">
-        <div class="inside-info">
-            <div class="name"></div>
-            <div class="value"></div>
-        </div>
-    </div>
+<div class="main-content">
+<h1>@ViewData["Title"]</h1>
+<div class="breadcrumbs">
+    <a href="#">Home</a>
+    <span>SPX WALLET</span>
 </div>
-<div class="qr-code-block">
+@{await Html.RenderPartialAsync("_Wallet");}
+<div class="flex-line line-btns">
+    <a href="#" class="main-btn green-btn icon-green-down">DEPOSIT YOUR SPX TOKENS</a>
+    <a href="#" class="main-btn white-btn icon-white-up">WITHDRAW YOUR SPX TOKENS</a>
+</div>
+</div>
+<!-- <div class="qr-code-block">
     <div class="titl">
         <div>
             Send your Sp8de (SPX) to the address in the field bellow!
@@ -47,5 +38,5 @@ ViewData["Title"] = "Wallet";
             <div class="text">Send any amount of SPX to the address.</div>
         </div>
     </div>
-</div>
+</div> -->
 

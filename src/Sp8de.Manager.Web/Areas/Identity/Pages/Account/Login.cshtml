@@ -4,7 +4,41 @@
 @{
     ViewData["Title"] = "Log in";
 }
-<div class="row">
+
+
+<div class="loader-main login-wrapper">
+                    <div class="login-window">
+                        <div class="login-window-header">
+                            <div class="login-window-header-title">@ViewData["Title"]</div>
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="login-link">Registration</a>
+                        </div>
+                        <form class="login-window-main" method="post">
+                                <div class="single-input">
+                                    <div class="single-input-title">Username</div>
+                                    <input asp-for="Input.Email" type="text" class="input-type-text" required="" placeholder="Username">
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                </div>
+                                <div class="single-input">
+                                    <div class="line-input-titles">
+                                    <div class="single-input-title">Password</div>
+                                    <a asp-page="./ForgotPassword" class="login-link">Forgotten password?</a>
+                                </div>
+                                    <input asp-for="Input.Password" type="password" class="input-type-text" required="" placeholder="********">
+                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                </div>
+                                <button class="main-btn green-btn static-btn static-btn-gradient">LOGIN</button>
+                                <div class="rememberme-line">
+                                        <input asp-for="Input.RememberMe" id="check" type="checkbox" class="checkbox-transaction">
+                                        <label for="check" class="line-label">
+                                            <div class="checkbox-box"></div>
+                                            <div class="title-remember-me">Remember Me</div>
+                                        </label>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+
+<!-- <div class="row">
     <div class="col-md-4">
         <section>
             <form method="post">
@@ -46,7 +80,7 @@
     <div class="col-md-6 col-md-offset-2">
 
     </div>
-</div>
+</div> -->
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

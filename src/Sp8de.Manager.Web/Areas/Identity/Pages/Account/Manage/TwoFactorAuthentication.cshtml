@@ -4,8 +4,8 @@
     ViewData["Title"] = "Two-factor authentication (2FA)";
 }
 
+<div class="account-title">@ViewData["Title"]</div>
 @Html.Partial("_StatusMessage", Model.StatusMessage)
-<h4>@ViewData["Title"]</h4>
 @if (Model.Is2faEnabled)
 {
     if (Model.RecoveryCodesLeft == 0)
@@ -36,19 +36,24 @@
             <button type="submit" class="btn btn-info">Forget this browser</button>
         </form>
     }
+    
     <a asp-page="./Disable2fa" class="btn btn-info">Disable 2FA</a>
     <a asp-page="./GenerateRecoveryCodes" class="btn btn-info">Reset recovery codes</a>
 }
 
-<h5>Authenticator app</h5>
 @if (!Model.HasAuthenticator)
 {
-    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-info">Add authenticator app</a>
+    <div class="flex-line line-btns factor-line">
+        <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="main-btn green-btn gradient-btn factor-btn">Add authenticator app</a>
+    </div>
+
 }
 else
 {
-    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-info">Setup authenticator app</a>
-    <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-info">Reset authenticator app</a>
+    <div class="flex-line line-btns factor-line">
+        <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="main-btn green-btn gradient-btn factor-btn">SETUP authentificator app</a>
+        <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="main-btn delete-btn">reset authentificator app</a>
+    </div>
 }
 
 @section Scripts {
