@@ -1,6 +1,6 @@
+@model WalletViewModel
 @{
 ViewData["Title"] = "Wallet Withdraw";
-ViewBag.PageClass = "transactions";
 }
 @section Scripts{
     <script>
@@ -8,54 +8,45 @@ ViewBag.PageClass = "transactions";
         $('.wallet-trigger').next('.sidebar-opened').addClass('active')
     </script>
 }
-	<div class="main-content">
-		<h1>@ViewData["Title"]</h1>
 
-		<div class="info row withdraw">
-			<div class="instructions col-12">
-				<form class="withdrawForm"
-					  asp-page="/Wallet/CreateWithdrawalRequest"
-					  onsubmit="return CreateWithdrawalRequest();">
-					<div class=" row">
-						<div class="input-div col-12 col-md-4">
-							<div>Amount</div>
-							<input type="number"
-								   required
-								   name="Amount"
-								   class="amount form-control input-address"
-								   placeholder="Amount">
-							<input type="hidden"
-								   name="Currency"
-								   value="SPX">
-						</div>
-						<div class="input-div col-12 col-md-4">
-							<div>Wallet</div>
-							<input type="text"
-								   required
-								   pattern="^(0x)?[0-9a-fA-F]{40}$"
-								   name="Wallet"
-								   class="wallet form-control input-address"
-								   placeholder="Wallet"
-								   value="0xsdfefdwe4r534ec342r2wdsa">
-						</div>
-						<div class="input-div col-12 col-md-4">
-							<div>Google 2FA</div>
-							<input type="number"
-								   required
-								   class="tfa form-control input-address"
-								   name="TwoFactorCode"
-								   placeholder="Google 2FA"
-								   value="">
-						</div>
-					</div>
-					<div class="button-div row">
-						<div class="col-6">
-							<button type="submit" class="btn btn-info copy-btn CreateWithdrawalRequest">
-								Withdraw your SPX tokens
-							</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+<div class="main-content">
+<h1>@ViewData["Title"]</h1>
+<div class="breadcrumbs">
+    <a href="#">Home</a>
+    <span>SPX WALLET</span>
+</div>
+@{await Html.RenderPartialAsync("_Wallet");}
+<div class="withdraw-title">Send your Sp8de (SPX) to the address in the field bellow!</div>
+<form asp-page="/Wallet/CreateWithdrawalRequest" onsubmit="return CreateWithdrawalRequest();">
+                            <div class="line-flex withdraw-line">
+                                <div class="single-input">
+                                    <div class="single-input-title">Available SPX tokens</div>
+                                    <div class="input-wrapper">
+                                        <input type="text" name="Amount" class="input-type-text withdraw-aviable" required="">
+                                        <span class="max-input">MAX</span>
+                                    </div>
+                                </div>
+                                <div class="single-input withdraw-eth-single-input">
+                                    <div class="single-input-title">Your Ethereum address</div>
+                                    <input pattern="^(0x)?[0-9a-fA-F]{40}$" name="Wallet" type="text" class="input-type-text withdraw-eth" value="0xsdfefdwe4r534ec342r2wdsa" required="">
+                                </div>
+                            </div>
+                            <div class="line-flex withdraw-line withdraw-line-with-btn">
+                                <div class="single-input">
+                                    <div class="single-input-title">Google 2FA</div>
+                                    <div class="input-wrapper">
+                                        <input type="text" name="TwoFactorCode" class="input-type-text withdraw-aviable" required="">
+                                    </div>
+                                </div>
+                                <button class="main-btn green-btn gradient-btn withdraw-submit icon-black-down  CreateWithdrawalRequest">Withdraw your SPX tokens</button>
+                            </div>
+                            
+                        </form>
+						<div class="desc-block">
+                            <p>Withdrawal request received, please click on the confirmation link in your email.</p>
+                            <p>After maling a withdrawal, you can track its progress on the <a href="~/Transaction" class="link-a green-color">Transaction history.</a></p>
+                        </div>
+
+</div>
+
+

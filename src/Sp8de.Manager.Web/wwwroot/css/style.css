@@ -1421,3 +1421,24 @@ html {
           margin-left: 0;
         }
       }
+
+      .color-percent-spx {
+        font-size: 15px;
+        font-weight: 700 !important;
+        color: #02ffce;
+      }
+
+      .withdraw-line-with-btn button {
+            padding: 11px 45px 11px 23px !important;
+            margin-top: 35px !important;
+            margin-left: 30px !important;
+      }
+      .withdraw-line-with-btn button:before {
+          top: 12px !important;
+      }
+
+      @media screen and (max-width: 1255px) {
+        .withdraw-line-with-btn button {
+            margin-left: 0 !important;
+        }
+      }

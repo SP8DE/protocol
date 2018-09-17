@@ -52,15 +52,10 @@ namespace Sp8de.Manager.Web.Controllers
 
             if (!memoryCache.TryGetValue(nameof(CmcTicker), out CmcTicker ticker))
             {
-<<<<<<< HEAD
-                ticker = await client.GetTickerData(tickerId);
-                
-=======
                 ticker = await client.GetTickerData(tickerId, "BTC");
                 var tickerETH = await client.GetTickerData(tickerId, "ETH");
                 ticker.Data.Quotes.ETH = tickerETH.Data.Quotes.ETH;
 
->>>>>>> 2c7adacf6db05e2224764c2fc25ade5f6ed08d62
                 memoryCache.Set(nameof(CmcTicker), ticker,
                     new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(60))
                 );
@@ -92,7 +87,12 @@ namespace Sp8de.Manager.Web.Controllers
 
         public IActionResult Withdraw()
         {
-            return View();
+            return View(new WalletViewModel()
+            {
+                Address = "0x618033684Dfedb6ce9b70744567E9E761A1c82F3",
+                Balance = 1000,
+                Currency = Currency.SPX
+            });
         }
 
         private ApplicationUser GetCurrentUser()

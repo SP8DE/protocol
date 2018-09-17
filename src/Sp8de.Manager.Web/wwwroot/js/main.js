@@ -4,12 +4,28 @@ $.ajax({
     url: "/Wallet/Balance",
   })
     .done(function( msg ) {
-        console.log(msg)
+        // console.log(msg)
         var dollarSpx = msg['ticker']['data']['quotes']['USD']['price']
+        var dollarSpxPercent = msg['ticker']['data']['quotes']['USD']['percent_change_24h']
+        var ethSpx = msg['ticker']['data']['quotes']['ETH']['price']
+        var btcSpx = msg['ticker']['data']['quotes']['BTC']['price']
         $('.wallet-chart-spx-value span strong').text(dollarSpx.toString().substring(0,4))
         $('.wallet-chart-spx-value span span').text(dollarSpx.toString().substring(4,10))
         var profileToken = $('.currencyTok').text()
         var spxToDollar = profileToken * dollarSpx
+        var spxToEth = profileToken * ethSpx
+        var spxToBtc = profileToken * btcSpx
         spxToDollar = spxToDollar.toFixed(2)
+        spxToEth = spxToEth.toFixed(8)
+        spxToBtc = spxToBtc.toFixed(8)
         $('.spx-to-dollar').text(spxToDollar)
+        $('.spx-to-eth').text(spxToEth)
+        $('.spx-to-btc').text(spxToBtc)
+        if (dollarSpxPercent >= 0) {
+            $('.up-down-percent').text('+')
+        }
+        else {
+            $('.up-down-percent').text('-')
+        }
+        $('.percent-spx').text(dollarSpxPercent)
     });
