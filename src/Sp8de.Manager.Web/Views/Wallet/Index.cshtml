@@ -1,38 +1,33 @@
 ﻿@model WalletViewModel
 @{
-ViewData["Title"] = "Wallet";
+ViewData["Title"] = "Your Wallet";
 }
 
 @section Scripts{
+    <script>
+        $('.wallet-trigger').addClass('active opening')
+        $('.wallet-trigger').next('.sidebar-opened').addClass('active')
+    </script>
 }
-
-<div class="info-blocks d-block d-md-flex">
-    <div class="info-block col-12 col-md-4">
-        <div class="inside-info">
-            <div class="name">Current balance</div>
-			<div class="value">@Model.Balance SPX</div>
-        </div>
-    </div>
-    <div class="info-block col-12 col-md-4">
-        <div class="inside-info">
-            <div class="name"></div>
-            <div class="value"></div>
-        </div>
-    </div>
-    <div class="info-block col-12 col-md-4">
-        <div class="inside-info">
-            <div class="name"></div>
-            <div class="value"></div>
-        </div>
-    </div>
+<div class="main-content">
+<h1>@ViewData["Title"]</h1>
+<div class="breadcrumbs">
+    <a href="#">Home</a>
+    <span>SPX WALLET</span>
 </div>
-<div class="qr-code-block">
+@{await Html.RenderPartialAsync("_Wallet");}
+<div class="flex-line line-btns">
+    <a href="~/wallet/deposit" class="main-btn green-btn icon-green-down">DEPOSIT YOUR SPX TOKENS</a>
+    <a href="~/wallet/withdraw" class="main-btn white-btn icon-white-up">WITHDRAW YOUR SPX TOKENS</a>
+</div>
+</div>
+<!-- <div class="qr-code-block">
     <div class="titl">
         <div>
             Send your Sp8de (SPX) to the address in the field bellow!
         </div>
     </div>
-    <div class="info row address">
+    <div class="info row">
         <div class="qr col-12 col-sm-4 col-md-6 col-lg-3">
             <div id="ETHWalletCode" class="qr-wrap qr-image" title="@Model.Address">
             </div>
@@ -41,63 +36,11 @@ ViewData["Title"] = "Wallet";
             <div class="input-div"><input type="text" class="form-control input-address" disabled value="@Model.Address">
             </div>
             <div class="button-div">
-                <div>
-                    <button class="btn btn-info copy-btn">Copy address
-                    </button>
-                </div>
-                <div>
-                    <button  class="toogleWithdraw btn btn-info">Withdraw your SPX tokens
-                    </button>
-                </div>
+                <button class="btn btn-info copy-btn">Copy address
+                </button>
             </div>
             <div class="text">Send any amount of SPX to the address.</div>
         </div>
     </div>
-    <div class="info row withdraw">
-        <div class="instructions col-12">
-            <form class="withdrawForm"
-                  asp-page="/Wallet/CreateWithdrawalRequest"
-                    onsubmit="return CreateWithdrawalRequest();">
-                <div class=" row">
-                        <div class="input-div col-12 col-md-4">
-                            <div>Amount</div>
-                            <input type="number"
-                                   required
-                                   name="Amount"
-                                   class="amount form-control input-address"
-                                   placeholder="Amount">
-                            <input type="hidden"
-                                   name="Currency"
-                                   value="SPX">
-                        </div>
-                        <div class="input-div col-12 col-md-4">
-                            <div>Wallet</div>
-                            <input type="text"
-                                   required
-                                   pattern="^(0x)?[0-9a-f]{40}$"
-                                   name="Wallet"
-                                   class="wallet form-control input-address"
-                                   placeholder="Wallet"
-                                   value="0xsdfefdwe4r534ec342r2wdsa">
-                        </div>
-                        <div class="input-div col-12 col-md-4">
-                            <div>Google 2FA</div>
-                            <input type="number"
-                                   required
-                                   class="tfa form-control input-address"
-                                   name="TwoFactorCode"
-                                   placeholder="Google 2FA"
-                                   value="">
-                        </div>
-                </div>
-                <div class="button-div row">
-                    <div class="col-6">
-                        <button type="submit" class="btn btn-info copy-btn CreateWithdrawalRequest">Withdraw your SPX tokens
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+</div> -->
 

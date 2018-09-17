@@ -1,9 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-<div class="row">
+<!-- <div class="row">
     <div class="col-md-4 col-sm-12">
         <h2>Wallets</h2>
+        
         <ul>
             <li><a href="~/Wallet">SPX Wallet (deposit / withdraw)</a></li>
             <li><a href="~/Transaction">Transaction history</a></li>
@@ -24,6 +25,75 @@
         </ul>
     </div>
 
-</div>
+</div> -->
+
+
+<div class="main-content">
+                        <h1>@ViewData["Title"]</h1>
+                        <div class="breadcrumbs">
+                            <span>home</span>
+                        </div>
+                        <div class="homepage-line">
+                        <div class="homepage-column">
+                    
+                                <div class="wallet-single-block wallet-chart">
+                                    <div class="wallet-chart-spx">
+                                        <span>1 SPX TOKEN =</span>
+                                    </div>
+                                    <div class="wallet-chart-spx-line">
+                                        <div class="wallet-chart-spx-value">
+                                            <span>$ <strong>1.48</strong><span>695610</span></span>
+                                        </div>
+                                        <div class="wallet-chart-spx-value-up">
+                                            <div class="time-charts-change">
+                                                <div class="time-charts-change-single mounth">1m</div>
+                                                <div class="time-charts-change-single hours active">24h</div>
+                                            </div>
+                                            <span>+</span> 9.15<span>%</span>
+                                        </div>
+                                    </div>
+                                    <div style="height: 76px; margin-left: -10px;">
+                                        <canvas id="chart" data-charthour="15, 12, 23, 11, 12, 11, 14, 8, 9, 21" data-chartmounth="15, 19, 33, 3, 11, 11, 14, 38, 12, 11" class="wallet-chart-graf"></canvas>
+                                    </div>
+                    
+                        </div>
+                        <div class="homepage-block">
+                                <span class="title-homepage">Your SPX Wallet</span>
+                                <a href="~/wallet/deposit" class="include-link">Deposit tokens</a>
+                                <a href="~/wallet/withdraw" class="include-link">Withdraw tokens</a>
+                            </div>
+                        </div>
+                        <div class="homepage-column">
+                            <div class="homepage-block">
+                                <a href="~/Transaction" class="title-homepage">Transaction history</a>
+                            </div>
+                            <!-- <div class="homepage-block">
+                                <span class="title-homepage">Demo games</span>
+                                <a href="#" class="include-link">Slot machine</a>
+                                <a href="#" class="include-link">Pachisi cash</a>
+                                <a href="#" class="include-link">Borchersword 3000</a>
+                            </div> -->
+                            <div class="homepage-block">
+                                <a href="~/ApiKey" class="title-homepage">API Keys</a>
+                            </div>
+                        </div>
+                        <div class="homepage-column">
+                            <!-- <div class="homepage-block">
+                                <span class="title-homepage">Documentation</span>
+                                <a href="#" class="include-link">Sp8de server API</a>
+                                <a href="#" class="include-link">Sp8de client SDK</a>
+                            </div> -->
+                            <div class="homepage-block">
+                                <span class="title-homepage">Manage profile</span>
+                                <a href="~/Identity/Account/Manage" class="include-link">Profile setting</a>
+                                <a href="~/Identity/Account/Manage/ChangePassword" class="include-link">Change password</a>
+                                <a href="~/Identity/Account/Manage/TwoFactorAuthentication" class="include-link">Two-factor authentication</a>
+                                <a href="~/Identity/Account/Manage/PersonalData" class="include-link">Personal Data</a>
+                            </div>
+                    
+                        </div>
+                        </div>
+                    
+                    </div>
 
 

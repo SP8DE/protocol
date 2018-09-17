@@ -49,6 +49,23 @@ namespace Sp8de.Manager.Web.Controllers
             return View(vm);
         }
 
+
+        public IActionResult Deposit()
+        {
+            //HACK
+            return View(new WalletViewModel()
+            {
+                Address = "0x618033684Dfedb6ce9b70744567E9E761A1c82F3",
+                Balance = 1000,
+                Currency = Currency.SPX
+            });
+        }
+
+        public IActionResult Withdraw()
+        {
+            return View();
+        }
+
         private ApplicationUser GetCurrentUser()
         {
             if (!User.Identity.IsAuthenticated || string.IsNullOrEmpty(User.Identity?.Name))

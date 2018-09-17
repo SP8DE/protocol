@@ -2,27 +2,39 @@
 @{
     ViewData["Title"] = "Api Keys";
 }
-<p>
-    <a class="btn btn-info" href="/ApiKey/Generate">Generate</a>
-</p>
 
-<div class="api-table-block">
-    <table class="api-table">
-        <tr>
-            <td>Title</td>
-            <td>Api Key</td>
-            <td>Api Secret</td>
-            <td></td>
-        </tr>
-
-        @foreach (var item in Model)
+@section Scripts{
+    <script>
+        $('.api-trigger').addClass('active')
+    </script>
+}
+<div class="main-content transactions-table-content-main">
+<h1>@ViewData["Title"]</h1>
+    <div class="breadcrumbs">
+        <a href="#">Home</a>
+        <span>Transaction history</span>
+    </div>
+    <a href="/ApiKey/Generate" class="main-btn green-btn button-class api-gen-btn">GENERATE NEW API KEY</a>
+<div class="all-api-wrapper">
+        <div class="all-api">
+            @foreach (var item in Model)
         {
-        <tr>
-            <td></td>
-            <td>@item.ApiKey</td>
-            <td>@item.ApiSecret ...</td>
-            <td><a class="btn btn-info btn-sm" href="#revoke">Revoke</a></td>
-        </tr>
+            <form action="" class="single-api">
+                <table>
+                    <thead>
+                        <th>Title</th>
+                        <th>API Key</th>
+                        <th>API Secret</th>
+                    </thead>
+                    <tbody>
+                        <td></td>
+                        <td>@item.ApiKey</td>
+                        <td>@item.ApiSecret ...</td>
+                    </tbody>
+                </table>
+                <button class="main-btn button-class padding-left revoke-btn">REVOKE API KEY</button>
+            </form>
         }
-    </table>
+        </div>
+        </div>
 </div>
