@@ -336,3 +336,5 @@ src/Sp8de.Frontend.Demo_2/Game/node_modules
 /src/Sp8de.DataModel.MigrationsApp/appsettings.Production.json
 /src/Sp8de.Manager.Web/appsettings.Production.json
 /src/Sp8de.Manager.Web/appsettings.Development.json
+/src/Sp8de.PaymentService/appsettings.Development.json
+/src/Sp8de.Explorer/appsettings.Development.json

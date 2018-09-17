@@ -37,12 +37,23 @@ namespace Sp8de.PaymentService.Service
                 throw new ApplicationException(msg);
             }
 
-            var wallet = context.Wallets.First(w => w.UserId == blockchainAddress.UserId && w.Currency == blockchainAddress.Currency);
-
             PaymentTransactionInfo transactionInfo;
 
             using (var transaction = await context.Database.BeginTransactionAsync())
             {
+                var wallet = context.Wallets.FirstOrDefault(w => w.UserId == blockchainAddress.UserId && w.Currency == blockchainAddress.Currency);
+                if (wallet == null)
+                {
+                    wallet = new Wallet()
+                    {
+                        UserId = blockchainAddress.UserId.Value,
+                        Amount = 0,
+                        Currency = blockchainAddress.Currency,
+                    };
+                    context.Wallets.Add(wallet);
+                    context.SaveChanges();
+                }
+
                 var blockchainTransaction = context.BlockchainTransactions
                                                 .FirstOrDefault(t => t.Hash == request.TransactionHash &&
                                                                      t.BlockchainAddressId == blockchainAddress.Id);
@@ -63,7 +74,7 @@ namespace Sp8de.PaymentService.Service
                                 Id = Guid.NewGuid(),
                                 Amount = blockchainTransaction.Amount,
                                 DateCreated = DateTime.UtcNow,
-                                Currency  = wallet.Currency,
+                                Currency = wallet.Currency,
                                 BlockchainTransaction = blockchainTransaction,
                                 BlockchainTransactionId = blockchainTransaction.Id,
                                 Type = WalletTransactionType.WalletDeposit,

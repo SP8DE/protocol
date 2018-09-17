@@ -46,8 +46,9 @@ namespace Sp8de.Explorer
             services.Configure<Sp8deTransactionStorageConfig>(Configuration.GetSection(nameof(Sp8deTransactionStorageConfig)));
             services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<Sp8deTransactionStorageConfig>>().Value);
 
+            services.AddTransient<ISp8deSearchService, Sp8deSearchService>();
             services.AddTransient<ISp8deTransactionStorage, Sp8deTransactionStorage>();
-            services.AddTransient<Sp8deBlockStorage>();
+            services.AddTransient<ISp8deBlockStorage, Sp8deBlockStorage>();
 
             services.AddSwaggerGen(c =>
             {

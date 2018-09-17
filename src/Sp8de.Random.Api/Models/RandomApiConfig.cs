@@ -7,5 +7,6 @@ namespace Sp8de.Random.Api.Models
 {
     public class RandomApiConfig
     {
+        public List<NodeInfo> Nodes { get; set; }
     }
 }

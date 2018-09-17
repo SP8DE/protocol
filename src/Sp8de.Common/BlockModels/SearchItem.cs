@@ -1,4 +1,4 @@
-﻿namespace Sp8de.Explorer.Api.Models
+﻿namespace Sp8de.Common.BlockModels
 {
     public class SearchItem
     {

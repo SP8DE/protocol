@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Sp8de.Random.Api.Models;
+using System.Collections.Generic;
 
 namespace Sp8de.Random.Api.Controllers
 {
@@ -13,17 +8,17 @@ namespace Sp8de.Random.Api.Controllers
     [ApiController]
     public class NodesController : ControllerBase
     {
+        private readonly RandomApiConfig config;
+
+        public NodesController(RandomApiConfig config)
+        {
+            this.config = config;
+        }
+
         [HttpGet]
         public List<NodeInfo> Get()
         {
-            return new List<NodeInfo>()
-            {
-                new NodeInfo ()
-                {
-                    Url = "https://api-node1.sp8de.com",
-                    Key = "0x492d0fd814940d1375225a7e10905585b72b0a8c"
-                }
-            };
+            return config.Nodes;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Sp8de.Common.Enums;
 using Sp8de.DataModel;
 using Sp8de.Manager.Web.Models;
@@ -17,28 +18,49 @@ namespace Sp8de.Manager.Web.Controllers
     {
         private readonly IBlockchainDepositAddressService addressService;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IFinService finService;
         private readonly Sp8deDbContext context;
+        private readonly IMemoryCache memoryCache;
 
         private Guid CurrentUserId { get { return User.GetUserId(); } }
 
-        public WalletController(IBlockchainDepositAddressService addressService, UserManager<ApplicationUser> userManager, IFinService finService, Sp8deDbContext context)
+        public WalletController(IBlockchainDepositAddressService addressService, UserManager<ApplicationUser> userManager, Sp8deDbContext context, IMemoryCache memoryCache)
         {
             this.addressService = addressService;
             this.userManager = userManager;
-            this.finService = finService;
             this.context = context;
+            this.memoryCache = memoryCache;
         }
 
         public async Task<IActionResult> Index()
         {
             var vm = await CreateWallet(Currency.SPX);
-
-            var wallet = context.Wallets.Where(x => x.UserId == CurrentUserId && x.Currency == vm.Currency).FirstOrDefault();
-
-            vm.Balance = wallet?.Amount ?? 0;
-
+            vm.Balance = GetBalance(Currency.SPX);
             return View(vm);
+        }
+
+        public async Task<ActionResult<BalanceModel>> Balance([FromServices]CmcClient client)
+        {
+            const int tickerId = 2940;
+
+            if (!memoryCache.TryGetValue(nameof(CmcTicker), out CmcTicker ticker))
+            {
+                ticker = await client.GetTickerData(tickerId);
+
+                memoryCache.Set(nameof(CmcTicker), ticker,
+                    new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(60))
+                );
+            }
+
+            return new BalanceModel()
+            {
+                Ticker = ticker,
+                Balance = GetBalance(Currency.SPX)
+            };
+        }
+
+        private decimal GetBalance(Currency currency)
+        {
+            return context.Wallets.Where(x => x.UserId == CurrentUserId && x.Currency == currency).FirstOrDefault()?.Amount ?? 0;
         }
 
         private ApplicationUser GetCurrentUser()
@@ -57,17 +79,17 @@ namespace Sp8de.Manager.Web.Controllers
                 throw new ArgumentException(nameof(currency));
             }
 
-            //var addresses = await addressService.GetAddresses(CurrentUserId);
-            //if (addresses.Any(x => x.Currency == currency))
-            //{
-            //    var rs = addresses.FirstOrDefault(x => x.Currency == currency);
+            var addresses = await addressService.GetAddresses(CurrentUserId);
+            if (addresses.Any(x => x.Currency == currency))
+            {
+                var rs = addresses.FirstOrDefault(x => x.Currency == currency);
 
-            //    return new WalletViewModel()
-            //    {
-            //        Currency = currency,
-            //        Address = rs.Address
-            //    };
-            //}
+                return new WalletViewModel()
+                {
+                    Currency = currency,
+                    Address = rs.Address
+                };
+            }
 
             var address = await addressService.GenerateAddress(currency, CurrentUserId);
 
@@ -84,7 +106,7 @@ namespace Sp8de.Manager.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateWithdrawalRequest([FromBody]CreateWithdrawalRequestModel model)
+        public async Task<IActionResult> CreateWithdrawalRequest([FromServices]IFinService finService, [FromBody]CreateWithdrawalRequestModel model)
         {
             model.UserId = CurrentUserId;
             var CurrentUser = GetCurrentUser();

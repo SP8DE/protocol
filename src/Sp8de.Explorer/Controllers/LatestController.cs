@@ -11,10 +11,10 @@ namespace Sp8de.Explorer.Api.Controllers
     [ApiController]
     public class LatestController : ControllerBase
     {
-        private readonly Sp8deBlockStorage blockStorage;
+        private readonly ISp8deBlockStorage blockStorage;
         private readonly ISp8deTransactionStorage transactionStorage;
 
-        public LatestController(Sp8deBlockStorage blockStorage, ISp8deTransactionStorage transactionStorage)
+        public LatestController(ISp8deBlockStorage blockStorage, ISp8deTransactionStorage transactionStorage)
         {
             this.blockStorage = blockStorage;
             this.transactionStorage = transactionStorage;
