@@ -28,7 +28,7 @@ function CreateWithdrawalRequest() {
             headers: headers,
             body: JSON.stringify(body)
         };
-    fetch('https://localhost:5001/Wallet/CreateWithdrawalRequest', options)
+    fetch('/Wallet/CreateWithdrawalRequest', options)
         .then(res => {
             console.log(res);
         });
