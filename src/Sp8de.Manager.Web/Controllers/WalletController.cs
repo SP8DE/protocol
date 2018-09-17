@@ -52,8 +52,15 @@ namespace Sp8de.Manager.Web.Controllers
 
             if (!memoryCache.TryGetValue(nameof(CmcTicker), out CmcTicker ticker))
             {
+<<<<<<< HEAD
                 ticker = await client.GetTickerData(tickerId);
                 
+=======
+                ticker = await client.GetTickerData(tickerId, "BTC");
+                var tickerETH = await client.GetTickerData(tickerId, "ETH");
+                ticker.Data.Quotes.ETH = tickerETH.Data.Quotes.ETH;
+
+>>>>>>> 2c7adacf6db05e2224764c2fc25ade5f6ed08d62
                 memoryCache.Set(nameof(CmcTicker), ticker,
                     new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(60))
                 );
