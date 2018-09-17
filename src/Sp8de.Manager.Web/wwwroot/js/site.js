@@ -1,4 +1,4 @@
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
@@ -34,6 +34,36 @@ function CreateWithdrawalRequest() {
         });
     return false;
 };
+var isAddress = function (address) {
+    if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
+        // check if it has the basic requirements of an address
+        return false;
+    } else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
+        // If it's all small caps or all all caps, return true
+        return true;
+    } else {
+        return false
+    }
+};
+var validateAddress = function () {
+    console.log('reu')
+    var wallet = document.querySelector('.wallet');
+    if (isAddress(wallet.value)) setWalletValid();
+    else setWalletInvalid();
+};
+var setWalletInvalid = function () {
+    var wallet = document.querySelector('.wallet'),
+        submit = document.querySelector('.CreateWithdrawalRequest');
+    wallet.classList.add('is-invalid');
+    submit.disable = true;
+};
+var setWalletValid = function () {
+    var wallet = document.querySelector('.wallet'),
+        submit = document.querySelector('.CreateWithdrawalRequest');
+    wallet.classList.remove('is-invalid');
+    submit.disable = false;
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector('.copy-btn')) {
         document.querySelector('.copy-btn').addEventListener('click', () => {
@@ -41,8 +71,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     if (document.querySelector('.CreateWithdrawalRequest')) {
-        document.querySelector('.CreateWithdrawalRequest').addEventListener('click', CreateWithdrawalRequest);
+        // document.querySelector('.CreateWithdrawalRequest').addEventListener('click', CreateWithdrawalRequest);
         document.querySelector('.toogleWithdraw').addEventListener('click', toogleWithdraw);
+        // document.querySelector('.wallet').addEventListener('change', validateAddress);
+        // document.querySelector('.wallet').addEventListener('blur', validateAddress);
+        // document.querySelector('.wallet').addEventListener('keyup', validateAddress);
     }
 
     var qrcode = new QRCode(document.querySelector('.qr-wrap'), {
