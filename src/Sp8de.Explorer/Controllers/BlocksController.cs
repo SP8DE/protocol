@@ -12,9 +12,9 @@ namespace Sp8de.Explorer.Api.Controllers
     [ApiController]
     public class BlocksController : ControllerBase
     {
-        private readonly Sp8deBlockStorage blockStorage;
+        private readonly ISp8deBlockStorage blockStorage;
 
-        public BlocksController(Sp8deBlockStorage blockStorage)
+        public BlocksController(ISp8deBlockStorage blockStorage)
         {
             this.blockStorage = blockStorage;
         }

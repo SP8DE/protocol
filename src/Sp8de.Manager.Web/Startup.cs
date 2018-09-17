@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Sp8de.DataModel;
-using Sp8de.Common.Interfaces;
-using Sp8de.Services;
 using Microsoft.Extensions.Options;
-using Sp8de.Manager.Web.Services;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Sp8de.Manager.Web.Models;
+using Sp8de.Common.Interfaces;
+using Sp8de.DataModel;
 using Sp8de.Email;
+using Sp8de.Manager.Web.Models;
+using Sp8de.Manager.Web.Services;
+using Sp8de.Services;
+using System;
 
 namespace Sp8de.Manager.Web
 {
@@ -45,13 +39,15 @@ namespace Sp8de.Manager.Web
             services.AddDbContext<Sp8deDbContext>(c =>
                 c.UseInMemoryDatabase("Sp8de"));
             
+            services.AddMemoryCache();
             /*
             services.AddDbContext<Sp8deDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
             );
             */
 
-            services.AddDefaultIdentity<ApplicationUser>(o => {
+            services.AddDefaultIdentity<ApplicationUser>(o =>
+            {
                 o.Password.RequireNonAlphanumeric = false;
                 o.SignIn.RequireConfirmedEmail = false;
             })
@@ -61,11 +57,13 @@ namespace Sp8de.Manager.Web
             services.AddTransient<IPaymentAddressService, SpxPaymentAddressService>();
             services.AddTransient<IFinService, FinService>();
 
+            services.AddHttpClient<CmcClient>(client => client.BaseAddress = new Uri("https://api.coinmarketcap.com"));
+
             services.Configure<SendGridApiConfig>(Configuration.GetSection(nameof(SendGridApiConfig)));
             services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<SendGridApiConfig>>().Value);
 
             services.AddTransient<ICommonEmailSender, SendGridEmailSender>();
-            
+
             services.Configure<SpxPaymentGatewayConfig>(Configuration.GetSection(nameof(SpxPaymentGatewayConfig)));
             services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<SpxPaymentGatewayConfig>>().Value);
 

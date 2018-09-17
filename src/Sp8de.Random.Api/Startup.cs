@@ -68,6 +68,8 @@ namespace Sp8de.Random.Api
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+
+
             services.AddSwaggerGen(c =>
             {
                 c.DescribeAllParametersInCamelCase();
