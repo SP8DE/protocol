@@ -85,3 +85,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     qrcode.makeCode(document.querySelector('.input-address').value);
 });
+

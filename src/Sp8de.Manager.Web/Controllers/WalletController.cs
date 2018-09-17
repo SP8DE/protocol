@@ -53,7 +53,7 @@ namespace Sp8de.Manager.Web.Controllers
             if (!memoryCache.TryGetValue(nameof(CmcTicker), out CmcTicker ticker))
             {
                 ticker = await client.GetTickerData(tickerId);
-
+                
                 memoryCache.Set(nameof(CmcTicker), ticker,
                     new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(60))
                 );
