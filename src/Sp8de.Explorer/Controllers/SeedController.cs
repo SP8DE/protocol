@@ -21,7 +21,6 @@ namespace Sp8de.Explorer.Api.Controllers
         private readonly IKeySecret[] keys;
         private readonly ISp8deTransactionStorage storage;
         private readonly ISp8deBlockStorage blockStorage;
-        private readonly Sp8deTransactionStorageConfig config;
         private readonly Sp8deBlockService blockService;
 
         public SeedController(ISp8deTransactionStorage storage, ISp8deBlockStorage blockStorage)
@@ -62,13 +61,11 @@ namespace Sp8de.Explorer.Api.Controllers
         [HttpGet("blocks")]
         public async Task<ActionResult<Sp8deBlock>> Blocks(int limit = 10)
         {
-            int blockSize = 25;
-
             var block = await blockStorage.GetLatestBlock() ?? new Sp8deBlock();
 
             for (int i = 0; i < limit; i++)
             {
-                var transactions = await storage.GetPending(blockSize);
+                var transactions = await storage.GetPending(new Random().Next(0, 200));
 
                 block = blockService.GenerateNewBlock(transactions, block);
                 await blockStorage.Add(block);
