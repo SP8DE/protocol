@@ -8,7 +8,7 @@ namespace Sp8de.Manager.Web.Services
 
     public interface ICmcClient
     {
-        Task<CmcTicker> GetTickerData(int id);
+        Task<CmcTicker> GetTickerData(int id, string currency);
     }
 
     public class CmcClient : ICmcClient
@@ -22,11 +22,11 @@ namespace Sp8de.Manager.Web.Services
             this.logger = logger;
         }
 
-        public async Task<CmcTicker> GetTickerData(int id)
+        public async Task<CmcTicker> GetTickerData(int id, string currency)
         {
             try
             {
-                var response = await client.GetAsync($"v2/ticker/{id}/");
+                var response = await client.GetAsync($"v2/ticker/{id}/?convert={currency}");
                 response.EnsureSuccessStatusCode();
 
                 return await response.Content.ReadAsAsync<CmcTicker>();
@@ -40,7 +40,7 @@ namespace Sp8de.Manager.Web.Services
 
     }
 
-    public class USD
+    public class RateInfo
     {
 
         [JsonProperty("price")]
@@ -66,7 +66,11 @@ namespace Sp8de.Manager.Web.Services
     {
 
         [JsonProperty("USD")]
-        public USD USD { get; set; }
+        public RateInfo USD { get; set; }
+        [JsonProperty("BTC")]
+        public RateInfo BTC { get; set; }
+        [JsonProperty("ETH")]
+        public RateInfo ETH { get; set; }
     }
 
     public class Data
