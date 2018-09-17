@@ -1383,6 +1383,17 @@ html {
         font-weight: 300;
         position: relative;
         margin-bottom: 9px;
+        display: inline-block;
+      }
+
+      .homepage-block .include-link:before {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: -1px;
+          width: 100%;
+          background: #d7d7d8;
+          height: 1px;
       }
       
       .homepage-column {
