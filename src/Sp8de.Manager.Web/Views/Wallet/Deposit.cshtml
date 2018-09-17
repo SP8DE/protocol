@@ -4,6 +4,10 @@ ViewData["Title"] = "Your Wallet";
 }
 
 @section Scripts{
+    <script>
+        $('.wallet-trigger').addClass('active opening')
+        $('.wallet-trigger').next('.sidebar-opened').addClass('active')
+    </script>
 }
 <div class="main-content">
 <h1>@ViewData["Title"]</h1>
