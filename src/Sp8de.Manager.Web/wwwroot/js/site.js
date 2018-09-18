@@ -83,6 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
         height: 250,
         useSVG: true
     });
-    qrcode.makeCode(document.querySelector('.input-address').value);
+    // qrcode.makeCode(document.querySelector('.input-address').value);
 });
 
