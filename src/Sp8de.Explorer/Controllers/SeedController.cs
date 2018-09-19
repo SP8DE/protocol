@@ -21,7 +21,7 @@ namespace Sp8de.Explorer.Api.Controllers
         private readonly IKeySecret[] keys;
         private readonly ISp8deTransactionStorage storage;
         private readonly ISp8deBlockStorage blockStorage;
-        private readonly Sp8deBlockService blockService;
+        private readonly Sp8deTransactionService blockService;
 
         public SeedController(ISp8deTransactionStorage storage, ISp8deBlockStorage blockStorage)
         {
@@ -39,7 +39,7 @@ namespace Sp8de.Explorer.Api.Controllers
 
             this.storage = storage;
             this.blockStorage = blockStorage;
-            this.blockService = new Sp8deBlockService(new Sp8deNodeConfig() { Key = keys.Last() });
+            this.blockService = new Sp8deTransactionService(new Sp8deNodeConfig() { Key = keys.Last() });
         }
 
         [HttpGet("transactions")]
@@ -141,4 +141,6 @@ namespace Sp8de.Explorer.Api.Controllers
             return tx;
         }
     }
+
+
 }

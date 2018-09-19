@@ -4,10 +4,6 @@ using System.Security.Cryptography;
 
 namespace Sp8de.DemoGame.Web.Services
 {
-    public class DemoGameService : IGameService
-    {
-
-    }
 
     public class RNGRandomGenerator : IRandomNumberGenerator
     {

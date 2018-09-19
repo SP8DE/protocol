@@ -1,4 +1,6 @@
-﻿namespace Sp8de.Common.BlockModels
+﻿using System.Text;
+
+namespace Sp8de.Common.BlockModels
 {
     public class InternalTransaction
     {
@@ -15,6 +17,11 @@
         public string GetDataForSign()
         {
             return $"{From.ToLower()};{Data};{Nonce}";
+        }
+
+        public byte[] GetBytes()
+        {
+            return Encoding.UTF8.GetBytes($"{this.Type};{this.From};{this.Nonce};{this.Sign}");
         }
     }
 }

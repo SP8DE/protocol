@@ -8,5 +8,6 @@ namespace Sp8de.Common.Interfaces
     {
         string SignMessage(string message, string privateKey);
         bool VerifySignature(string message, string signature, string pubKey);
+        byte[] CalculateHash(byte[] value);
     }
 }
