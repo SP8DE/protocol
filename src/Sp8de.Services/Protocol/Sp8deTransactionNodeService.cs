@@ -7,69 +7,67 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Sp8de.Services.Explorer
+namespace Sp8de.Services.Protocol
 {
-    //temp
-    public class Sp8deTransactionService
+    public class Sp8deTransactionNodeService : ISp8deTransactionNodeService
     {
-        private readonly ICryptoService signService;
+        private readonly ICryptoService cryptoService;
+        private readonly ISp8deTransactionStorage transactionStorage;
+        private readonly IEnumerable<IExternalAnchorService> anchorServices;
         private readonly Sp8deNodeConfig config;
 
-        public Sp8deTransactionService(Sp8deNodeConfig config)
+        public Sp8deTransactionNodeService(Sp8deNodeConfig config, ICryptoService cryptoService, ISp8deTransactionStorage transactionStorage, IEnumerable<IExternalAnchorService> anchorServices)
         {
-            this.signService = new EthCryptoService();
             this.config = config;
+            this.cryptoService = cryptoService;
+            this.transactionStorage = transactionStorage;
+            this.anchorServices = anchorServices;
         }
 
         public string CalculateHash(byte[] inputBytes)
         {
-            byte[] outputBytes = signService.CalculateHash(inputBytes);
+            byte[] outputBytes = cryptoService.CalculateHash(inputBytes);
             return HexConverter.ToHex(outputBytes);
         }
 
         public (string hash, byte[] bytes) CalculateTransactionHash(Sp8deTransaction transaction)
         {
-            byte[] outputBytes = signService.CalculateHash(transaction.GetBytes());
+            byte[] outputBytes = cryptoService.CalculateHash(transaction.GetBytes());
             return (HexConverter.ToHex(outputBytes), outputBytes);
         }
 
-        public Sp8deTransaction GenerateNewTransaction(IList<InternalTransaction> inner, Sp8deTransactionType transactionType, string dependsOn = null)
+        public async Task<Sp8deTransaction> AddTransaction(CreateTransactionRequest request)
         {
             var tx = new Sp8deTransaction()
             {
                 Timestamp = DateConverter.UtcNow,
                 Expiration = DateConverter.UtcNow,
                 CompleatedAt = DateConverter.UtcNow,
-                DependsOn = dependsOn,
+                DependsOn = request.DependsOn,
+                Anchors = new List<Anchor>(),
                 InputData = new TransactionData()
                 {
                     Items = new Dictionary<string, IList<string>> {
                         { "randomType", new List<string>{ "Dice" } }
                     }
                 },
-                Type = transactionType,
+                Type = request.Type,
                 Status = Sp8deTransactionStatus.New
             };
 
-            PopulateInternalTransactionHash(inner);
+            PopulateInternalTransactionHash(request.InnerTransactions);
 
-            tx.InternalTransactions = inner;
+            tx.InternalTransactions = request.InnerTransactions;
 
-            tx.Anchors.Add(new Anchor()
-            {
-                Type = "IPFS",
-                Data = "QmPTptErGpze3kzx84nyoEpYyK3caWdUThRbcpi2tYdCmi",
-                Timestamp = DateConverter.UtcNow,
-            });
-
-            tx.InternalRoot = CalculateInternalTransactionRootHash(inner);
+            tx.InternalRoot = CalculateInternalTransactionRootHash(request.InnerTransactions);
 
             tx.InputData.Hash = CalculateHash(tx.InputData.GetBytes());
 
-            if (transactionType == Sp8deTransactionType.AggregatedReveal)
+            if (request.Type == Sp8deTransactionType.AggregatedReveal)
             {
-                var (seedArray, seedHash) = SharedSeedGenerator.CreateSharedSeed(inner.Select(x => x.Data));
+                var (seedArray, seedHash) = SharedSeedGenerator.CreateSharedSeed(request.InnerTransactions.Select(x => x.Data));
 
                 tx.OutputData = new TransactionData()
                 {
@@ -83,7 +81,26 @@ namespace Sp8de.Services.Explorer
 
             tx.Id = CalculateTransactionHash(tx).hash;
 
+            await AddAnchors(tx);
+
+            await transactionStorage.Add(tx);
+
             return tx;
+        }
+
+        private async Task AddAnchors(Sp8deTransaction transaction)
+        {
+            if (anchorServices != null)
+            {
+                transaction.Anchors = transaction.Anchors ?? new List<Anchor>();
+
+                var anckors = await Task.WhenAll(anchorServices.Select(x => x.Add(transaction)));
+
+                foreach (var anckor in anckors)
+                {
+                    transaction.Anchors.Add(anckor);
+                }
+            }
         }
 
         public void PopulateInternalTransactionHash(IList<InternalTransaction> list)
@@ -116,7 +133,7 @@ namespace Sp8de.Services.Explorer
 
         public (string hash, byte[] bytes) CalculateInternalTransactionHash(InternalTransaction transaction)
         {
-            byte[] outputBytes = signService.CalculateHash(transaction.GetBytes());
+            byte[] outputBytes = cryptoService.CalculateHash(transaction.GetBytes());
             return (HexConverter.ToHex(outputBytes), outputBytes);
         }
     }

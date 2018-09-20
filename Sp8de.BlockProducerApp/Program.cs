@@ -8,6 +8,7 @@ using NLog.Extensions.Hosting;
 using Sp8de.Common.Interfaces;
 using Sp8de.EthServices;
 using Sp8de.Services.Explorer;
+using Sp8de.Services.Protocol;
 using System;
 using System.Threading.Tasks;
 

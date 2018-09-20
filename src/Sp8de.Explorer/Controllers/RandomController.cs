@@ -1,14 +1,15 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sp8de.Common.BlockModels;
+using Sp8de.Common.Enums;
 using Sp8de.Common.Interfaces;
 using Sp8de.Random.Api.Models;
 
 namespace Sp8de.Random.Api.Controllers
 {
-    [Route("api/[controller]")]
+
+    [Route("api/random")]
     [ApiController]
     public class RandomController : Controller
     {
@@ -21,10 +22,10 @@ namespace Sp8de.Random.Api.Controllers
 
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        [HttpPost("check")]
-        public async Task<ActionResult<RandomCheckResponse>> Check([FromBody] RandomCheckRequest request)
+        [HttpPost("validate")]
+        public ActionResult<ValidateRandomResponse> Validate(ValidateRandomRequest request)
         {
-            var vm = new RandomCheckResponse();
+            var vm = new ValidateRandomResponse();
 
             switch (request.Settings.Type)
             {

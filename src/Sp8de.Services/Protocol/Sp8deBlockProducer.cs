@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sp8de.Services.Explorer
+namespace Sp8de.Services.Protocol
 {
     public class Sp8deBlockProducer : ISp8deBlockProducer
     {
@@ -51,7 +51,7 @@ namespace Sp8de.Services.Explorer
 
             var transactions = await transactionStorage.GetPending(new Random().Next(1, 200));
 
-            if (transactions.Count == 0 && DateConverter.UtcNow - block.Timestamp < (60 * 15 * 1000)) //skip empty blocks
+            if (transactions.Count == 0 && DateConverter.UtcNow - block.Timestamp < (60 * 15)) //skip empty blocks
             {
                 return null;
             }

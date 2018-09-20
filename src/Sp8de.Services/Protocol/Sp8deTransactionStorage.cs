@@ -1,12 +1,13 @@
 ﻿using Marten;
 using Marten.Linq;
 using Sp8de.Common.BlockModels;
+using Sp8de.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Sp8de.Services.Explorer
+namespace Sp8de.Services.Protocol
 {
     public class Sp8deTransactionStorage : ISp8deTransactionStorage
     {

@@ -1,7 +1,7 @@
 ﻿using Sp8de.Common.Enums;
 using System.ComponentModel;
 
-namespace Sp8de.Random.Api.Models
+namespace Sp8de.Common.BlockModels
 {
     public class RandomSettings
     {
@@ -14,4 +14,6 @@ namespace Sp8de.Random.Api.Models
         public int? RangeMin { get; set; }
         public int? RangeMax { get; set; }
     }
+
+
 }

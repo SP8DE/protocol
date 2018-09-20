@@ -15,14 +15,14 @@ namespace Sp8de.DemoGame.Web.Services
     {
         private readonly IRandomNumberGenerator random;
         private readonly IGenericDataStorage storage;
-        private readonly ICryptoService signService;
+        private readonly ICryptoService cryptoService;
         private readonly IKeySecret keySecret;
 
-        public DemoGameRandomService(DemoGameConfig config, IRandomNumberGenerator random, IGenericDataStorage storage, ICryptoService signService, IKeySecretManager keySecretManager)
+        public DemoGameRandomService(DemoGameConfig config, IRandomNumberGenerator random, IGenericDataStorage storage, ICryptoService cryptoService, IKeySecretManager keySecretManager)
         {
             this.random = random;
             this.storage = storage;
-            this.signService = signService;
+            this.cryptoService = cryptoService;
             this.keySecret = keySecretManager.LoadKeySecret(config.PrivateKey);
         }
 
@@ -36,7 +36,7 @@ namespace Sp8de.DemoGame.Web.Services
                 PubKey = keySecret.PublicAddress.ToLowerInvariant()
             };
 
-            revealItem.Sign = signService.SignMessage(revealItem.ToString(), keySecret.PrivateKey);
+            revealItem.Sign = cryptoService.SignMessage(revealItem.ToString(), keySecret.PrivateKey);
 
             await storage.Add(revealItem.Sign, revealItem);
 
@@ -47,7 +47,7 @@ namespace Sp8de.DemoGame.Web.Services
         {
             var revealItem = await storage.Get<RevealItem>(item.Sign);
 
-            if (!signService.VerifySignature(revealItem.ToString(), revealItem.Sign, revealItem.PubKey))
+            if (!cryptoService.VerifySignature(revealItem.ToString(), revealItem.Sign, revealItem.PubKey))
             {
                 throw new ArgumentException("Invalid signature");
             };

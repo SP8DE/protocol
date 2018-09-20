@@ -11,11 +11,13 @@ using Sp8de.Common.Interfaces;
 using Sp8de.Common.Models;
 using Sp8de.DataModel;
 using Sp8de.EthServices;
+using Sp8de.IpfsStorageService;
 using Sp8de.Random.Api.Authentication;
 using Sp8de.Random.Api.Models;
 using Sp8de.Random.Api.Services;
 using Sp8de.RandomGenerators;
 using Sp8de.Services;
+using Sp8de.Services.Protocol;
 
 namespace Sp8de.Random.Api
 {
@@ -31,10 +33,10 @@ namespace Sp8de.Random.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddEntityFrameworkNpgsql()
-            //        .AddDbContext<Sp8deDbContext>(x => x.UseNpgsql(
-            //            Configuration.GetConnectionString("DefaultConnection")
-            //            ));
+            services.AddEntityFrameworkNpgsql()
+                    .AddDbContext<Sp8deDbContext>(x => x.UseNpgsql(
+                        Configuration.GetConnectionString("DefaultConnection")
+                        ));
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -57,18 +59,25 @@ namespace Sp8de.Random.Api
             services.Configure<RandomApiConfig>(Configuration.GetSection(nameof(RandomApiConfig)));
             services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<RandomApiConfig>>().Value);
 
-            services.AddDbContext<Sp8deDbContext>(c => c.UseInMemoryDatabase("Sp8de"));
 
             services.AddTransient<IApiKeyProvider, ApiKeyProvider>();
-            services.AddTransient<ICryptoService, EthCryptoService>();
-            services.AddTransient<ISharedSeedService, SharedSeedService>();
-            services.AddTransient<IRandomNumberGenerator, RNGRandomGenerator>();
-            services.AddTransient<IRandomContributorService, BuildinRandomContributorService>();
+            //services.AddTransient<ISharedSeedService, SharedSeedService>();
             services.AddTransient<IPRNGRandomService, PRNGRandomService>();
+            services.AddTransient<IWalletService, WalletService>();            
+
+            services.AddTransient<ISp8deTransactionStorage, Sp8deTransactionStorage>();
+            services.AddTransient<ISp8deTransactionNodeService, Sp8deTransactionNodeService>();
+
+            services.AddTransient<IExternalAnchorService, IpfsExternalAnchorService>();
+            services.AddTransient<IpfsFileStorageService>();
+            services.Configure<IpfsStorageConfig>(Configuration.GetSection(nameof(IpfsStorageConfig)));
+            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<IpfsStorageConfig>>().Value);
+
+            services.AddTransient<ICryptoService, EthCryptoService>();
+            services.AddTransient<IRandomNumberGenerator, RNGRandomGenerator>();
+            services.AddTransient<IRandomContributorService, BuildinRandomContributorService>();           
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-
 
             services.AddSwaggerGen(c =>
             {

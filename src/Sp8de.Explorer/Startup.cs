@@ -4,8 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Sp8de.Common.Interfaces;
 using Sp8de.Common.Models;
+using Sp8de.EthServices;
+using Sp8de.RandomGenerators;
 using Sp8de.Services.Explorer;
+using Sp8de.Services.Protocol;
 using System.Linq;
 
 namespace Sp8de.Explorer
@@ -49,6 +53,8 @@ namespace Sp8de.Explorer
             services.AddTransient<ISp8deSearchService, Sp8deSearchService>();
             services.AddTransient<ISp8deTransactionStorage, Sp8deTransactionStorage>();
             services.AddTransient<ISp8deBlockStorage, Sp8deBlockStorage>();
+            services.AddTransient<ICryptoService, EthCryptoService>();
+            services.AddTransient<IPRNGRandomService, PRNGRandomService>();
 
             services.AddSwaggerGen(c =>
             {

@@ -20,15 +20,15 @@ namespace Sp8de.DemoGame.Web.Controllers
     {
         private readonly IMemoryCache cache;
         private readonly IPRNGRandomService prng;
-        private readonly ICryptoService signService;
+        private readonly ICryptoService cryptoService;
         private readonly IRandomContributorService randomContributorService;
         private readonly IChaosProtocolService protocol;
 
-        public DemoGameController(IMemoryCache cache, IPRNGRandomService prng, ICryptoService signService, IRandomContributorService randomContributorService, IChaosProtocolService protocol)
+        public DemoGameController(IMemoryCache cache, IPRNGRandomService prng, ICryptoService cryptoService, IRandomContributorService randomContributorService, IChaosProtocolService protocol)
         {
             this.cache = cache;
             this.prng = prng;
-            this.signService = signService;
+            this.cryptoService = cryptoService;
             this.randomContributorService = randomContributorService;
             this.protocol = protocol;
         }

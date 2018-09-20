@@ -1,5 +1,6 @@
 ﻿using Sp8de.Common.Interfaces;
 using System;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 
 namespace Sp8de.Services
@@ -18,6 +19,14 @@ namespace Sp8de.Services
             Span<byte> arr = new byte[4];
             RandomNumberGenerator.Fill(arr);
             return BitConverter.ToInt32(arr);
+        }
+
+        public int NextInt2()
+        {
+            Span<byte> arr = new byte[4];
+            RandomNumberGenerator.Fill(arr);
+            return MemoryMarshal.Read<int>(arr);
+            //return BitConverter.ToInt32(arr);
         }
     }
 }
