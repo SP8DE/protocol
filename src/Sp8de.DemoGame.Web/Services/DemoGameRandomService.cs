@@ -15,10 +15,10 @@ namespace Sp8de.DemoGame.Web.Services
     {
         private readonly IRandomNumberGenerator random;
         private readonly IGenericDataStorage storage;
-        private readonly ISignService signService;
+        private readonly ICryptoService signService;
         private readonly IKeySecret keySecret;
 
-        public DemoGameRandomService(DemoGameConfig config, IRandomNumberGenerator random, IGenericDataStorage storage, ISignService signService, IKeySecretManager keySecretManager)
+        public DemoGameRandomService(DemoGameConfig config, IRandomNumberGenerator random, IGenericDataStorage storage, ICryptoService signService, IKeySecretManager keySecretManager)
         {
             this.random = random;
             this.storage = storage;

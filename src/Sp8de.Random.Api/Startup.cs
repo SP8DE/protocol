@@ -60,7 +60,7 @@ namespace Sp8de.Random.Api
             services.AddDbContext<Sp8deDbContext>(c => c.UseInMemoryDatabase("Sp8de"));
 
             services.AddTransient<IApiKeyProvider, ApiKeyProvider>();
-            services.AddTransient<ISignService, EthSignService>();
+            services.AddTransient<ICryptoService, EthCryptoService>();
             services.AddTransient<ISharedSeedService, SharedSeedService>();
             services.AddTransient<IRandomNumberGenerator, RNGRandomGenerator>();
             services.AddTransient<IRandomContributorService, BuildinRandomContributorService>();

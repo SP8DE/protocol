@@ -19,7 +19,7 @@ namespace Sp8de.Services.Tests
 
             Assert.NotNull(key);
 
-            var service = new EthSignService();
+            var service = new EthCryptoService();
             var signature = service.SignMessage(message, key.PrivateKey);
             Assert.NotNull(signature);
 
@@ -39,7 +39,7 @@ namespace Sp8de.Services.Tests
 
             Assert.NotNull(key);
 
-            var service = new EthSignService();
+            var service = new EthCryptoService();
             var signature = service.SignMessage(message, key.PrivateKey);
             Assert.NotNull(signature);
 
@@ -57,7 +57,7 @@ namespace Sp8de.Services.Tests
 
             Assert.NotNull(key);
 
-            var service = new EthSignService();
+            var service = new EthCryptoService();
             var signature = service.SignMessage(message, key.PrivateKey);
             Assert.NotNull(signature);
 
@@ -75,7 +75,7 @@ namespace Sp8de.Services.Tests
 
             Assert.NotNull(key);
 
-            var service = new EthSignService();
+            var service = new EthCryptoService();
             var signature = service.SignMessage(message, key.PrivateKey);
             Assert.NotNull(signature);
 
@@ -92,7 +92,7 @@ namespace Sp8de.Services.Tests
             var generator = new EthKeySecretManager();
             var key = generator.LoadKeySecret("0xd3a7d42d881a9b59ccefcac0f5bcc69f85e68fdf0bfb6fcbbe42373320de420f");
 
-            var service = new EthSignService();
+            var service = new EthCryptoService();
             var rs = service.VerifySignature(text, signature, key.PublicAddress);
             Assert.True(rs);
 

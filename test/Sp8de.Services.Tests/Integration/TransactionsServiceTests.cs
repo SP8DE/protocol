@@ -13,7 +13,7 @@ namespace Sp8de.Services.Tests.Integration
 {
     public class TransactionsServiceTests
     {
-        private readonly EthSignService signService;
+        private readonly EthCryptoService signService;
         private readonly EthKeySecretManager secretManager;
         private readonly IKeySecret[] keys;
         private readonly PRNGRandomService prng;
@@ -21,7 +21,7 @@ namespace Sp8de.Services.Tests.Integration
 
         public TransactionsServiceTests()
         {
-            signService = new EthSignService();
+            signService = new EthCryptoService();
             secretManager = new EthKeySecretManager();
 
             keys = new[]

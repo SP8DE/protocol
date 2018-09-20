@@ -339,3 +339,4 @@ src/Sp8de.Frontend.Demo_2/Game/node_modules
 /src/Sp8de.PaymentService/appsettings.Development.json
 /src/Sp8de.Explorer/appsettings.Development.json
 *.DS_Store
+/Sp8de.BlockProducerApp/appsettings.Production.json

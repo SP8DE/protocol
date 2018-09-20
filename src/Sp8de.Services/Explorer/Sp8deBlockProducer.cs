@@ -1,7 +1,6 @@
 ﻿using Sp8de.Common.BlockModels;
 using Sp8de.Common.Interfaces;
 using Sp8de.Common.Utils;
-using Sp8de.EthServices;
 using Stratis.Patricia;
 using System;
 using System.Collections.Generic;
@@ -15,18 +14,16 @@ namespace Sp8de.Services.Explorer
     {
         private readonly ISp8deTransactionStorage transactionStorage;
         private readonly ISp8deBlockStorage blockStorage;
-        private readonly ISignService signService;
-        private readonly IKeySecret key;
+        private readonly ICryptoService cryptoService;
 
-        public Sp8deBlockProducer(ISp8deTransactionStorage transactionStorage, ISp8deBlockStorage blockStorage, IKeySecret key)
+        public Sp8deBlockProducer(ISp8deTransactionStorage transactionStorage, ISp8deBlockStorage blockStorage, ICryptoService cryptoService)
         {
             this.transactionStorage = transactionStorage;
             this.blockStorage = blockStorage;
-            this.key = key;
-            this.signService = new EthSignService();
+            this.cryptoService = cryptoService;
         }
 
-        public Sp8deBlock GenerateNewBlock(IReadOnlyList<Sp8deTransaction> list, Sp8deBlock prevBlock)
+        public Sp8deBlock GenerateNewBlock(IReadOnlyList<Sp8deTransaction> list, Sp8deBlock prevBlock, IKeySecret producerKey)
         {
             var block = new Sp8deBlock()
             {
@@ -34,51 +31,45 @@ namespace Sp8de.Services.Explorer
                 PreviousHash = prevBlock.Hash,
                 Timestamp = DateConverter.UtcNow,
                 Transactions = list.Select(x => x.Id).ToList(),
-                Signer = key.PublicAddress,
-                /*Anchors = new List<Anchor>() {
-                    new Anchor(){
-                        Type = "IPFS",
-                        Data = "QmPTptErGpze3kzx84nyoEpYyK3caWdUThRbcpi2tYdCmi",
-                        Timestamp = DateConverter.UtcNow
-                    }
-                }*/
+                Signer = producerKey.PublicAddress
             };
 
             block.TransactionRoot = CalculateTransactionRootHash(list);
 
             var blockContent = block.GeteDataForSing();
 
-            block.Signature = signService.SignMessage(blockContent, key.PrivateKey);
+            block.Signature = cryptoService.SignMessage(blockContent, producerKey.PrivateKey);
 
-            block.Hash = HexConverter.ToHex(signService.CalculateHash(Encoding.UTF8.GetBytes(block.Signature)));
+            block.Hash = HexConverter.ToHex(cryptoService.CalculateHash(Encoding.UTF8.GetBytes(block.Signature)));
 
             return block;
         }
 
-        public async Task<Sp8deBlock> Produce(int limit = 1)
+        public async Task<Sp8deBlock> Produce(IKeySecret producerKey)
         {
             var block = await blockStorage.GetLatestBlock() ?? new Sp8deBlock();
 
-            for (int i = 0; i < limit; i++)
+            var transactions = await transactionStorage.GetPending(new Random().Next(1, 200));
+
+            if (transactions.Count == 0 && DateConverter.UtcNow - block.Timestamp < (60 * 15 * 1000)) //skip empty blocks
             {
-                var transactions = await transactionStorage.GetPending(new Random().Next(0, 200));
-
-
-                //block = blockService.GenerateNewBlock(transactions, block);
-
-                await blockStorage.Add(block);
-
-                foreach (var item in transactions)
-                {
-                    item.Status = Sp8deTransactionStatus.Confirmed;
-                    item.Meta = new TransactionMeta()
-                    {
-                        BlockId = block.Id
-                    };
-                }
-
-                await transactionStorage.Update(transactions);
+                return null;
             }
+
+            block = GenerateNewBlock(transactions, block, producerKey);
+
+            await blockStorage.Add(block);
+
+            foreach (var item in transactions)
+            {
+                item.Status = Sp8deTransactionStatus.Confirmed;
+                item.Meta = new TransactionMeta()
+                {
+                    BlockId = block.Id
+                };
+            }
+
+            await transactionStorage.Update(transactions);
 
             return block;
         }
@@ -88,8 +79,8 @@ namespace Sp8de.Services.Explorer
             var trie = new PatriciaTrie();
 
             foreach (var item in list)
-            {               
-                trie.Put(Encoding.UTF8.GetBytes(item.Id), Encoding.UTF8.GetBytes(item.InternalRoot /*item.Signature*/)); //TODO
+            {
+                trie.Put(Encoding.UTF8.GetBytes(item.Id), Encoding.UTF8.GetBytes(item.InternalRoot /*item.Signature*/));
             }
 
             var outputBytes = trie.GetRootHash();

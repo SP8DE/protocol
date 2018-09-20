@@ -5,16 +5,14 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Extensions.Hosting;
+using Sp8de.Common.Interfaces;
+using Sp8de.EthServices;
+using Sp8de.Services.Explorer;
 using System;
 using System.Threading.Tasks;
 
 namespace Sp8de.BlockProducerApp
 {
-    public class AppConfig
-    {
-        public int? Delay { get; set; }
-    }
-
     public class Program
     {
         public static async Task Main(string[] args)
@@ -27,6 +25,8 @@ namespace Sp8de.BlockProducerApp
                     .ConfigureAppConfiguration((hostContext, config) =>
                     {
                         config.AddJsonFile("appsettings.json", optional: true);
+                        config.AddJsonFile("appsettings.Production.json", optional: true);
+
                         if (args != null)
                         {
                             config.AddCommandLine(args);
@@ -37,8 +37,16 @@ namespace Sp8de.BlockProducerApp
                         services.Configure<AppConfig>(hostContext.Configuration.GetSection(nameof(AppConfig)));
                         services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<AppConfig>>().Value);
 
-                        //services.AddTransient<ISp8deBlockStorage, Sp8deBlockStorage>();
-                        services.AddHostedService<BackgroundService>();
+                        services.Configure<Sp8deStorageConfig>(hostContext.Configuration.GetSection(nameof(Sp8deStorageConfig)));
+                        services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<Sp8deStorageConfig>>().Value);
+
+                        services.AddTransient<ICryptoService, EthCryptoService>();
+                        services.AddTransient<ISp8deBlockProducer, Sp8deBlockProducer>();
+                        services.AddTransient<ISp8deSearchService, Sp8deSearchService>();
+                        services.AddTransient<ISp8deTransactionStorage, Sp8deTransactionStorage>();
+                        services.AddTransient<ISp8deBlockStorage, Sp8deBlockStorage>();
+
+                        services.AddHostedService<BackgroundJobService>();
                     })
                     .ConfigureLogging((hostingContext, configLogging) =>
                     {

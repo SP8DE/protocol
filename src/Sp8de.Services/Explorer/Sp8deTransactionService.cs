@@ -13,12 +13,12 @@ namespace Sp8de.Services.Explorer
     //temp
     public class Sp8deTransactionService
     {
-        private readonly ISignService signService;
+        private readonly ICryptoService signService;
         private readonly Sp8deNodeConfig config;
 
         public Sp8deTransactionService(Sp8deNodeConfig config)
         {
-            this.signService = new EthSignService();
+            this.signService = new EthCryptoService();
             this.config = config;
         }
 

@@ -75,7 +75,7 @@ namespace Sp8de.DemoGame.Web
 
             services.AddSingleton<IGenericDataStorage, InMemoryDataStorage>(); //DEV
             services.AddTransient<IPRNGRandomService, PRNGRandomService>();
-            services.AddScoped<ISignService, EthSignService>();
+            services.AddScoped<ICryptoService, EthCryptoService>();
             services.AddTransient<IRandomNumberGenerator, RNGRandomGenerator>();
             services.AddScoped<IKeySecretManager, EthKeySecretManager>();
 

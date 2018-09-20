@@ -15,11 +15,11 @@ namespace Sp8de.DemoGame.Web.Services
     {
         private readonly IRandomNumberGenerator random;
         private readonly IGenericDataStorage storage;
-        private readonly ISignService signService;
+        private readonly ICryptoService signService;
         private readonly IpfsFileStorageService ipfs;
         private readonly IKeySecret keySecret;
 
-        public DemoProtocolService(ChaosProtocolConfig config, IRandomNumberGenerator random, IGenericDataStorage storage, ISignService signService, IKeySecretManager keySecretManager, IpfsFileStorageService ipfs)
+        public DemoProtocolService(ChaosProtocolConfig config, IRandomNumberGenerator random, IGenericDataStorage storage, ICryptoService signService, IKeySecretManager keySecretManager, IpfsFileStorageService ipfs)
         {
             this.random = random;
             this.storage = storage;

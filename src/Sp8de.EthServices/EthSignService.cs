@@ -4,7 +4,7 @@ using Sp8de.Common.Interfaces;
 
 namespace Sp8de.EthServices
 {
-    public class EthSignService : ISignService
+    public class EthCryptoService : ICryptoService
     {
         public string SignMessage(byte[] message, string privateKey)
         {

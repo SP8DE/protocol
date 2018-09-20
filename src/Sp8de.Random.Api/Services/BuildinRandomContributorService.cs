@@ -10,10 +10,10 @@ namespace Sp8de.Random.Api.Services
     {
         private readonly IRandomNumberGenerator random;
         private readonly IGenericDataStorage storage;
-        private readonly ISignService signService;
+        private readonly ICryptoService signService;
         private readonly IKeySecret keySecret;
 
-        public BuildinRandomContributorService(IRandomNumberGenerator random, IGenericDataStorage storage, ISignService signService, IKeySecretManager keySecretManager)
+        public BuildinRandomContributorService(IRandomNumberGenerator random, IGenericDataStorage storage, ICryptoService signService, IKeySecretManager keySecretManager)
         {
             this.random = random;
             this.storage = storage;
