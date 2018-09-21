@@ -1546,3 +1546,28 @@ html {
 .qr-code-block {
     margin-left: 0 !important;
 }
+
+.qr-wrap{
+    width: 250px;
+}
+
+.address-qrcode > div:first-child{
+    padding-right: 24px;
+}
+
+.successful,.fail{
+    display: none;
+}
+
+.main-content > .fail > .failMessage{
+    color: indianred;
+}
+
+.qrCode img, .qr-wrap svg{
+    background: white;
+    border: 5px solid white;
+}
+.qrCode img {
+    width: 200px;
+    margin: 10px;
+}
