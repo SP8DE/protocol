@@ -9,6 +9,10 @@ var toogleWithdraw = function (amount, wallet) {
     withdraw.style.display = 'block';
 };
 function CreateWithdrawalRequest() {
+    var success = document.querySelector('.successful'),
+        fail = document.querySelector('.fail'),
+        failMessage = document.querySelector('.failMessage'),
+        form = document.querySelector('.form');
     var headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-Type', 'application/json');
@@ -31,6 +35,16 @@ function CreateWithdrawalRequest() {
     fetch('/Wallet/CreateWithdrawalRequest', options)
         .then(res => {
             console.log(res);
+            if (res.status === 200) {
+                form.style.display = 'none';
+                fail.style.display = 'none';
+                success.style.display = 'block';
+            } else {
+                form.style.display = 'block';
+                success.style.display = 'none';
+                fail.style.display = 'block';
+                failMessage.innerHTML = res.statusText;
+            }
         });
     return false;
 };
