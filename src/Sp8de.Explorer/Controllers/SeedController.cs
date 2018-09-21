@@ -13,8 +13,10 @@ using System.Threading.Tasks;
 
 namespace Sp8de.Explorer.Api.Controllers
 {
+
     [Route("api/seed")]
     [ApiController]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class SeedController : Controller
     {
         private readonly ICryptoService cryptoService;
