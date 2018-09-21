@@ -74,11 +74,11 @@ namespace Sp8de.Manager.Web.Controllers
         }
 
 
-        public IActionResult Deposit()
+        public async Task<IActionResult> Deposit()
         {
             //HACK
-            return View(new WalletViewModel()
-            /*{
+           /* return View(new WalletViewModel()
+            {
                 Address = "0x618033684Dfedb6ce9b70744567E9E761A1c82F3",
                 Balance = 1000,
                 Currency = Currency.SPX
