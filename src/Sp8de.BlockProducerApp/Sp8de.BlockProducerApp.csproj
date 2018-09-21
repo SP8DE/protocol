@@ -30,8 +30,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\src\Sp8de.Common\Sp8de.Common.csproj" />
-	  <ProjectReference Include="..\src\Sp8de.Services\Sp8de.Services.csproj" />
+	  <ProjectReference Include="..\Sp8de.Common\Sp8de.Common.csproj" />
+	  <ProjectReference Include="..\Sp8de.Services\Sp8de.Services.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -69,19 +69,7 @@ namespace Sp8de.PaymentService.Service
 
                         if (blockchainTransaction.Status == BlockchainTransactionStatus.ConfirmedAndValidated)
                         {
-                            context.Add(new WalletTransaction
-                            {
-                                Id = Guid.NewGuid(),
-                                Amount = blockchainTransaction.Amount,
-                                DateCreated = DateTime.UtcNow,
-                                Currency = wallet.Currency,
-                                BlockchainTransaction = blockchainTransaction,
-                                BlockchainTransactionId = blockchainTransaction.Id,
-                                Type = WalletTransactionType.WalletDeposit,
-                                Status = WalletTransactionStatus.Compleated,
-                                Wallet = wallet,
-                                WalletId = wallet.Id
-                            });
+                            ProcessPayment(wallet, blockchainTransaction);
                         }
                     }
                     else
@@ -109,24 +97,7 @@ namespace Sp8de.PaymentService.Service
 
                     if (blockchainTransaction.Status == BlockchainTransactionStatus.ConfirmedAndValidated)
                     {
-                        wallet.Amount += blockchainTransaction.Amount;
-
-                        if (blockchainTransaction.Status == BlockchainTransactionStatus.ConfirmedAndValidated)
-                        {
-                            context.Add(new WalletTransaction
-                            {
-                                Id = Guid.NewGuid(),
-                                Amount = blockchainTransaction.Amount,
-                                DateCreated = DateTime.UtcNow,
-                                Currency = wallet.Currency,
-                                BlockchainTransaction = blockchainTransaction,
-                                BlockchainTransactionId = blockchainTransaction.Id,
-                                Type = WalletTransactionType.WalletDeposit,
-                                Status = WalletTransactionStatus.Compleated,
-                                Wallet = wallet,
-                                WalletId = wallet.Id
-                            });
-                        }
+                        ProcessPayment(wallet, blockchainTransaction);
                     }
                 }
 
@@ -146,6 +117,28 @@ namespace Sp8de.PaymentService.Service
             }
 
             return transactionInfo;
+        }
+
+        private void ProcessPayment(Wallet wallet, BlockchainTransaction blockchainTransaction)
+        {
+            wallet.Amount += blockchainTransaction.Amount;
+
+            if (blockchainTransaction.Status == BlockchainTransactionStatus.ConfirmedAndValidated)
+            {
+                context.Add(new WalletTransaction
+                {
+                    Id = Guid.NewGuid(),
+                    Amount = blockchainTransaction.Amount,
+                    DateCreated = DateTime.UtcNow,
+                    Currency = wallet.Currency,
+                    BlockchainTransaction = blockchainTransaction,
+                    BlockchainTransactionId = blockchainTransaction.Id,
+                    Type = WalletTransactionType.WalletDeposit,
+                    Status = WalletTransactionStatus.Compleated,
+                    Wallet = wallet,
+                    WalletId = wallet.Id
+                });
+            }
         }
     }
 }

@@ -22,10 +22,10 @@ namespace Sp8de.Services.Explorer
             var list = new List<SearchItem>();
 
             var blocks = await blockStorage.Search(q, limit);
-            list.AddRange(blocks.Select(x => new SearchItem() { Hash = x.Hash, Type = SearchItemType.Block }));
+            list.AddRange(blocks.Select(x => new SearchItem() { Hash = x.Hash, Type = SearchItemType.Block, BlockId = x.Id, Timestamp = x.Timestamp }));
 
             var transactions = await transactionStorage.Search(q, limit);
-            list.AddRange(transactions.Select(x => new SearchItem() { Hash = x.Id, Type = SearchItemType.Transaction }));
+            list.AddRange(transactions.Select(x => new SearchItem() { Hash = x.Id, Type = SearchItemType.Transaction, BlockId = x.Meta?.BlockId, TransactionType = x.Type, Timestamp = x.Timestamp }));
 
             return list;
         }
