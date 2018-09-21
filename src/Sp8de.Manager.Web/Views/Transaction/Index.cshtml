@@ -1,9 +1,9 @@
-@model WalletTransactionsViewModel
+﻿@model WalletTransactionsViewModel
 @using Sp8de.Common.Enums
 
 @{
 ViewData["Title"] = "YOUR TRANSACTIONS";
-ViewBag.PageClass = "transactions-columns"; 
+ViewBag.PageClass = "transactions-columns";
 }
 
 @section Scripts{
@@ -132,7 +132,7 @@ ViewBag.PageClass = "transactions-columns";
             <div class="main-table-subcontent" id="@($"advanced-table{i}")">
                     <div class="main-table-content-line">
                             <div class="checkbox-line">
-                                  
+
                                 </div>
                                 <div class="date-line">
                                     <div class="date-line-name name-single-date">@item.DateCreated.ToUniversalTime().ToString("MM/dd/yyyy")<span class="name-single-date-time">@item.DateCreated.ToUniversalTime().ToString("HH:mm")</span></div>
@@ -186,7 +186,7 @@ ViewBag.PageClass = "transactions-columns";
                     </div>
                     <div class="main-table-content-line">
                             <div class="checkbox-line">
-                                  
+
                                 </div>
                                 <div class="date-line">
                                     <div class="date-line-name name-single-date">@item.DateCreated.ToUniversalTime().ToString("MM/dd/yyyy") <span class="name-single-date-time">@item.DateCreated.ToUniversalTime().ToString("HH:mm")</span></div>
@@ -205,7 +205,7 @@ ViewBag.PageClass = "transactions-columns";
                                     </div>
                                     </div>
                                 <div class="action-line">
-                                   
+
                                 </div>
                     </div>
             </div>
