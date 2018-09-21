@@ -10,14 +10,14 @@ namespace Sp8de.Random.Api.Services
     {
         private readonly IRandomNumberGenerator random;
         private readonly IGenericDataStorage storage;
-        private readonly ICryptoService signService;
+        private readonly ICryptoService cryptoService;
         private readonly IKeySecret keySecret;
 
-        public BuildinRandomContributorService(IRandomNumberGenerator random, IGenericDataStorage storage, ICryptoService signService, IKeySecretManager keySecretManager)
+        public BuildinRandomContributorService(IRandomNumberGenerator random, IGenericDataStorage storage, ICryptoService cryptoService, IKeySecretManager keySecretManager)
         {
             this.random = random;
             this.storage = storage;
-            this.signService = signService;
+            this.cryptoService = cryptoService;
             this.keySecret = keySecretManager.Generate();
         }
 
@@ -31,7 +31,7 @@ namespace Sp8de.Random.Api.Services
                 PubKey = keySecret.PublicAddress
             };
 
-            revealItem.Sign = signService.SignMessage(revealItem.ToString(), keySecret.PrivateKey);
+            revealItem.Sign = cryptoService.SignMessage(revealItem.ToString(), keySecret.PrivateKey);
 
             await storage.Add(revealItem.Sign, revealItem);
 

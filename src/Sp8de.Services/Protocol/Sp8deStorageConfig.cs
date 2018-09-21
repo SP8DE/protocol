@@ -1,4 +1,4 @@
-﻿namespace Sp8de.Services.Explorer
+﻿namespace Sp8de.Services.Protocol
 {
     public class Sp8deStorageConfig
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Sp8de.Services.Explorer
+namespace Sp8de.Common.Interfaces
 {
     public interface ISp8deTransactionStorage
     {

@@ -1,4 +1,5 @@
-﻿using Sp8de.Common.Enums;
+﻿using Sp8de.Common.BlockModels;
+using Sp8de.Common.Enums;
 using Sp8de.Common.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,9 @@ namespace Sp8de.RandomGenerators
 {
     public class PRNGRandomService : IPRNGRandomService
     {
-        public Int32[] Generate(IList<uint> seed, int count, int min, int max, PRNGAlgorithmType type = PRNGAlgorithmType.MT19937)
+        public int[] Generate(IList<uint> seed, int count, int min, int max, PRNGAlgorithmType type = PRNGAlgorithmType.MT19937)
         {
-            var arr = new Int32[count];
+            var arr = new int[count];
             var rng = GetGenerator(type, seed);
             for (int i = 0; i < count; i++)
             {
@@ -22,7 +23,6 @@ namespace Sp8de.RandomGenerators
 
         private AbstractGenerator GetGenerator(PRNGAlgorithmType type, IList<uint> seed)
         {
-
             switch (type)
             {
                 case PRNGAlgorithmType.MT19937:
@@ -56,7 +56,7 @@ namespace Sp8de.RandomGenerators
             return seedArray.Aggregate((x, y) => x ^ y);
         }
 
-        public Int32[] GenerateUnique(IList<uint> seed, int count, int min, int max, PRNGAlgorithmType type = PRNGAlgorithmType.MT19937)
+        public int[] GenerateUnique(IList<uint> seed, int count, int min, int max, PRNGAlgorithmType type = PRNGAlgorithmType.MT19937)
         {
             var rng = GetGenerator(type, seed);
 

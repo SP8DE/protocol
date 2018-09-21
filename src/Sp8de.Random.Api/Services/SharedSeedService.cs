@@ -6,23 +6,26 @@ using Sp8de.Random.Api.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Sp8de.Random.Api.Services
 {
-    public class SharedSeedService : ISharedSeedService
+    public class SharedSeedService //: ISharedSeedService
     {
         private readonly IDataStorage dataStorage;
-        private readonly ICryptoService signService;
+        private readonly ICryptoService cryptoService;
         private readonly IRandomContributorService contributorService;
+        private readonly ISp8deTransactionNodeService transactionNode;
 
-        public SharedSeedService(IDataStorage dataStorage, ICryptoService signService, IRandomContributorService contributorService)
+        public SharedSeedService(IDataStorage dataStorage, ICryptoService cryptoService, IRandomContributorService contributorService, ISp8deTransactionNodeService transactionNode)
         {
             this.dataStorage = dataStorage;
-            this.signService = signService;
+            this.cryptoService = cryptoService;
             this.contributorService = contributorService;
+            this.transactionNode = transactionNode;
         }
 
-        public SharedSeedData AggregatedCommit(List<CommitItem> items)
+        public async Task<SharedSeedData> AggregatedCommit(List<CommitItem> items)
         {
             var seedData = new SharedSeedData()
             {
@@ -42,6 +45,8 @@ namespace Sp8de.Random.Api.Services
 
             dataStorage.Add(seedData);
 
+            var transaction = await transactionNode.AddTransaction(new CreateTransactionRequest() { });
+
             return seedData;
         }
 
@@ -49,7 +54,7 @@ namespace Sp8de.Random.Api.Services
         {
             foreach (var item in items)
             {
-                if (!signService.VerifySignature(item.ToString(), item.Sign, item.PubKey))
+                if (!cryptoService.VerifySignature(item.ToString(), item.Sign, item.PubKey))
                 {
                     throw new ArgumentException($"Invalid signature for {item.PubKey}");
                 }

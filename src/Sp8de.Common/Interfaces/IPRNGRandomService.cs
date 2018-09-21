@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Sp8de.Common.BlockModels;
 using Sp8de.Common.Enums;
 
 namespace Sp8de.Common.Interfaces

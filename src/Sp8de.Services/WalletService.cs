@@ -9,10 +9,10 @@ namespace Sp8de.Services
 {
     public interface IWalletService
     {
-        Task ProcessPayment(Guid userId, decimal amount);
+        Task ProcessPayment(Guid userId, decimal amount, WalletTransactionType type);
     }
 
-    public class WalletService
+    public class WalletService : IWalletService
     {
         private readonly ILogger<IWalletService> logger;
         private readonly Sp8deDbContext context;

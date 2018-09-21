@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Sp8de.Services.Tests
 {
-    public class EthSignServiceTest
+    public class EthcryptoServiceTest
     {
         [Fact]
         public void EthSignTest()

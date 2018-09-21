@@ -15,18 +15,19 @@ namespace Sp8de.DemoGame.Web.Services
     {
         private readonly IRandomNumberGenerator random;
         private readonly IGenericDataStorage storage;
-        private readonly ICryptoService signService;
+        private readonly ICryptoService cryptoService;
         private readonly IpfsFileStorageService ipfs;
         private readonly IKeySecret keySecret;
 
-        public DemoProtocolService(ChaosProtocolConfig config, IRandomNumberGenerator random, IGenericDataStorage storage, ICryptoService signService, IKeySecretManager keySecretManager, IpfsFileStorageService ipfs)
+        public DemoProtocolService(ChaosProtocolConfig config, IRandomNumberGenerator random, IGenericDataStorage storage, ICryptoService cryptoService, IKeySecretManager keySecretManager, IpfsFileStorageService ipfs)
         {
             this.random = random;
             this.storage = storage;
-            this.signService = signService;
+            this.cryptoService = cryptoService;
             this.ipfs = ipfs;
             this.keySecret = keySecretManager.LoadKeySecret(config.ApiSecret);
         }
+
         public async Task<ProtocolTransaction> CreateTransaction(List<SignedItem> items, ChaosProtocolSettings settings)
         {
             var id = TxIdHelper.GenerateId();
@@ -39,7 +40,7 @@ namespace Sp8de.DemoGame.Web.Services
                 PubKey = keySecret.PublicAddress.ToLowerInvariant()
             };
 
-            revealItem.Sign = signService.SignMessage(revealItem.ToString(), keySecret.PrivateKey);
+            revealItem.Sign = cryptoService.SignMessage(revealItem.ToString(), keySecret.PrivateKey);
 
             await storage.Add(revealItem.Sign, revealItem);
 
@@ -84,7 +85,7 @@ namespace Sp8de.DemoGame.Web.Services
 
             foreach (var revealItem in items)
             {
-                if (!signService.VerifySignature(revealItem.ToString(), revealItem.Sign, revealItem.PubKey))
+                if (!cryptoService.VerifySignature(revealItem.ToString(), revealItem.Sign, revealItem.PubKey))
                 {
                     throw new ArgumentException($"Invalid signature for {revealItem.PubKey}");
                 };
