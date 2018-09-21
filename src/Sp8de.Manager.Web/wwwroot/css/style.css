@@ -1571,3 +1571,11 @@ html {
     width: 200px;
     margin: 10px;
 }
+
+.description-block{
+    padding: 20px 0;
+    color: white;
+}
+.account-info,.account-info a{
+    color: white;
+}
