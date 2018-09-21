@@ -12,10 +12,10 @@ namespace Sp8de.Random.Api.Services
     public class SharedSeedService : ISharedSeedService
     {
         private readonly IDataStorage dataStorage;
-        private readonly ISignService signService;
+        private readonly ICryptoService signService;
         private readonly IRandomContributorService contributorService;
 
-        public SharedSeedService(IDataStorage dataStorage, ISignService signService, IRandomContributorService contributorService)
+        public SharedSeedService(IDataStorage dataStorage, ICryptoService signService, IRandomContributorService contributorService)
         {
             this.dataStorage = dataStorage;
             this.signService = signService;

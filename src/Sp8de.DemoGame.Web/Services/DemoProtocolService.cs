@@ -10,42 +10,16 @@ using System.Threading.Tasks;
 
 namespace Sp8de.DemoGame.Web.Services
 {
-    public interface IChaosProtocolService
-    {
-        Task<ProtocolTransaction> CreateTransaction(List<SignedItem> items, ChaosProtocolSettings settings);
-        Task<ProtocolTransaction> RevealTransaction(string transactionId, List<RevealItem> items);
-    }
-
-    public class ChaosProtocolConfig
-    {
-        public string ApiKey { get; set; }
-        public string ApiSecret { get; set; }
-    }
-
-    public class ChaosProtocolSettings
-    {
-        public static ChaosProtocolSettings Default { get { return new ChaosProtocolSettings(); } }
-    }
-    
-    public class ProtocolTransaction : IEntity
-    {
-        public string Id { get; set; }
-        public List<SignedItem> Items { get; set; }
-        public string Signer { get; set; }
-        public string DependsOn { get; set; }
-        public Anchor Anchor { get; set; }
-    }
-
     //temp
     public class DemoProtocolService : IChaosProtocolService
     {
         private readonly IRandomNumberGenerator random;
         private readonly IGenericDataStorage storage;
-        private readonly ISignService signService;
+        private readonly ICryptoService signService;
         private readonly IpfsFileStorageService ipfs;
         private readonly IKeySecret keySecret;
 
-        public DemoProtocolService(ChaosProtocolConfig config, IRandomNumberGenerator random, IGenericDataStorage storage, ISignService signService, IKeySecretManager keySecretManager, IpfsFileStorageService ipfs)
+        public DemoProtocolService(ChaosProtocolConfig config, IRandomNumberGenerator random, IGenericDataStorage storage, ICryptoService signService, IKeySecretManager keySecretManager, IpfsFileStorageService ipfs)
         {
             this.random = random;
             this.storage = storage;

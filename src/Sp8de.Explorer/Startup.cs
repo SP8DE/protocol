@@ -43,8 +43,8 @@ namespace Sp8de.Explorer
                 };
             });
 
-            services.Configure<Sp8deTransactionStorageConfig>(Configuration.GetSection(nameof(Sp8deTransactionStorageConfig)));
-            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<Sp8deTransactionStorageConfig>>().Value);
+            services.Configure<Sp8deStorageConfig>(Configuration.GetSection(nameof(Sp8deStorageConfig)));
+            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<Sp8deStorageConfig>>().Value);
 
             services.AddTransient<ISp8deSearchService, Sp8deSearchService>();
             services.AddTransient<ISp8deTransactionStorage, Sp8deTransactionStorage>();

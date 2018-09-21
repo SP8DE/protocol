@@ -12,7 +12,7 @@ namespace Sp8de.Services.Explorer
     {
         private readonly IDocumentStore store;
 
-        public Sp8deBlockStorage(Sp8deTransactionStorageConfig config)
+        public Sp8deBlockStorage(Sp8deStorageConfig config)
         {
             if (config is null)
             {

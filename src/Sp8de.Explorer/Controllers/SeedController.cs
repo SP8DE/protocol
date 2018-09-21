@@ -16,30 +16,26 @@ namespace Sp8de.Explorer.Api.Controllers
     [ApiController]
     public class SeedController : Controller
     {
-        private readonly EthSignService signService;
+        private readonly ICryptoService signService;
         private readonly EthKeySecretManager secretManager;
         private readonly IKeySecret[] keys;
         private readonly ISp8deTransactionStorage storage;
-        private readonly ISp8deBlockStorage blockStorage;
-        private readonly Sp8deBlockService blockService;
+        private readonly Sp8deTransactionService transactionService;
 
-        public SeedController(ISp8deTransactionStorage storage, ISp8deBlockStorage blockStorage)
+        public SeedController(ISp8deTransactionStorage storage)
         {
-            signService = new EthSignService();
-            secretManager = new EthKeySecretManager();
+            signService = new EthCryptoService();
 
-            keys = new[]
-            {
+            keys = new[]{
                 "d7d60dc1c9376fe0011a854fef00d62dbfb9c7224954c396d057d02223abd2ea",
                 "42e40a6e9ccdf1003f8be7230db99d2d1a87f42fb0d0969b472da9325dcda7af",
                 "f03efed83ff22c7ed2d8d2e7f45b8d20f800f2036ad9ebf569c71d77dca318b3"
             }
-            .Select(x => secretManager.LoadKeySecret(x))
+            .Select(x => EthKeySecret.Load(x))
             .ToArray();
 
             this.storage = storage;
-            this.blockStorage = blockStorage;
-            this.blockService = new Sp8deBlockService(new Sp8deNodeConfig() { Key = keys.Last() });
+            this.transactionService = new Sp8deTransactionService(new Sp8deNodeConfig() { Key = keys.Last() });
         }
 
         [HttpGet("transactions")]
@@ -58,33 +54,6 @@ namespace Sp8de.Explorer.Api.Controllers
             return Ok(sw.ElapsedMilliseconds);
         }
 
-        [HttpGet("blocks")]
-        public async Task<ActionResult<Sp8deBlock>> Blocks(int limit = 10)
-        {
-            var block = await blockStorage.GetLatestBlock() ?? new Sp8deBlock();
-
-            for (int i = 0; i < limit; i++)
-            {
-                var transactions = await storage.GetPending(new Random().Next(0, 200));
-
-                block = blockService.GenerateNewBlock(transactions, block);
-                await blockStorage.Add(block);
-
-                foreach (var item in transactions)
-                {
-                    item.Status = Sp8deTransactionStatus.Confirmed;
-                    item.Meta = new TransactionMeta()
-                    {
-                        BlockId = block.Id
-                    };
-                }
-
-                await storage.Update(transactions);
-            }
-
-            return block;
-        }
-
         private async Task<List<Sp8deTransaction>> SeedTransactions(int limit)
         {
             var list = new List<Sp8deTransaction>();
@@ -97,6 +66,7 @@ namespace Sp8de.Explorer.Api.Controllers
             {
                 var tx1 = CreateTransaction(secret, Sp8deTransactionType.AggregatedCommit);
                 list.Add(tx1);
+
                 var tx2 = CreateTransaction(secret, Sp8deTransactionType.AggregatedReveal, tx1.Id);
                 list.Add(tx2);
             }
@@ -115,7 +85,7 @@ namespace Sp8de.Explorer.Api.Controllers
                 {
                     Nonce = ((secret + i) * 3).ToString(),
                     From = key.PublicAddress,
-                    Data = (secret + i).ToString()
+                    Data = (secret / i + i).ToString()
                 };
 
                 internalTx.Sign = signService.SignMessage(internalTx.GetDataForSign(), key.PrivateKey);
@@ -136,7 +106,7 @@ namespace Sp8de.Explorer.Api.Controllers
                 innerItems.Add(internalTx);
             }
 
-            var tx = blockService.GenerateNewTransaction(innerItems, type, dependsOn);
+            var tx = transactionService.GenerateNewTransaction(innerItems, type, dependsOn);
 
             return tx;
         }

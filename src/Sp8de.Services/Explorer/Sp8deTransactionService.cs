@@ -1,4 +1,5 @@
 ﻿using Sp8de.Common.BlockModels;
+using Sp8de.Common.Interfaces;
 using Sp8de.Common.Utils;
 using Sp8de.EthServices;
 using Stratis.Patricia;
@@ -10,59 +11,27 @@ using System.Text;
 namespace Sp8de.Services.Explorer
 {
     //temp
-    public class Sp8deBlockService
+    public class Sp8deTransactionService
     {
-        private readonly IHasher hasher;
-        private readonly EthSignService signService;
+        private readonly ICryptoService signService;
         private readonly Sp8deNodeConfig config;
 
-        public Sp8deBlockService(Sp8deNodeConfig config)
+        public Sp8deTransactionService(Sp8deNodeConfig config)
         {
-            this.hasher = new Keccak256Hasher();
-            this.signService = new EthSignService();
+            this.signService = new EthCryptoService();
             this.config = config;
         }
 
         public string CalculateHash(byte[] inputBytes)
         {
-            byte[] outputBytes = hasher.Hash(inputBytes);
+            byte[] outputBytes = signService.CalculateHash(inputBytes);
             return HexConverter.ToHex(outputBytes);
         }
 
         public (string hash, byte[] bytes) CalculateTransactionHash(Sp8deTransaction transaction)
         {
-            byte[] inputBytes = Encoding.UTF8.GetBytes($"{transaction.Type};{transaction.Timestamp};{transaction.InternalRoot};{transaction.Signer ?? ""};{transaction.DependsOn ?? ""};{transaction.InputData?.Hash ?? ""};{transaction.OutputData?.Hash ?? ""}");
-            byte[] outputBytes = hasher.Hash(inputBytes);
+            byte[] outputBytes = signService.CalculateHash(transaction.GetBytes());
             return (HexConverter.ToHex(outputBytes), outputBytes);
-        }
-
-        public Sp8deBlock GenerateNewBlock(IReadOnlyList<Sp8deTransaction> list, Sp8deBlock prevBlock)
-        {
-            var block = new Sp8deBlock()
-            {
-                Id = prevBlock.Id + 1,
-                PreviousHash = prevBlock.Hash,
-                Timestamp = DateConverter.UtcNow,
-                Transactions = list.Select(x => x.Id).ToList(),
-                Signer = config.Key.PublicAddress,
-                Anchors = new List<Anchor>() {
-                    new Anchor(){
-                        Type = "IPFS",
-                        Data = "QmPTptErGpze3kzx84nyoEpYyK3caWdUThRbcpi2tYdCmi",
-                        Timestamp = DateConverter.UtcNow
-                    }
-                }
-            };
-
-            block.TransactionRoot = CalculateTransactionRootHash(list);
-
-            var blockContent = block.GeteDataForSing();
-
-            block.Signature = signService.SignMessage(blockContent, config.Key.PrivateKey);
-
-            block.Hash = CalculateHash(Encoding.UTF8.GetBytes(block.Signature));
-
-            return block;
         }
 
         public Sp8deTransaction GenerateNewTransaction(IList<InternalTransaction> inner, Sp8deTransactionType transactionType, string dependsOn = null)
@@ -117,20 +86,6 @@ namespace Sp8de.Services.Explorer
             return tx;
         }
 
-        public string CalculateTransactionRootHash(IReadOnlyList<Sp8deTransaction> list)
-        {
-            var trie = new PatriciaTrie();
-
-            foreach (var item in list)
-            {
-                var hash = CalculateTransactionHash(item);
-                trie.Put(hash.bytes, Encoding.UTF8.GetBytes(item.InternalRoot /*item.Signature*/)); //TODO
-            }
-
-            var outputBytes = trie.GetRootHash();
-            return HexConverter.ToHex(outputBytes);
-        }
-
         public void PopulateInternalTransactionHash(IList<InternalTransaction> list)
         {
             if (list == null && list.Count == 0)
@@ -161,10 +116,8 @@ namespace Sp8de.Services.Explorer
 
         public (string hash, byte[] bytes) CalculateInternalTransactionHash(InternalTransaction transaction)
         {
-            byte[] inputBytes = Encoding.UTF8.GetBytes($"{transaction.Type};{transaction.From};{transaction.Nonce};{ transaction.Sign}");
-            byte[] outputBytes = hasher.Hash(inputBytes);
+            byte[] outputBytes = signService.CalculateHash(transaction.GetBytes());
             return (HexConverter.ToHex(outputBytes), outputBytes);
         }
     }
-
 }

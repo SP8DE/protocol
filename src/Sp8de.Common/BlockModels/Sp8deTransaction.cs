@@ -1,9 +1,10 @@
 ﻿using Sp8de.Common.Interfaces;
 using System.Collections.Generic;
+using System.Text;
+using System.Linq;
 
 namespace Sp8de.Common.BlockModels
 {
-
     public class Sp8deTransaction : IEntity
     {
         public string Id { get; set; }
@@ -30,6 +31,12 @@ namespace Sp8de.Common.BlockModels
         public IList<InternalTransaction> InternalTransactions { get; set; }
 
         public TransactionMeta Meta { get; set; }
+
+        public byte[] GetBytes()
+        {
+            return Encoding.UTF8.GetBytes($"{this.Type};{this.Timestamp};{this.InternalRoot};{this.Signer ?? ""};{this.DependsOn ?? ""};{this.InputData?.Hash ?? ""};{this.OutputData?.Hash ?? ""}");
+            //{string.Join('|', InternalTransactions.Select(x => x.Sign))}
+        }
 
         public Sp8deTransaction()
         {
