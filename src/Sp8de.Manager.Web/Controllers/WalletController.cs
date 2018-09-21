@@ -34,13 +34,13 @@ namespace Sp8de.Manager.Web.Controllers
         public async Task<IActionResult> Index()
         {
             //HACK
-            return View(new WalletViewModel()
+            /*return View(new WalletViewModel()
             {
                 Address = "0x618033684Dfedb6ce9b70744567E9E761A1c82F3",
                 Balance = 1000,
                 Currency = Currency.SPX
             });
-
+*/
             var vm = await CreateWallet(Currency.SPX);
             vm.Balance = GetBalance(Currency.SPX);
             return View(vm);
@@ -78,11 +78,14 @@ namespace Sp8de.Manager.Web.Controllers
         {
             //HACK
             return View(new WalletViewModel()
-            {
+            /*{
                 Address = "0x618033684Dfedb6ce9b70744567E9E761A1c82F3",
                 Balance = 1000,
                 Currency = Currency.SPX
-            });
+            });*/
+            var vm = await CreateWallet(Currency.SPX);
+            vm.Balance = GetBalance(Currency.SPX);
+            return View(vm);
         }
 
         public IActionResult Withdraw()
