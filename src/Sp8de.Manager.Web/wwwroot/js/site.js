@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             navigator.clipboard.writeText(document.querySelector('.input-address').value)
         });
     }
-    if (document.querySelector('.CreateWithdrawalRequest')) {
+    if (document.querySelector('.CreateWithdrawalRequest') && document.querySelector('.toogleWithdraw')) {
         // document.querySelector('.CreateWithdrawalRequest').addEventListener('click', CreateWithdrawalRequest);
         document.querySelector('.toogleWithdraw').addEventListener('click', toogleWithdraw);
         // document.querySelector('.wallet').addEventListener('change', validateAddress);
