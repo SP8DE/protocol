@@ -1,4 +1,4 @@
-﻿@model WalletTransactionsViewModel
+@model WalletTransactionsViewModel
 @using Sp8de.Common.Enums
 
 @{
@@ -23,50 +23,52 @@ ViewBag.PageClass = "transactions-columns";
             <p>Wallet transactions were not found.</p>
         </div>
         }
-<div class="transactions-table">
-        <div class="nav-panel-transactions">
-            <div class="nav-panel-transactions-title">ALL TRANSACTIONS</div>
-            <div class="nav-panel-transaction">
-                <div class="wrapper-nav-panel-transaction-search">
-                    <input type="text" class="search-input-transaction" placeholder="SEARCH...">
-                    <button class="search-icon-transaction"></button>
+    @if (Model.HasTransactions)
+        {
+            <div class="transactions-table">
+                <div class="nav-panel-transactions">
+                    <div class="nav-panel-transactions-title">ALL TRANSACTIONS</div>
+                    <div class="nav-panel-transaction">
+                        <div class="wrapper-nav-panel-transaction-search">
+                            <input type="text" class="search-input-transaction" placeholder="SEARCH...">
+                            <button class="search-icon-transaction"></button>
+                        </div>
+                        <select class="select-transaction">
+                            <option>Show all</option>
+                            <option>Date</option>
+                            <option>Popular</option>
+                            <option>Date</option>
+                            <option>Popular</option>
+                            <option>Date</option>
+                            <option>Popular</option>
+                        </select>
+                    </div>
                 </div>
-                <select class="select-transaction">
-                    <option>Show all</option>
-                    <option>Date</option>
-                    <option>Popular</option>
-                    <option>Date</option>
-                    <option>Popular</option>
-                    <option>Date</option>
-                    <option>Popular</option>
-                </select>
-            </div>
-        </div>
-        <div class="line-naming-transactions">
-            <div class="checkbox-line">
-                <input id="check" type="checkbox" class="checkbox-transaction">
-                <label for="check">
-                    <div class="checkbox-box"></div>
-                </label>
-            </div>
-            <div class="date-line">
-                <div class="date-line-name name-transcation-column">date</div>
-            </div>
-            <div class="type-line">
-                <div class="type-line-name name-transcation-column">TYPE</div>
-            </div>
-            <div class="amount-line">
-                <div class="amount-line-name name-transcation-column">AMOUNT</div>
-            </div>
-            <div class="status-line">
-                <div class="status-line-name name-transcation-column">STATUS</div>
-            </div>
-            <div class="action-line">
-                <div class="action-line-name name-transcation-column">action</div>
-            </div>
-        </div>
-        <div class="main-table-content-transactions">
-             @if (Model.HasTransactions)
+                <div class="line-naming-transactions">
+                    <div class="checkbox-line">
+                        <input id="check" type="checkbox" class="checkbox-transaction">
+                        <label for="check">
+                            <div class="checkbox-box"></div>
+                        </label>
+                    </div>
+                    <div class="date-line">
+                        <div class="date-line-name name-transcation-column">date</div>
+                    </div>
+                    <div class="type-line">
+                        <div class="type-line-name name-transcation-column">TYPE</div>
+                    </div>
+                    <div class="amount-line">
+                        <div class="amount-line-name name-transcation-column">AMOUNT</div>
+                    </div>
+                    <div class="status-line">
+                        <div class="status-line-name name-transcation-column">STATUS</div>
+                    </div>
+                    <div class="action-line">
+                        <div class="action-line-name name-transcation-column">action</div>
+                    </div>
+                </div>
+                <div class="main-table-content-transactions">
+                    @if (Model.HasTransactions)
                     {
                     for (int i = 0; i < Model.Transactions.Count; i++)
                     {
