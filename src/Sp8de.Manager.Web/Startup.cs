@@ -36,15 +36,10 @@ namespace Sp8de.Manager.Web
             });
 
             //HACK
-            services.AddDbContext<Sp8deDbContext>(c =>
-                c.UseInMemoryDatabase("Sp8de"));
-            
             services.AddMemoryCache();
-            /*
             services.AddDbContext<Sp8deDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
             );
-            */
 
             services.AddDefaultIdentity<ApplicationUser>(o =>
             {
