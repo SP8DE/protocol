@@ -1,4 +1,4 @@
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
@@ -8,6 +8,7 @@ var toogleWithdraw = function (amount, wallet) {
     address.style.display = 'none';
     withdraw.style.display = 'block';
 };
+
 function CreateWithdrawalRequest() {
     var success = document.querySelector('.successful'),
         fail = document.querySelector('.fail'),
@@ -91,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // document.querySelector('.wallet').addEventListener('blur', validateAddress);
         // document.querySelector('.wallet').addEventListener('keyup', validateAddress);
     }
-
     var qrcode = new QRCode(document.querySelector('.qr-wrap'), {
         width: 250,
         height: 250,

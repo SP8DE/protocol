@@ -1329,24 +1329,24 @@ html {
         -ms-flex-wrap: wrap;
             flex-wrap: wrap;
       }
-      
+
       @media screen and (max-width: 1100px) {
         .homepage-line {
           width: 600px;
         }
       }
-      
+
       @media screen and (max-width: 890px) {
         .homepage-line {
           display: block;
           width: 100%;
         }
       }
-      
+
       .homepage-block {
         margin-bottom: 50px;
       }
-      
+
       .homepage-block a.title-homepage {
         font-size: 21px;
         font-weight: 300;
@@ -1355,7 +1355,7 @@ html {
         margin-bottom: 20px;
         display: inline-block;
       }
-      
+
       .homepage-block a.title-homepage:before {
         content: '';
         position: absolute;
@@ -1365,18 +1365,18 @@ html {
         height: 1px;
         background: #11907e;
       }
-      
+
       .homepage-block span.title-homepage {
         font-size: 21px;
         font-weight: 300;
         color: #02ffce;
         margin-bottom: 15px;
       }
-      
+
       .homepage-block a, .homepage-block span {
         display: block;
       }
-      
+
       .homepage-block .include-link {
         font-size: 16px;
         color: #ffffff;
@@ -1395,27 +1395,27 @@ html {
           background: #d7d7d8;
           height: 1px;
       }
-      
+
       .homepage-column {
         margin-left: 33px;
         margin-top: 37px;
       }
-      
+
       .homepage-column:first-child {
         margin-left: 0;
       }
-      
+
       .homepage-column:first-child .wallet-single-block {
         margin-bottom: 30px;
       }
-      
+
       @media screen and (max-width: 1100px) {
         .homepage-column:last-child {
           margin-left: 0;
           margin-top: 0;
         }
       }
-      
+
       @media screen and (max-width: 890px) {
         .homepage-column {
           margin-left: 0;
@@ -1487,11 +1487,11 @@ html {
     font-weight: 500;
     margin-bottom: 6px;
   }
-  
+
   .new-api-key {
     margin-top: 40px;
   }
-  
+
   .content-single-new-api {
     font-size: 16px;
     color: #ffffff;
@@ -1501,24 +1501,24 @@ html {
     padding-top: 16px;
     word-wrap: break-word;
   }
-  
+
   @media screen and (max-width: 1000px) {
     .content-single-new-api {
       width: 100%;
     }
   }
-  
+
   .single-new-api {
     margin-bottom: 45px;
   }
-  
+
   .main-btn.back-btn {
     border-color: #06d6ae;
     color: #02ffce;
     position: relative;
     margin-left: 0;
   }
-  
+
   .main-btn.back-btn::before {
     content: '';
     position: absolute;
@@ -1535,12 +1535,12 @@ html {
 .single-api table tbody td:nth-child(2) {
     min-width: 186px;
     max-width: 186px;
-    width: 100%;    
+    width: 100%;
 }
 .single-api table tbody td:nth-child(1) {
     min-width: 325px;
     max-width: 325px;
-    width: 100%;    
+    width: 100%;
 }
 
 .qr-code-block {
