@@ -17,11 +17,13 @@ ViewData["Title"] = "Your Wallet";
 </div>
 @{await Html.RenderPartialAsync("_Wallet");}
 <div class="withdraw-title">Send your Sp8de (SPX) to the address in the field bellow!</div>
-<div class="deposit-line">
-
+<div class="deposit-line address-qrcode">
+                                <div id="ETHWalletCode" class="qr-wrap qr-image" title="@Model.Address">
+                                </div>
                                <div class="deposit-content qr-code-block">
                                     <input id="ethadress" type="text" class=" input-address input-type-text withdraw-eth withdraw-eth-code" required="" disabled value="@Model.Address">
-                                    <div class="flex-line line-btns deposit-buttons deposit-line-flex">
+
+                                   <div class="flex-line line-btns deposit-buttons deposit-line-flex">
                                             <button class="main-btn green-btn button-class copy-elem copy-btn">COPY ADDRESS</button>
                                             <a href="~/wallet/withdraw" class="main-btn white-btn icon-white-up">WITHDRAW YOUR SPX TOKENS</a>
                                         </div>
