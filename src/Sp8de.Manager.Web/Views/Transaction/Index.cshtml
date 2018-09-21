@@ -2,234 +2,236 @@
 @using Sp8de.Common.Enums
 
 @{
-ViewData["Title"] = "YOUR TRANSACTIONS";
-ViewBag.PageClass = "transactions-columns";
+	ViewData["Title"] = "YOUR TRANSACTIONS";
+	ViewBag.PageClass = "transactions-columns";
 }
 
 @section Scripts{
-    <script>
-        $('.transactions-trigger').addClass('active')
-    </script>
+	<script>
+		$('.transactions-trigger').addClass('active')
+	</script>
 }
-<div class="main-content transactions-table-content-main">
-    <h1>@ViewData["Title"]</h1>
-    <div class="breadcrumbs">
-        <a href="#">Home</a>
-        <span>Transaction history</span>
-    </div>
-    @if (!Model.HasTransactions)
-        {
-        <div class="description-block">
-            <p>Wallet transactions were not found.</p>
-        </div>
-        }
-    @if (Model.HasTransactions)
-    {
-<div class="transactions-table">
-        <div class="nav-panel-transactions">
-            <div class="nav-panel-transactions-title">ALL TRANSACTIONS</div>
-            <div class="nav-panel-transaction">
-                <div class="wrapper-nav-panel-transaction-search">
-                    <input type="text" class="search-input-transaction" placeholder="SEARCH...">
-                    <button class="search-icon-transaction"></button>
-                </div>
-                <select class="select-transaction">
-                    <option>Show all</option>
-                    <option>Date</option>
-                    <option>Popular</option>
-                    <option>Date</option>
-                    <option>Popular</option>
-                    <option>Date</option>
-                    <option>Popular</option>
-                </select>
-            </div>
-        </div>
-        <div class="line-naming-transactions">
-            <div class="checkbox-line">
-                <input id="check" type="checkbox" class="checkbox-transaction">
-                <label for="check">
-                    <div class="checkbox-box"></div>
-                </label>
-            </div>
-            <div class="date-line">
-                <div class="date-line-name name-transcation-column">date</div>
-            </div>
-            <div class="type-line">
-                <div class="type-line-name name-transcation-column">TYPE</div>
-            </div>
-            <div class="amount-line">
-                <div class="amount-line-name name-transcation-column">AMOUNT</div>
-            </div>
-            <div class="status-line">
-                <div class="status-line-name name-transcation-column">STATUS</div>
-            </div>
-            <div class="action-line">
-                <div class="action-line-name name-transcation-column">action</div>
-            </div>
-        </div>
-        <div class="main-table-content-transactions">
-             @if (Model.HasTransactions)
-                    {
-                    for (int i = 0; i < Model.Transactions.Count; i++)
-                    {
-                    var item = Model.Transactions[i];
-            <div class="main-table-content-line not-subline">
-                    <div class="checkbox-line">
-                            <input id="check1" type="checkbox" class="checkbox-transaction">
-                            <label for="check1">
-                                <div class="checkbox-box"></div>
-                            </label>
-                        </div>
-                        <div class="date-line">
-                            <div class="date-line-name name-single-date">@item.DateCreated.ToUniversalTime().ToString("dd/MM/yyyy")<span class="name-single-date-time">@item.DateCreated.ToUniversalTime().ToString("HH:mm")</span></div>
-                        </div>
-                        <div class="type-line">
-                            <div class="type-line-name name-single-type">@item.Type.ToString()</div>
-                        </div>
-                        <div class="mobile-hidden-wrapper-hide">
-                        <div class="mobile-hidden-wrapper">
-                        <div class="amount-line">
-                            <div class="amount-line-name name-single-amount">@item.Amount.ToString("0.000000") @item.Currency</div>
-                        </div>
-                        <div class="status-line">
-                            @switch (item.Status)
-                            {
+	<div class="main-content transactions-table-content-main">
+		<h1>@ViewData["Title"]</h1>
+		<div class="breadcrumbs">
+			<a href="#">Home</a>
+			<span>Transaction history</span>
+		</div>
+		@if (!Model.HasTransactions)
+		{
+			<div class="description-block">
+				<p>Wallet transactions were not found.</p>
+			</div>
+		}
+		@if (Model.HasTransactions)
+		{
+			<div class="transactions-table">
+				<div class="nav-panel-transactions">
+					<div class="nav-panel-transactions-title">ALL TRANSACTIONS</div>
+					<div class="nav-panel-transaction">
+						<div class="wrapper-nav-panel-transaction-search">
+							<input type="text" class="search-input-transaction" placeholder="SEARCH...">
+							<button class="search-icon-transaction"></button>
+						</div>
+						<select class="select-transaction">
+							<option>Show all</option>
+							<option>Date</option>
+							<option>Popular</option>
+							<option>Date</option>
+							<option>Popular</option>
+							<option>Date</option>
+							<option>Popular</option>
+						</select>
+					</div>
+				</div>
+				<div class="line-naming-transactions">
+					<div class="checkbox-line">
+						<input id="check" type="checkbox" class="checkbox-transaction">
+						<label for="check">
+							<div class="checkbox-box"></div>
+						</label>
+					</div>
+					<div class="date-line">
+						<div class="date-line-name name-transcation-column">date</div>
+					</div>
+					<div class="type-line">
+						<div class="type-line-name name-transcation-column">TYPE</div>
+					</div>
+					<div class="amount-line">
+						<div class="amount-line-name name-transcation-column">AMOUNT</div>
+					</div>
+					<div class="status-line">
+						<div class="status-line-name name-transcation-column">STATUS</div>
+					</div>
+					<div class="action-line">
+						<div class="action-line-name name-transcation-column">action</div>
+					</div>
+				</div>
+				<div class="main-table-content-transactions">
+					@if (Model.HasTransactions)
+					{
+						for (int i = 0; i < Model.Transactions.Count; i++)
+						{
+							var item = Model.Transactions[i];
+							<div class="main-table-content-line not-subline">
+								<div class="checkbox-line">
+									<input id="check1" type="checkbox" class="checkbox-transaction">
+									<label for="check1">
+										<div class="checkbox-box"></div>
+									</label>
+								</div>
+								<div class="date-line">
+									<div class="date-line-name name-single-date">@item.DateCreated.ToUniversalTime().ToString("dd/MM/yyyy")<span class="name-single-date-time">@item.DateCreated.ToUniversalTime().ToString("HH:mm")</span></div>
+								</div>
+								<div class="type-line">
+									<div class="type-line-name name-single-type">@item.Type.ToString()</div>
+								</div>
+								<div class="mobile-hidden-wrapper-hide">
+									<div class="mobile-hidden-wrapper">
+										<div class="amount-line">
+											<div class="amount-line-name name-single-amount">@item.Amount.ToString("0.000000") @item.Currency</div>
+										</div>
+										<div class="status-line">
+											@switch (item.Status)
+											{
 
-                            case WalletTransactionStatus.New:
-                            <div class="status-line-name name-transcation-column name-single-status white">@item.Status</div>
-                            break;
+												case WalletTransactionStatus.New:
+													<div class="status-line-name name-transcation-column name-single-status white">@item.Status</div>
+													break;
 
-                            case WalletTransactionStatus.Pending:
-                            <div class="status-line-name name-transcation-column name-single-status white">@item.Status</div>
-                            break;
+												case WalletTransactionStatus.Pending:
+													<div class="status-line-name name-transcation-column name-single-status white">@item.Status</div>
+													break;
 
-                            case WalletTransactionStatus.ConfirmedByManager:
-                            <div class="status-line-name name-transcation-column name-single-status white">@item.Status</div>
-                            break;
+												case WalletTransactionStatus.ConfirmedByManager:
+													<div class="status-line-name name-transcation-column name-single-status white">@item.Status</div>
+													break;
 
-                            case WalletTransactionStatus.Compleated:
-                            <div class="status-line-name name-transcation-column name-single-status completed">@item.Status</div>
-                            break;
+												case WalletTransactionStatus.Compleated:
+													<div class="status-line-name name-transcation-column name-single-status completed">@item.Status</div>
+													break;
 
-                            case WalletTransactionStatus.Error:
-                            <div class="status-line-name name-transcation-column name-single-status error">@item.Status</div>
-                            break;
+												case WalletTransactionStatus.Error:
+													<div class="status-line-name name-transcation-column name-single-status error">@item.Status</div>
+													break;
 
-                            case WalletTransactionStatus.Rejected:
-                            <div class="status-line-name name-transcation-column name-single-status white">@item.Status</div>
-                            break;
-                            }
-                        </div>
-                    </div>
-                    </div>
-                        <div class="action-line">
-                            <div class="action-line-name name-single-action">
-                                <button class="delete-btn-action"></button>
-                                <div class="arrows-action"></div>
-                            </div>
-                        </div>
-            </div>
-            <div class="main-table-subcontent" id="@($"advanced-table{i}")">
-                    <div class="main-table-content-line">
-                            <div class="checkbox-line">
+												case WalletTransactionStatus.Rejected:
+													<div class="status-line-name name-transcation-column name-single-status white">@item.Status</div>
+													break;
+											}
+										</div>
+									</div>
+								</div>
+								<div class="action-line">
+									<div class="action-line-name name-single-action">
+										<button class="delete-btn-action"></button>
+										<div class="arrows-action"></div>
+									</div>
+								</div>
+							</div>
+							<div class="main-table-subcontent" id="@($"advanced-table{i}")">
+								<div class="main-table-content-line">
+									<div class="checkbox-line">
 
-                                </div>
-                                <div class="date-line">
-                                    <div class="date-line-name name-single-date">@item.DateCreated.ToUniversalTime().ToString("MM/dd/yyyy")<span class="name-single-date-time">@item.DateCreated.ToUniversalTime().ToString("HH:mm")</span></div>
-                                </div>
-                                <div class="type-line">
-                                    <div class="type-line-name name-single-type">Deposit Wallet</div>
-                                </div>
-                                <div class="mobile-hidden-wrapper-hide">
-                                        <div class="mobile-hidden-wrapper">
-                                        <div class="amount-line">
-                                            <div class="amount-line-name name-single-amount">@item.Amount.ToString("0.000000") @item.Currency</div>
-                                        </div>
-                                        <div class="status-line">
-                                            @switch (item.TransactionInfo.Status)
-                                            {
+									</div>
+									<div class="date-line">
+										<div class="date-line-name name-single-date">@item.DateCreated.ToUniversalTime().ToString("MM/dd/yyyy")<span class="name-single-date-time">@item.DateCreated.ToUniversalTime().ToString("HH:mm")</span></div>
+									</div>
+									<div class="type-line">
+										<div class="type-line-name name-single-type">Deposit Wallet</div>
+									</div>
+									<div class="mobile-hidden-wrapper-hide">
+										<div class="mobile-hidden-wrapper">
+											<div class="amount-line">
+												<div class="amount-line-name name-single-amount">@item.Amount.ToString("0.000000") @item.Currency</div>
+											</div>
+											<div class="status-line">
+												@switch (item.TransactionInfo.Status)
+												{
 
-                                            case BlockchainTransactionStatus.Undefined:
-                                            <div class="status-line-name name-transcation-column name-single-status white">Undefined</div>
-                                            break;
+													case BlockchainTransactionStatus.Undefined:
+														<div class="status-line-name name-transcation-column name-single-status white">Undefined</div>
+														break;
 
-                                            case BlockchainTransactionStatus.New:
-                                            <div class="status-line-name name-transcation-column name-single-status white">New</div>
-                                            break;
+													case BlockchainTransactionStatus.New:
+														<div class="status-line-name name-transcation-column name-single-status white">New</div>
+														break;
 
-                                            case BlockchainTransactionStatus.Pending:
-                                            <div class="status-line-name name-transcation-column name-single-status white">Pending</div>
-                                            break;
+													case BlockchainTransactionStatus.Pending:
+														<div class="status-line-name name-transcation-column name-single-status white">Pending</div>
+														break;
 
-                                            case BlockchainTransactionStatus.ConfirmedByGate:
-                                            <div class="status-line-name name-transcation-column name-single-status white">Pending</div>
-                                            break;
+													case BlockchainTransactionStatus.ConfirmedByGate:
+														<div class="status-line-name name-transcation-column name-single-status white">Pending</div>
+														break;
 
-                                            case BlockchainTransactionStatus.ConfirmedAndValidated:
-                                            <div class="status-line-name name-transcation-column name-single-status completed">Accepted</div>
-                                            break;
+													case BlockchainTransactionStatus.ConfirmedAndValidated:
+														<div class="status-line-name name-transcation-column name-single-status completed">Accepted</div>
+														break;
 
-                                            case BlockchainTransactionStatus.Error:
-                                            <div class="status-line-name name-transcation-column name-single-status completed">Error</div>
-                                            break;
+													case BlockchainTransactionStatus.Error:
+														<div class="status-line-name name-transcation-column name-single-status completed">Error</div>
+														break;
 
-                                            case BlockchainTransactionStatus.Canceled:
-                                            <div class="status-line-name name-transcation-column name-single-status completed">Canceled</div>
-                                            break;
-                                            }
-                                        </div>
-                                    </div>
-                                    </div>
-                                <div class="action-line">
+													case BlockchainTransactionStatus.Canceled:
+														<div class="status-line-name name-transcation-column name-single-status completed">Canceled</div>
+														break;
+												}
+											</div>
+										</div>
+									</div>
+									<div class="action-line">
 
-                                </div>
-                    </div>
-                    <div class="main-table-content-line">
-                            <div class="checkbox-line">
+									</div>
+								</div>
+								<div class="main-table-content-line">
+									<div class="checkbox-line">
 
-                                </div>
-                                <div class="date-line">
-                                    <div class="date-line-name name-single-date">@item.DateCreated.ToUniversalTime().ToString("MM/dd/yyyy") <span class="name-single-date-time">@item.DateCreated.ToUniversalTime().ToString("HH:mm")</span></div>
-                                </div>
-                                <div class="type-line">
-                                    <div class="type-line-name name-single-type">... @item.Type.ToString()</div>
-                                </div>
-                                <div class="mobile-hidden-wrapper-hide">
-                                        <div class="mobile-hidden-wrapper">
-                                        <div class="amount-line">
-                                            <div class="amount-line-name name-single-amount">... @item.Type.ToString()</div>
-                                        </div>
-                                        <div class="status-line">
-                                            <div class="status-line-name name-transcation-column name-single-status white">Pending</div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                <div class="action-line">
+									</div>
+									<div class="date-line">
+										<div class="date-line-name name-single-date">@item.DateCreated.ToUniversalTime().ToString("MM/dd/yyyy") <span class="name-single-date-time">@item.DateCreated.ToUniversalTime().ToString("HH:mm")</span></div>
+									</div>
+									<div class="type-line">
+										<div class="type-line-name name-single-type">... @item.Type.ToString()</div>
+									</div>
+									<div class="mobile-hidden-wrapper-hide">
+										<div class="mobile-hidden-wrapper">
+											<div class="amount-line">
+												<div class="amount-line-name name-single-amount">... @item.Type.ToString()</div>
+											</div>
+											<div class="status-line">
+												<div class="status-line-name name-transcation-column name-single-status white">Pending</div>
+											</div>
+										</div>
+									</div>
+									<div class="action-line">
 
-                                </div>
-                    </div>
-            </div>
-                    }}
+									</div>
+								</div>
+							</div>
+						}
+					}
 
 
+				</div>
+				}
+				<button class="ajax-show-more-btn">show more</button>
+			</div>
 
-        </div>
-    }
-        <button class="ajax-show-more-btn">show more</button>
-</div>
-</div>
-<!-- <div class="history">
-    <div class="history-line">
-        <div class="history-title">
-            <div class="words">+ ICO => Payments received => 8/12/2017 2:45:16 => 0.1 BTC (Pending) => 29.38 (30% GVOT);
-                20.00 (20% GVOT)
-            </div>
-            <div class="toggle"
-                 data-toggle="collapse"
-                 data-toggle="collapse"
-                 data-target="#transaction-table"
-                 aria-expanded="false"
-                 aria-controls="transaction-table">+
-            </div>
-        </div>
-    </div> -->
+		}
+	</div>
+	<!-- <div class="history">
+		<div class="history-line">
+			<div class="history-title">
+				<div class="words">+ ICO => Payments received => 8/12/2017 2:45:16 => 0.1 BTC (Pending) => 29.38 (30% GVOT);
+					20.00 (20% GVOT)
+				</div>
+				<div class="toggle"
+					 data-toggle="collapse"
+					 data-toggle="collapse"
+					 data-target="#transaction-table"
+					 aria-expanded="false"
+					 aria-controls="transaction-table">+
+				</div>
+			</div>
+		</div> -->
