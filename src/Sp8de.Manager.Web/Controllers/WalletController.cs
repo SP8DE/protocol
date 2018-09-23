@@ -33,14 +33,6 @@ namespace Sp8de.Manager.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            //HACK
-            /*return View(new WalletViewModel()
-            {
-                Address = "0x618033684Dfedb6ce9b70744567E9E761A1c82F3",
-                Balance = 1000,
-                Currency = Currency.SPX
-            });
-*/
             var vm = await CreateWallet(Currency.SPX);
             vm.Balance = GetBalance(Currency.SPX);
             return View(vm);
@@ -76,13 +68,6 @@ namespace Sp8de.Manager.Web.Controllers
 
         public async Task<IActionResult> Deposit()
         {
-            //HACK
-           /* return View(new WalletViewModel()
-            {
-                Address = "0x618033684Dfedb6ce9b70744567E9E761A1c82F3",
-                Balance = 1000,
-                Currency = Currency.SPX
-            });*/
             var vm = await CreateWallet(Currency.SPX);
             vm.Balance = GetBalance(Currency.SPX);
             return View(vm);
@@ -90,12 +75,9 @@ namespace Sp8de.Manager.Web.Controllers
 
         public IActionResult Withdraw()
         {
-            return View(new WalletViewModel()
-            {
-                Address = "0x618033684Dfedb6ce9b70744567E9E761A1c82F3",
-                Balance = 1000,
-                Currency = Currency.SPX
-            });
+            var vm = await CreateWallet(Currency.SPX);
+            vm.Balance = GetBalance(Currency.SPX);
+            return View(vm);
         }
 
         private ApplicationUser GetCurrentUser()
@@ -153,7 +135,7 @@ namespace Sp8de.Manager.Web.Controllers
             if (!is2faTokenValid)
                 return BadRequest("Verification code is invalid");
 
-            //var result = finService.CreateWithdrawalRequest(model);
+            var result = await finService.CreateWithdrawalRequest(model);
 
             //if (!result.IsSuccess)
             //    return BadRequest(ErrorResult.GetResult(result));
@@ -175,30 +157,5 @@ namespace Sp8de.Manager.Web.Controllers
 
             return Ok();
         }
-
-        //[AllowAnonymous]
-        //public IActionResult ConfirmWithdrawalRequestByCode(Guid requestId, string code)
-        //{
-        //    var result = finService.ConfirmWithdrawalRequestByCode(requestId, code);
-        //    if (!result.IsSuccess || !result.Data)
-        //        return BadRequest(ErrorResult.GetResult(result));
-
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public IActionResult CancelWithdrawalRequest(Guid requestId)
-        //{
-        //    var result = finService.CancelWithdrawalRequest(new CancelWithdrawalRequestModel
-        //    {
-        //        UserId = CurrentUser.Id,
-        //        RequestId = requestId
-        //    });
-        //    if (!result.IsSuccess)
-        //        return BadRequest(ErrorResult.GetResult(result));
-
-        //    return Ok();
-        //}
-
     }
 }
