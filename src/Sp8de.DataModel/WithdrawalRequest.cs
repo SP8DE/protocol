@@ -29,22 +29,4 @@ namespace Sp8de.DataModel
         public bool CanConfirmAndPayByAdmin() => IsApprovedByUser && Status != WithdrawalRequestStatus.Done;
         public bool CanResendEmail() => Status == WithdrawalRequestStatus.New;
     }
-
-    public enum WithdrawalRequestStatus
-    {
-        New = 0,
-        InProcess = 1,
-        Done = 2,
-        Error = 3,
-        Rejected = 4,
-        Cancelled = 5
-    }
-
-    public class WithdrowStatusUpdateRequest
-    {
-        public Guid RequestId { get; set; }
-        public BlockchainTransactionStatus Status { get; set; }
-        public string Address { get; set; }
-        public string TxHash { get; set; }
-    }
 }

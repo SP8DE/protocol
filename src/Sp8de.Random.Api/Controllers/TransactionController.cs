@@ -25,7 +25,7 @@ namespace Sp8de.Random.Api.Controllers
             this.transactionStorage = transactionStorage;
         }
 
-        // GET api/values/5
+        // GET api/transaction/0x
         [ProducesResponseType(404)]
         [HttpGet("{id}")]
         public async Task<ActionResult<Sp8deTransaction>> Get(string id)
@@ -42,7 +42,9 @@ namespace Sp8de.Random.Api.Controllers
         {
             return new UserInfo
             {
-                UserId = User.GetUserId()
+                UserId = User.GetUserId(),
+                ApiKey = User.GetUserApiKey(),
+                ApiKeyId = User.GetUserApiKeyId()
             };
         }
 

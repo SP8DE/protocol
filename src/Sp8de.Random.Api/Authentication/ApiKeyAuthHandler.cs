@@ -44,8 +44,8 @@ namespace Sp8de.Random.Api.Authentication
                         new List<Claim>
                         {
                             new Claim(ClaimTypes.Name, apiKey, ClaimValueTypes.String),
-                            new Claim(ClaimTypes.NameIdentifier, apiKeyItem.ApiKeyId.ToString(), ClaimValueTypes.Integer),
-                            new Claim(ClaimTypes.UserData, apiKeyItem.UserId.ToString(), ClaimValueTypes.String),
+                            new Claim(ClaimTypes.NameIdentifier, apiKeyItem.UserId.ToString(), ClaimValueTypes.String),
+                            new Claim(ClaimTypes.UserData, apiKeyItem.ApiKeyId.ToString(), ClaimValueTypes.Integer),
                         },
                     ApiKeyAuthOptions.DefaultScheme
                 )

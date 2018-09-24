@@ -16,31 +16,17 @@ namespace Sp8de.Services.Protocol
         private readonly ICryptoService cryptoService;
         private readonly ISp8deTransactionStorage transactionStorage;
         private readonly IEnumerable<IExternalAnchorService> anchorServices;
-        private readonly Sp8deNodeConfig config;
 
-        public Sp8deTransactionNodeService(Sp8deNodeConfig config, ICryptoService cryptoService, ISp8deTransactionStorage transactionStorage, IEnumerable<IExternalAnchorService> anchorServices)
+        public Sp8deTransactionNodeService(ICryptoService cryptoService, ISp8deTransactionStorage transactionStorage, IEnumerable<IExternalAnchorService> anchorServices)
         {
-            this.config = config;
             this.cryptoService = cryptoService;
             this.transactionStorage = transactionStorage;
             this.anchorServices = anchorServices;
         }
 
-        public string CalculateHash(byte[] inputBytes)
-        {
-            byte[] outputBytes = cryptoService.CalculateHash(inputBytes);
-            return HexConverter.ToHex(outputBytes);
-        }
-
-        public (string hash, byte[] bytes) CalculateTransactionHash(Sp8deTransaction transaction)
-        {
-            byte[] outputBytes = cryptoService.CalculateHash(transaction.GetBytes());
-            return (HexConverter.ToHex(outputBytes), outputBytes);
-        }
-
         public async Task<Sp8deTransaction> AddTransaction(CreateTransactionRequest request)
         {
-            var tx = new Sp8deTransaction()
+            var transaction = new Sp8deTransaction()
             {
                 Timestamp = DateConverter.UtcNow,
                 Expiration = DateConverter.UtcNow,
@@ -53,41 +39,41 @@ namespace Sp8de.Services.Protocol
 
             if (request.InputData != null)
             {
-                tx.InputData = new TransactionData()
+                transaction.InputData = new TransactionData()
                 {
                     Items = request.InputData
                 };
 
-                tx.InputData.Hash = CalculateHash(tx.InputData.GetBytes());
+                transaction.InputData.Hash = CalculateHash(transaction.InputData.GetBytes());
             }
 
             PopulateInternalTransactionHash(request.InnerTransactions);
 
-            tx.InternalTransactions = request.InnerTransactions;
+            transaction.InternalTransactions = request.InnerTransactions;
 
-            tx.InternalRoot = CalculateInternalTransactionRootHash(request.InnerTransactions);
+            transaction.InternalRoot = CalculateInternalTransactionRootHash(request.InnerTransactions);
 
             if (request.Type == Sp8deTransactionType.AggregatedReveal)
             {
                 var (seedArray, seedHash) = SharedSeedGenerator.CreateSharedSeed(request.InnerTransactions.Select(x => x.Data));
 
-                tx.OutputData = new TransactionData()
+                transaction.OutputData = new TransactionData()
                 {
                     Items = new Dictionary<string, IList<string>> {
                         { "sharedSeedArray", seedArray.Select(x=>x.ToString()).ToArray() },
                         { "sharedSeedHash", new List<string> { seedHash } }
                     }
                 };
-                tx.OutputData.Hash = CalculateHash(tx.OutputData.GetBytes());
+                transaction.OutputData.Hash = CalculateHash(transaction.OutputData.GetBytes());
             }
 
-            tx.Id = CalculateTransactionHash(tx).hash;
+            transaction.Id = CalculateTransactionHash(transaction).hash;
 
-            await AddAnchors(tx);
+            await AddAnchors(transaction);
 
-            await transactionStorage.Add(tx);
+            await transactionStorage.Add(transaction);
 
-            return tx;
+            return transaction;
         }
 
         private async Task AddAnchors(Sp8deTransaction transaction)
@@ -96,11 +82,11 @@ namespace Sp8de.Services.Protocol
             {
                 transaction.Anchors = transaction.Anchors ?? new List<Anchor>();
 
-                var anckors = await Task.WhenAll(anchorServices.Select(x => x.Add(transaction)));
+                var anchors = await Task.WhenAll(anchorServices.Select(x => x.Add(transaction)));
 
-                foreach (var anckor in anckors)
+                foreach (var anchor in anchors)
                 {
-                    transaction.Anchors.Add(anckor);
+                    transaction.Anchors.Add(anchor);
                 }
             }
         }
@@ -131,6 +117,18 @@ namespace Sp8de.Services.Protocol
 
             var outputBytes = trie.GetRootHash();
             return HexConverter.ToHex(outputBytes);
+        }
+
+        public string CalculateHash(byte[] inputBytes)
+        {
+            byte[] outputBytes = cryptoService.CalculateHash(inputBytes);
+            return HexConverter.ToHex(outputBytes);
+        }
+
+        public (string hash, byte[] bytes) CalculateTransactionHash(Sp8deTransaction transaction)
+        {
+            byte[] outputBytes = cryptoService.CalculateHash(transaction.GetBytes());
+            return (HexConverter.ToHex(outputBytes), outputBytes);
         }
 
         public (string hash, byte[] bytes) CalculateInternalTransactionHash(InternalTransaction transaction)

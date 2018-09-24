@@ -10,7 +10,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Marten" Version="3.0.0-alpha-2" />
 		<PackageReference Include="Microsoft.AspNetCore.App" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
 		<PackageReference Include="Stratis.Patricia" Version="1.0.3" />

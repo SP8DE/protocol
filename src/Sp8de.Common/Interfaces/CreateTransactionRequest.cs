@@ -10,6 +10,13 @@ namespace Sp8de.Common.Interfaces
         public IList<InternalTransaction> InnerTransactions { get; set; }
         public string DependsOn { get; set; }
         public Dictionary<string, IList<string>> InputData { get; set; }
+        private static readonly string[] randomSettingsKeys = new[] { "randomType", "randomCount", "randomAlgorithm", "randomRange" };
+
+        public CreateTransactionRequest()
+        {
+            InputData = new Dictionary<string, IList<string>>();
+            InnerTransactions = new List<InternalTransaction>();
+        }
 
         public void AddExtended(Dictionary<string, IList<string>> extended)
         {
@@ -33,11 +40,10 @@ namespace Sp8de.Common.Interfaces
             {
                 InputData = new Dictionary<string, IList<string>>();
             }
-            var arr = new[] { "randomType", "randomCount", "randomAlgorithm", "randomRange" };
 
             if (originalSettings != null)
             {
-                foreach (var item in originalSettings.Where(x => arr.Contains(x.Key)))
+                foreach (var item in originalSettings.Where(x => randomSettingsKeys.Contains(x.Key)))
                 {
                     InputData[item.Key] = item.Value;
                 }

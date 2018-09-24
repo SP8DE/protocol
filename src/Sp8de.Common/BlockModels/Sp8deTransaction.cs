@@ -38,10 +38,10 @@ namespace Sp8de.Common.BlockModels
             //{string.Join('|', InternalTransactions.Select(x => x.Sign))}
         }
 
-        public Sp8deTransaction()
+        /*public Sp8deTransaction()
         {
             Anchors = new List<Anchor>();
             InternalTransactions = new List<InternalTransaction>();
-        }
+        }*/
     }
 }

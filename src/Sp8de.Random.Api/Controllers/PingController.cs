@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Sp8de.Random.Api.Controllers
 {
@@ -16,7 +12,6 @@ namespace Sp8de.Random.Api.Controllers
         [HttpGet]
         public ActionResult<string> Get()
         {
-            //User.Identity.Name
             return $"Pong {DateTime.UtcNow}";
         }
     }

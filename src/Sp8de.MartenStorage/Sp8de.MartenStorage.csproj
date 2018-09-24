@@ -5,10 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Marten" Version="2.10.0" />
-  </ItemGroup>
-
-  <ItemGroup>
+	  <PackageReference Include="Marten" Version="3.0.0-alpha-2" />
     <ProjectReference Include="..\Sp8de.Common\Sp8de.Common.csproj" />
   </ItemGroup>
 
