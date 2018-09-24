@@ -51,26 +51,11 @@ namespace Sp8de.Services.Protocol
                 Status = Sp8deTransactionStatus.New
             };
 
-            if (request.RandomSettings != null)
+            if (request.InputData != null)
             {
-                var inputData = new Dictionary<string, IList<string>>()
-                {
-                    { "randomType", new List<string>{ request.RandomSettings.Type.ToString() } },
-                    { "randomCount", new List<string>{ request.RandomSettings.Count.ToString() } },
-                    { "randomAlgorithm", new List<string>{ request.RandomSettings.Algorithm.ToString() } }
-                };
-
-                if (request.RandomSettings.RangeMin.HasValue && request.RandomSettings.RangeMax.HasValue)
-                {
-                    inputData["randomRange"] = new List<string> {
-                        request.RandomSettings.RangeMin.Value.ToString(),
-                        request.RandomSettings.RangeMax.Value.ToString()
-                    };
-                }
-
                 tx.InputData = new TransactionData()
                 {
-                    Items = inputData
+                    Items = request.InputData
                 };
 
                 tx.InputData.Hash = CalculateHash(tx.InputData.GetBytes());
