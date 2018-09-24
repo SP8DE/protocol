@@ -74,8 +74,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sp8de.BlockProducerApp", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Marten", "..\..\new-git\marten\src\Marten\Marten.csproj", "{2910D191-3C95-4EA8-93E5-8199F146AA76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{B7351478-5E21-413F-9C45-717AA97125C9}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -174,10 +172,6 @@ Global
 		{2910D191-3C95-4EA8-93E5-8199F146AA76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2910D191-3C95-4EA8-93E5-8199F146AA76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2910D191-3C95-4EA8-93E5-8199F146AA76}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B7351478-5E21-413F-9C45-717AA97125C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B7351478-5E21-413F-9C45-717AA97125C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B7351478-5E21-413F-9C45-717AA97125C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B7351478-5E21-413F-9C45-717AA97125C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -206,7 +200,6 @@ Global
 		{06AB8D08-DEC5-4A00-BD38-7A2637923329} = {BDCDC468-2E1C-47D7-A499-987FBDC86BDD}
 		{E3A127CE-7978-46B0-9298-061AC53EBD7F} = {831BAA38-4FBB-484C-8993-42227145E995}
 		{2910D191-3C95-4EA8-93E5-8199F146AA76} = {BDCDC468-2E1C-47D7-A499-987FBDC86BDD}
-		{B7351478-5E21-413F-9C45-717AA97125C9} = {BDCDC468-2E1C-47D7-A499-987FBDC86BDD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {09583719-2DC2-4BF1-A168-4C38B60B1FAC}

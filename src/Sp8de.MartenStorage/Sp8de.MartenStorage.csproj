@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\new-git\marten\src\Marten\Marten.csproj" />
+	  <PackageReference Include="Marten" Version="3.0.0-alpha-2" />
     <ProjectReference Include="..\Sp8de.Common\Sp8de.Common.csproj" />
   </ItemGroup>
 
