@@ -63,10 +63,8 @@ namespace Sp8de.Random.Api.Services
 
         private InternalTransaction MapToInternalTransaction(SignedItem item)
         {
-            return new InternalTransaction() { Type = MapUserType(item.Type), From = item.PubKey, Nonce = item.Nonce, Sign = item.Sign };
+            return new InternalTransaction() { Type = MapUserType(item.Type), From = item.PubKey, Nonce = item.Nonce, Sign = item.Sign, Data = item.Seed };
         }
-
-
 
         public async Task<Sp8deTransaction> AggregatedReveal(ProtocolTransaction request, UserInfo userInfo, Sp8deTransaction original)
         {
@@ -77,6 +75,8 @@ namespace Sp8de.Random.Api.Services
             };
 
             var rtx = original.InternalTransactions.First(x => x.Type == Sp8deTransactionType.InternalValidator);
+
+            createRequest.InnerTransactions = request.Items.Select(x => MapToInternalTransaction(x)).ToList();
 
             var validatorCommit = new SignedItem() { Type = UserType.Validator, PubKey = rtx.From, Nonce = rtx.Nonce, Sign = rtx.Sign };
 
@@ -118,7 +118,7 @@ namespace Sp8de.Random.Api.Services
 
         private async Task ProcessFee(UserInfo userInfo)
         {
-            await walletService.ProcessPayment(userInfo.UserId, 0.1m, Common.Enums.WalletTransactionType.ServiceFee);
+            await walletService.ProcessPayment(userInfo.UserId, -0.1m, Common.Enums.WalletTransactionType.ServiceFee);
         }
     }
 }

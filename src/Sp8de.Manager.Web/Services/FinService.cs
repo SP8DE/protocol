@@ -24,18 +24,18 @@ namespace Sp8de.Manager.Web.Services
         {
             logger.LogInformation($"{model} Starting...");
 
-            var amountCommission = 1000;
+            decimal amountCommission = 1m;
 
             var finalAmount = model.Amount - amountCommission;
             if (model.Amount <= 0 || finalAmount <= 0)
-                throw new Exception("ErrorAmountMustBeGreaterZero");
+                throw new ArgumentException("ErrorAmountMustBeGreaterZero");
 
             var wallet = await context.Wallets.FirstAsync(x => x.Currency == model.Currency && x.UserId == model.UserId);
             if (wallet.Amount < model.Amount)
-                throw new Exception("ErrorNotEnoughMoney");
+                throw new ArgumentException("ErrorNotEnoughMoney");
 
             if (wallet.Currency != Currency.SPX)
-                throw new Exception($"Withdrawal requests from {wallet.Currency} not allowed");
+                throw new ArgumentException($"Withdrawal requests from {wallet.Currency} not allowed");
 
             wallet.Amount -= model.Amount;
 
