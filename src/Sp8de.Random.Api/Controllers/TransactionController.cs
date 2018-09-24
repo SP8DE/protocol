@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Sp8de.Common.BlockModels;
 using Sp8de.Common.Interfaces;
 using Sp8de.Common.Models;
@@ -10,6 +11,7 @@ namespace Sp8de.Random.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TransactionController : ControllerBase
     {
         private readonly ProtocolService protocolService;
