@@ -59,6 +59,7 @@ namespace Sp8de.Random.Api
                 };
             });
 
+
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
             services.Configure<RandomApiConfig>(Configuration.GetSection(nameof(RandomApiConfig)));
@@ -86,7 +87,10 @@ namespace Sp8de.Random.Api
             services.AddTransient<IRandomContributorService, BuildinRandomContributorService>();
             services.AddSingleton<IGenericDataStorage, InMemoryDataStorage>(); //DEV
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(options =>
+            {
+                options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+            });
 
             services.AddSwaggerGen(c =>
             {
@@ -116,14 +120,20 @@ namespace Sp8de.Random.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseDeveloperExceptionPage();
+
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                
             }
             else
             {
                 app.UseHsts();
             }
+
+            app.UseCors(builder =>
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+            );
 
             app.UseSwagger(c =>
             {

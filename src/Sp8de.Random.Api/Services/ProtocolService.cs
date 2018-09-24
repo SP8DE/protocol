@@ -42,7 +42,7 @@ namespace Sp8de.Random.Api.Services
             createRequest.AddRandomSettings(request.RandomSettings);
             createRequest.AddExtended(request.Extended);
 
-            createRequest.InnerTransactions = request.Items.Select(x => Map(x)).ToList();
+            createRequest.InnerTransactions = request.Items.Select(x => MapToInternalTransaction(x)).ToList();
 
             var contributorCommit = await contributorService.Commit();
 
@@ -61,10 +61,12 @@ namespace Sp8de.Random.Api.Services
             return result;
         }
 
-        private InternalTransaction Map(SignedItem item)
+        private InternalTransaction MapToInternalTransaction(SignedItem item)
         {
             return new InternalTransaction() { Type = MapUserType(item.Type), From = item.PubKey, Nonce = item.Nonce, Sign = item.Sign };
         }
+
+
 
         public async Task<Sp8deTransaction> AggregatedReveal(ProtocolTransaction request, UserInfo userInfo, Sp8deTransaction original)
         {
@@ -74,15 +76,19 @@ namespace Sp8de.Random.Api.Services
                 DependsOn = request.DependsOn
             };
 
-            var validatorCommit = request.Items.First(x => x.Type == UserType.Validator);
-            var contributorCommit = await contributorService.Reveal(validatorCommit);
+            var rtx = original.InternalTransactions.First(x => x.Type == Sp8deTransactionType.InternalValidator);
+
+            var validatorCommit = new SignedItem() { Type = UserType.Validator, PubKey = rtx.From, Nonce = rtx.Nonce, Sign = rtx.Sign };
+
+            var reveal = await contributorService.Reveal(validatorCommit);
 
             createRequest.InnerTransactions.Add(new InternalTransaction()
             {
-                Type = MapUserType(contributorCommit.Type),
-                From = contributorCommit.PubKey,
-                Nonce = contributorCommit.Nonce,
-                Sign = contributorCommit.Sign
+                Type = MapUserType(reveal.Type),
+                From = reveal.PubKey,
+                Nonce = reveal.Nonce,
+                Sign = reveal.Sign,
+                Data = reveal.Seed
             });
 
             createRequest.AddOriginalRandomSettings(original.InputData?.Items);

@@ -18,5 +18,10 @@
                 Type = this.Type
             };
         }
+
+        public override string ToString()
+        {
+            return $"{this.PubKey.ToLowerInvariant()};{this.Seed};{this.Nonce}";
+        }
     }
 }
