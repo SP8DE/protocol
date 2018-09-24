@@ -47,23 +47,25 @@ namespace Sp8de.Services.Protocol
                 CompleatedAt = DateConverter.UtcNow,
                 DependsOn = request.DependsOn,
                 Anchors = new List<Anchor>(),
-                InputData = new TransactionData()
-                {
-                    Items = new Dictionary<string, IList<string>> {
-                        { "randomType", new List<string>{ "Dice" } }
-                    }
-                },
                 Type = request.Type,
                 Status = Sp8deTransactionStatus.New
             };
+
+            if (request.InputData != null)
+            {
+                tx.InputData = new TransactionData()
+                {
+                    Items = request.InputData
+                };
+
+                tx.InputData.Hash = CalculateHash(tx.InputData.GetBytes());
+            }
 
             PopulateInternalTransactionHash(request.InnerTransactions);
 
             tx.InternalTransactions = request.InnerTransactions;
 
             tx.InternalRoot = CalculateInternalTransactionRootHash(request.InnerTransactions);
-
-            tx.InputData.Hash = CalculateHash(tx.InputData.GetBytes());
 
             if (request.Type == Sp8deTransactionType.AggregatedReveal)
             {

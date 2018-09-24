@@ -44,7 +44,15 @@ namespace Sp8de.DemoGame.Web.Services
 
             await storage.Add(revealItem.Sign, revealItem);
 
-            items.Add(revealItem.ToCommitItem());
+            var commitItem = revealItem.ToCommitItem();
+
+            items.Add(new SignedItem()
+            {
+                Type = commitItem.Type,
+                Nonce = commitItem.Nonce,
+                PubKey = commitItem.PubKey,
+                Sign = commitItem.Sign,
+            });
 
             var tx = new ProtocolTransaction()
             {
@@ -96,7 +104,14 @@ namespace Sp8de.DemoGame.Web.Services
                 Id = TxIdHelper.GenerateId(),
                 DependsOn = transactionId,
                 Signer = keySecret.PublicAddress.ToLowerInvariant(),
-                Items = items.Select(x => (SignedItem)x).ToList()
+                Items = items.Select(x => new SignedItem()
+                {
+                    Type = x.Type,
+                    PubKey = x.PubKey,
+                    Seed = x.Seed,
+                    Sign = x.Sign,
+                    Nonce = x.Nonce,
+                }).ToList()
             };
 
             await AddAnchors(finishTx);

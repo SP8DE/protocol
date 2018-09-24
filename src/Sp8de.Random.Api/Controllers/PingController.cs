@@ -14,8 +14,9 @@ namespace Sp8de.Random.Api.Controllers
     public class PingController : ControllerBase
     {
         [HttpGet]
-        public string Get()
+        public ActionResult<string> Get()
         {
+            //User.Identity.Name
             return $"Pong {DateTime.UtcNow}";
         }
     }

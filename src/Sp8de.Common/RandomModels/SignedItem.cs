@@ -6,5 +6,17 @@
         public string PubKey { get; set; }
         public string Nonce { get; set; }
         public string Sign { get; set; }
+        public string Seed { get; set; }
+
+        public CommitItem ToCommitItem()
+        {
+            return new CommitItem()
+            {
+                PubKey = this.PubKey,
+                Nonce = this.Nonce,
+                Sign = this.Sign,
+                Type = this.Type
+            };
+        }
     }
 }

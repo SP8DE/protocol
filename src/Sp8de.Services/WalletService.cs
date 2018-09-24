@@ -1,17 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Sp8de.Common.Enums;
+using Sp8de.Common.Interfaces;
 using Sp8de.DataModel;
 using System;
 using System.Threading.Tasks;
 
 namespace Sp8de.Services
 {
-    public interface IWalletService
-    {
-        Task ProcessPayment(Guid userId, decimal amount, WalletTransactionType type);
-    }
-
     public class WalletService : IWalletService
     {
         private readonly ILogger<IWalletService> logger;

@@ -7,8 +7,9 @@
         AggregatedCommit = 10,
         AggregatedReveal = 11,
 
-        InternalCommit = 20,
-        InternalReveal = 21,
+        InternalContributor = 20,
+        InternalRequester = 21,
+        InternalValidator = 23,
 
         System = 30
     }

@@ -16,7 +16,7 @@ namespace Sp8de.Random.Api.Controllers
         }
 
         [HttpGet]
-        public List<NodeInfo> Get()
+        public ActionResult<List<NodeInfo>> Get()
         {
             return config.Nodes;
         }

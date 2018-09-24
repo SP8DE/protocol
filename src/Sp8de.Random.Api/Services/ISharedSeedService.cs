@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 namespace Sp8de.Random.Api.Services
 {
-    public interface ISharedSeedService
-    {
-        SharedSeedData AggregatedCommit(List<CommitItem> items);
+    //public interface ISharedSeedService
+    //{
+    //    SharedSeedData AggregatedCommit(List<CommitItem> items);
 
-        RevealSharedSeedData Reveal(string sharedSeedId, IList<RevealItem> items);
-    }
+    //    RevealSharedSeedData Reveal(string sharedSeedId, IList<RevealItem> items);
+    //}
 }
