@@ -65,7 +65,6 @@ namespace Sp8de.Manager.Web.Controllers
             return context.Wallets.Where(x => x.UserId == CurrentUserId && x.Currency == currency).FirstOrDefault()?.Amount ?? 0;
         }
 
-
         public async Task<IActionResult> Deposit()
         {
             var vm = await CreateWallet(Currency.SPX);
@@ -77,6 +76,7 @@ namespace Sp8de.Manager.Web.Controllers
         {
             var vm = await CreateWallet(Currency.SPX);
             vm.Balance = GetBalance(Currency.SPX);
+            vm.TwoFactorEnabled = GetCurrentUser().TwoFactorEnabled;
             return View(vm);
         }
 
@@ -135,7 +135,16 @@ namespace Sp8de.Manager.Web.Controllers
             if (!is2faTokenValid)
                 return BadRequest("Verification code is invalid");
 
-            var result = await finService.CreateWithdrawalRequest(model);
+            try
+            {
+                var (requestId, withdrawalCode) = await finService.CreateWithdrawalRequest(model);
+                return Ok(requestId);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+
 
             //if (!result.IsSuccess)
             //    return BadRequest(ErrorResult.GetResult(result));
@@ -154,8 +163,6 @@ namespace Sp8de.Manager.Web.Controllers
             //        emailSender.SendEmail(nEmail, "GenesisMarkets - New withdrawal request", text, text);
             //    }
             //}
-
-            return Ok();
         }
     }
 }
