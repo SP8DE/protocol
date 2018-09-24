@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace Sp8de.Random.Api.Services
 {
-
     public class ProtocolService
     {
         private readonly IRandomContributorService contributorService;
@@ -54,9 +53,6 @@ namespace Sp8de.Random.Api.Services
                 Nonce = contributorCommit.Nonce,
                 Sign = contributorCommit.Sign
             });
-
-            createRequest.AddRandomSettings(request.RandomSettings);
-            createRequest.AddExtended(request.Extended);
 
             var result = await transactionNode.AddTransaction(createRequest);
 

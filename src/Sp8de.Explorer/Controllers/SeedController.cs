@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace Sp8de.Explorer.Api.Controllers
 {
-
     [Route("api/seed")]
     [ApiController]
     [ApiExplorerSettings(IgnoreApi = true)]
@@ -23,18 +22,17 @@ namespace Sp8de.Explorer.Api.Controllers
         private readonly ISp8deTransactionStorage storage;
         private readonly Sp8deTransactionNodeService transactionService;
 
-        public SeedController(ISp8deTransactionStorage storage, ICryptoService cryptoService)
+        public SeedController(ISp8deTransactionStorage storage, ICryptoService cryptoService, Sp8deNodeConfig config)
         {
-            keys = new[]{
-                "42e40a6e9ccdf1003f8be7230db99d2d1a87f42fb0d0969b472da9325dcda7af",
-                "f03efed83ff22c7ed2d8d2e7f45b8d20f800f2036ad9ebf569c71d77dca318b3"
+            if (config == null || config.PrivateKeys == null)
+            {
+                throw new ArgumentNullException(nameof(Sp8deNodeConfig));
             }
-            .Select(x => EthKeySecret.Load(x))
-            .ToArray();
 
+            this.keys = config.PrivateKeys.Select(x => EthKeySecret.Load(x)).ToArray();
             this.storage = storage;
             this.cryptoService = cryptoService;
-            this.transactionService = new Sp8deTransactionNodeService(new Sp8deNodeConfig() { Key = keys.Last() }, cryptoService, storage, Enumerable.Empty<IExternalAnchorService>());
+            this.transactionService = new Sp8deTransactionNodeService(cryptoService, storage, Enumerable.Empty<IExternalAnchorService>());
         }
 
         [HttpGet("transactions")]

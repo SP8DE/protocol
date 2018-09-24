@@ -21,6 +21,71 @@ namespace Sp8de.RandomGenerators
             return arr;
         }
 
+        public IList<int> GetVerifiableRandomNumbers(IList<uint> sharedSeed, RandomSettings settings)
+        {
+            IList<int> randomNumbers;
+
+            switch (settings.Type)
+            {
+                case RandomType.Boolen:
+                    randomNumbers = Generate(sharedSeed,
+                        settings.Count,
+                        0,
+                        1,
+                        settings.Algorithm);
+                    break;
+                case RandomType.Dice:
+                    randomNumbers = Generate(sharedSeed,
+                        settings.Count,
+                        1,
+                        6,
+                        settings.Algorithm);
+                    break;
+                case RandomType.RepeatableNumber:
+                    if (!settings.RangeMin.HasValue || !settings.RangeMax.HasValue)
+                    {
+                        throw new ArgumentException("Invalid Random Range");
+                    }
+
+                    randomNumbers = Generate(sharedSeed,
+                        settings.Count,
+                        settings.RangeMin.Value,
+                        settings.RangeMax.Value,
+                        settings.Algorithm);
+                    break;
+                case RandomType.UniqueNumber:
+                    if (!settings.RangeMin.HasValue || !settings.RangeMax.HasValue)
+                    {
+                        throw new ArgumentException("Invalid Random Range");
+                    }
+
+                    randomNumbers = Generate(sharedSeed,
+                        settings.Count,
+                        settings.RangeMin.Value,
+                        settings.RangeMax.Value,
+                        settings.Algorithm);
+                    break;
+                case RandomType.Shuffle:
+                    if (!settings.RangeMin.HasValue || !settings.RangeMax.HasValue)
+                    {
+                        throw new ArgumentException("Invalid Random Range");
+                    }
+
+                    var rangeArray = Enumerable.Range(settings.RangeMin.Value, settings.RangeMax.Value).ToArray();
+                    Shuffle(sharedSeed,
+                    rangeArray,
+                    settings.Algorithm);
+
+                    randomNumbers = rangeArray;
+                    break;
+                default:
+                    throw new ArgumentException("Random Type");
+
+            }
+
+            return randomNumbers;
+        }
+
         private AbstractGenerator GetGenerator(PRNGAlgorithmType type, IList<uint> seed)
         {
             switch (type)

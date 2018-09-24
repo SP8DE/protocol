@@ -46,6 +46,9 @@ namespace Sp8de.Explorer
                     return new BadRequestObjectResult(errors);
                 };
             });
+            
+            services.Configure<Sp8deNodeConfig>(Configuration.GetSection(nameof(Sp8deNodeConfig)));
+            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<Sp8deNodeConfig>>().Value);
 
             services.Configure<Sp8deStorageConfig>(Configuration.GetSection(nameof(Sp8deStorageConfig)));
             services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<Sp8deStorageConfig>>().Value);

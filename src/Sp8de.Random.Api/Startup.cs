@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Concurrent;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -7,15 +9,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Sp8de.Common.Interfaces;
 using Sp8de.Common.Models;
 using Sp8de.DataModel;
 using Sp8de.EthServices;
 using Sp8de.IpfsStorageService;
+//using Sp8de.IpfsStorageService;
 using Sp8de.Random.Api.Authentication;
 using Sp8de.Random.Api.Models;
 using Sp8de.Random.Api.Services;
 using Sp8de.RandomGenerators;
+//using Sp8de.RandomGenerators;
 using Sp8de.Services;
 using Sp8de.Services.Protocol;
 
@@ -33,14 +38,10 @@ namespace Sp8de.Random.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            /*
             services.AddEntityFrameworkNpgsql()
                     .AddDbContext<Sp8deDbContext>(x => x.UseNpgsql(
                         Configuration.GetConnectionString("DefaultConnection")
                         ));
-            */
-
-            services.AddDbContext<Sp8deDbContext>(options => options.UseInMemoryDatabase("AuthTests"));
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -63,23 +64,27 @@ namespace Sp8de.Random.Api
             services.Configure<RandomApiConfig>(Configuration.GetSection(nameof(RandomApiConfig)));
             services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<RandomApiConfig>>().Value);
 
-
             services.AddTransient<IApiKeyProvider, ApiKeyProvider>();
             services.AddTransient<ProtocolService>();
             services.AddTransient<IPRNGRandomService, PRNGRandomService>();
-            services.AddTransient<IWalletService, WalletService>();            
+            services.AddTransient<IWalletService, WalletService>();
 
-            services.AddTransient<ISp8deTransactionStorage, Sp8deTransactionStorage>();
+            services.Configure<Sp8deStorageConfig>(Configuration.GetSection(nameof(Sp8deStorageConfig)));
+            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<Sp8deStorageConfig>>().Value);
+
+            services.AddScoped<ISp8deTransactionStorage, Sp8deTransactionStorage>();
             services.AddTransient<ISp8deTransactionNodeService, Sp8deTransactionNodeService>();
 
-            services.AddTransient<IExternalAnchorService, IpfsExternalAnchorService>();
-            services.AddTransient<IpfsFileStorageService>();
-            services.Configure<IpfsStorageConfig>(Configuration.GetSection(nameof(IpfsStorageConfig)));
-            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<IpfsStorageConfig>>().Value);
+            AddIpfs(services);
 
             services.AddTransient<ICryptoService, EthCryptoService>();
+            services.AddScoped<IKeySecretManager, EthKeySecretManager>();
             services.AddTransient<IRandomNumberGenerator, RNGRandomGenerator>();
-            services.AddTransient<IRandomContributorService, RandomContributorService>();           
+
+            services.Configure<RandomContributorConfig>(Configuration.GetSection(nameof(RandomContributorConfig)));
+            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<RandomContributorConfig>>().Value);
+            services.AddTransient<IRandomContributorService, BuildinRandomContributorService>();
+            services.AddSingleton<IGenericDataStorage, InMemoryDataStorage>(); //DEV
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -98,6 +103,14 @@ namespace Sp8de.Random.Api
                 options.DefaultChallengeScheme = ApiKeyAuthOptions.DefaultScheme;
             })
             .AddApiKeyAuth(o => { });
+        }
+
+        private void AddIpfs(IServiceCollection services)
+        {
+            services.AddTransient<IExternalAnchorService, IpfsExternalAnchorService>();
+            services.AddTransient<IpfsFileStorageService>();
+            services.Configure<IpfsStorageConfig>(Configuration.GetSection(nameof(IpfsStorageConfig)));
+            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<IpfsStorageConfig>>().Value);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -135,6 +148,28 @@ namespace Sp8de.Random.Api
             });
 
             app.UseMvc();
+        }
+    }
+
+    public class InMemoryDataStorage : IGenericDataStorage
+    {
+        private readonly ConcurrentDictionary<string, string> storage;
+
+        public InMemoryDataStorage()
+        {
+            this.storage = new ConcurrentDictionary<string, string>();
+        }
+
+        public Task<IEntity> Add<TEntity>(string key, TEntity data) where TEntity : class, IEntity
+        {
+            var json = JsonConvert.SerializeObject(data);
+            this.storage[key] = json;
+            return Task.FromResult((IEntity)data);
+        }
+
+        public Task<TEntity> Get<TEntity>(string key) where TEntity : class, IEntity
+        {
+            return storage.TryGetValue(key, out var value) ? Task.FromResult(JsonConvert.DeserializeObject<TEntity>(value)) : Task.FromResult(default(TEntity));
         }
     }
 }
