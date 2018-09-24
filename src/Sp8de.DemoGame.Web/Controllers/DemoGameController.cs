@@ -20,15 +20,13 @@ namespace Sp8de.DemoGame.Web.Controllers
     {
         private readonly IMemoryCache cache;
         private readonly IPRNGRandomService prng;
-        private readonly ICryptoService cryptoService;
         private readonly IRandomContributorService randomContributorService;
         private readonly IChaosProtocolService protocol;
 
-        public DemoGameController(IMemoryCache cache, IPRNGRandomService prng, ICryptoService cryptoService, IRandomContributorService randomContributorService, IChaosProtocolService protocol)
+        public DemoGameController(IMemoryCache cache, IPRNGRandomService prng, IRandomContributorService randomContributorService, IChaosProtocolService protocol)
         {
             this.cache = cache;
             this.prng = prng;
-            this.cryptoService = cryptoService;
             this.randomContributorService = randomContributorService;
             this.protocol = protocol;
         }
@@ -58,7 +56,7 @@ namespace Sp8de.DemoGame.Web.Controllers
                     throw new NotImplementedException();
             }
 
-            var commit = await randomContributorService.GenerateCommit(DateTime.UtcNow.Ticks.ToString());
+            var commit = await randomContributorService.Commit(DateTime.UtcNow.Ticks.ToString());
 
             var list = new List<SignedItem>
             {
@@ -69,7 +67,7 @@ namespace Sp8de.DemoGame.Web.Controllers
                     Nonce = model.Nonce.ToString(),
                     Sign = model.Sign
                 },
-                commit
+                commit.ToSignedItem()
             };
 
             var tx = await protocol.CreateTransaction(list, ChaosProtocolSettings.Default);
@@ -123,7 +121,7 @@ namespace Sp8de.DemoGame.Web.Controllers
             
             var tx = await protocol.RevealTransaction(game.ValidationTx, list);
 
-            var seedItems = tx.Items.Select(x => (x as RevealItem).Seed).ToArray();
+            var seedItems = tx.Items.Select(x => x.Seed).ToArray();
 
             var seed = SharedSeedGenerator.CreateSharedSeed(seedItems);
 

@@ -33,10 +33,14 @@ namespace Sp8de.Random.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            /*
             services.AddEntityFrameworkNpgsql()
                     .AddDbContext<Sp8deDbContext>(x => x.UseNpgsql(
                         Configuration.GetConnectionString("DefaultConnection")
                         ));
+            */
+
+            services.AddDbContext<Sp8deDbContext>(options => options.UseInMemoryDatabase("AuthTests"));
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -61,7 +65,7 @@ namespace Sp8de.Random.Api
 
 
             services.AddTransient<IApiKeyProvider, ApiKeyProvider>();
-            //services.AddTransient<ISharedSeedService, SharedSeedService>();
+            services.AddTransient<ProtocolService>();
             services.AddTransient<IPRNGRandomService, PRNGRandomService>();
             services.AddTransient<IWalletService, WalletService>();            
 
@@ -75,7 +79,7 @@ namespace Sp8de.Random.Api
 
             services.AddTransient<ICryptoService, EthCryptoService>();
             services.AddTransient<IRandomNumberGenerator, RNGRandomGenerator>();
-            services.AddTransient<IRandomContributorService, BuildinRandomContributorService>();           
+            services.AddTransient<IRandomContributorService, RandomContributorService>();           
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

@@ -73,7 +73,7 @@ namespace Sp8de.Manager.Web.Controllers
             return View(vm);
         }
 
-        public IActionResult Withdraw()
+        public async Task<IActionResult> Withdraw()
         {
             var vm = await CreateWallet(Currency.SPX);
             vm.Balance = GetBalance(Currency.SPX);

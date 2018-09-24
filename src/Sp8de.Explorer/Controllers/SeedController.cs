@@ -3,7 +3,6 @@ using Sp8de.Common.BlockModels;
 using Sp8de.Common.Interfaces;
 using Sp8de.EthServices;
 using Sp8de.Services;
-using Sp8de.Services.Explorer;
 using Sp8de.Services.Protocol;
 using System;
 using System.Collections.Generic;
@@ -82,11 +81,11 @@ namespace Sp8de.Explorer.Api.Controllers
                 switch (type)
                 {
                     case Sp8deTransactionType.AggregatedCommit:
-                        internalTx.Type = Sp8deTransactionType.InternalCommit;
+                        internalTx.Type = Sp8deTransactionType.InternalContributor + i;
                         internalTx.Data = null; //cleanup secret data
                         break;
                     case Sp8deTransactionType.AggregatedReveal:
-                        internalTx.Type = Sp8deTransactionType.InternalReveal;
+                        internalTx.Type = Sp8deTransactionType.InternalContributor + i;
                         break;
                     default:
                         throw new ArgumentException(nameof(type));

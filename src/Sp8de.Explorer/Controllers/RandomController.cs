@@ -36,6 +36,13 @@ namespace Sp8de.Random.Api.Controllers
                         1,
                         request.Settings.Algorithm);
                     break;
+                case RandomType.Dice:
+                    vm.Numbers = randomService.Generate(request.SharedSeed,
+                        request.Settings.Count,
+                        1,
+                        7,
+                        request.Settings.Algorithm);
+                    break;
                 case RandomType.RepeatableNumber:
                     vm.Numbers = randomService.Generate(request.SharedSeed,
                         request.Settings.Count,

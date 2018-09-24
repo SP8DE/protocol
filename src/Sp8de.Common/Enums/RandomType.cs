@@ -4,7 +4,8 @@
     {
         RepeatableNumber = 0,
         Boolen = 1,
-        UniqueNumber = 2,
-        Shuffle = 3
+        Dice = 2,
+        UniqueNumber = 3,
+        Shuffle = 4
     }
 }
