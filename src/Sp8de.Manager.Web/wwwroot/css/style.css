@@ -1579,3 +1579,13 @@ html {
 .account-info,.account-info a{
     color: white;
 }
+
+.loader-page, .loader-page a{
+    color: #fff;
+}
+.loader-page a{
+    text-decoration: underline;
+}
+.loader-page button{
+    color: #000;
+}
