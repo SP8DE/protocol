@@ -1586,6 +1586,15 @@ html {
 .loader-page a{
     text-decoration: underline;
 }
-.loader-page button{
+.loader-page button,#Input_TwoFactorCode{
     color: #000;
+}
+input, button{
+    color: black;
+}
+.tfa-block{
+    padding: 15px;
+}
+.tfa-block input{
+    margin: 15px;
 }
