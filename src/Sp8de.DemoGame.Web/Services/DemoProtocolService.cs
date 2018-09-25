@@ -28,7 +28,7 @@ namespace Sp8de.DemoGame.Web.Services
             this.keySecret = keySecretManager.LoadKeySecret(config.ApiSecret);
         }
 
-        public async Task<ProtocolTransaction> CreateTransaction(List<SignedItem> items, ChaosProtocolSettings settings)
+        public async Task<ProtocolTransactionResponse> CreateTransaction(List<SignedItem> items, ChaosProtocolSettings settings)
         {
             var id = TxIdHelper.GenerateId();
 
@@ -54,7 +54,7 @@ namespace Sp8de.DemoGame.Web.Services
                 Sign = commitItem.Sign,
             });
 
-            var tx = new ProtocolTransaction()
+            var tx = new ProtocolTransactionResponse()
             {
                 Id = id,
                 Signer = keySecret.PublicAddress.ToLowerInvariant(),
@@ -68,7 +68,7 @@ namespace Sp8de.DemoGame.Web.Services
             return tx;
         }
 
-        private async Task AddAnchors(ProtocolTransaction tx)
+        private async Task AddAnchors(ProtocolTransactionResponse tx)
         {
             if (ipfs.IsActive)
             {
@@ -83,9 +83,9 @@ namespace Sp8de.DemoGame.Web.Services
             }
         }
 
-        public async Task<ProtocolTransaction> RevealTransaction(string transactionId, List<RevealItem> items)
+        public async Task<ProtocolTransactionResponse> RevealTransaction(string transactionId, List<RevealItem> items)
         {
-            var tx = await storage.Get<ProtocolTransaction>(transactionId);
+            var tx = await storage.Get<ProtocolTransactionResponse>(transactionId);
 
             var commitItem = tx.Items.First(x => x.PubKey == tx.Signer);
 
@@ -99,7 +99,7 @@ namespace Sp8de.DemoGame.Web.Services
                 };
             }
 
-            var finishTx = new ProtocolTransaction()
+            var finishTx = new ProtocolTransactionResponse()
             {
                 Id = TxIdHelper.GenerateId(),
                 DependsOn = transactionId,

@@ -6,7 +6,7 @@ namespace Sp8de.DemoGame.Web.Services
 {
     public interface IChaosProtocolService
     {
-        Task<ProtocolTransaction> CreateTransaction(List<SignedItem> items, ChaosProtocolSettings settings);
-        Task<ProtocolTransaction> RevealTransaction(string transactionId, List<RevealItem> items);
+        Task<ProtocolTransactionResponse> CreateTransaction(List<Common.RandomModels.SignedItem> items, ChaosProtocolSettings settings);
+        Task<ProtocolTransactionResponse> RevealTransaction(string transactionId, List<Common.RandomModels.RevealItem> items);
     }
 }

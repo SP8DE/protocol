@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Sp8de.DemoGame.Web.Services
 {
-    public class ProtocolTransaction : IEntity
+    public class ProtocolTransactionResponse : IEntity
     {
         public string Id { get; set; }
         public List<SignedItem> Items { get; set; }

@@ -81,7 +81,8 @@ namespace Sp8de.DemoGame.Web
 
             services.Configure<ChaosProtocolConfig>(Configuration.GetSection(nameof(ChaosProtocolConfig)));
             services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<ChaosProtocolConfig>>().Value);
-            services.AddTransient<IChaosProtocolService, DemoProtocolService>();
+            //services.AddTransient<IChaosProtocolService, DemoProtocolService>();
+            services.AddTransient<IChaosProtocolService, ChaosProtocolService>();
 
             services.Configure<IpfsStorageConfig>(Configuration.GetSection(nameof(IpfsStorageConfig)));
             services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<IpfsStorageConfig>>().Value);

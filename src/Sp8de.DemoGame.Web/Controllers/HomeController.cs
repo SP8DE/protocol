@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Sp8de.DemoGame.Web.Models;
+using System.Diagnostics;
 
 namespace Sp8de.DemoGame.Web.Controllers
 {

@@ -3,7 +3,6 @@ using Microsoft.Extensions.Caching.Memory;
 using Sp8de.Common.Interfaces;
 using Sp8de.Common.Models;
 using Sp8de.Common.RandomModels;
-using Sp8de.Common.Utils;
 using Sp8de.DemoGame.Web.Models;
 using Sp8de.DemoGame.Web.Services;
 using Sp8de.EthServices;
@@ -70,7 +69,7 @@ namespace Sp8de.DemoGame.Web.Controllers
                 commit.ToSignedItem()
             };
 
-            var tx = await protocol.CreateTransaction(list, ChaosProtocolSettings.Default);
+            var tx = await protocol.CreateTransaction(list, ChaosProtocolSettings.ByGameType(model.Type));
 
             var rs = new GameStartResponse()
             {
@@ -118,7 +117,7 @@ namespace Sp8de.DemoGame.Web.Controllers
                 },
                 revealItem
             };
-            
+
             var tx = await protocol.RevealTransaction(game.ValidationTx, list);
 
             var seedItems = tx.Items.Select(x => x.Seed).ToArray();
@@ -134,7 +133,7 @@ namespace Sp8de.DemoGame.Web.Controllers
                 SharedSeedHash = seed.seedHash,
                 ValidationTxHash = tx.Id, //TODO                
                 Items = list,
-                
+
                 IsWinner = isWinner,
                 WinAmount = winAmount,
                 WinNumbers = winNumbers,
