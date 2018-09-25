@@ -72,6 +72,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sp8de.Storage", "src\Sp8de.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sp8de.BlockProducerApp", "src\Sp8de.BlockProducerApp\Sp8de.BlockProducerApp.csproj", "{E3A127CE-7978-46B0-9298-061AC53EBD7F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sp8de.Protocol.Client", "src\Sp8de.Protocol.Client\Sp8de.Protocol.Client.csproj", "{FF5158A4-4FFF-4F05-B2E1-00333FDBF201}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -166,6 +168,10 @@ Global
 		{E3A127CE-7978-46B0-9298-061AC53EBD7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3A127CE-7978-46B0-9298-061AC53EBD7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3A127CE-7978-46B0-9298-061AC53EBD7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF5158A4-4FFF-4F05-B2E1-00333FDBF201}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF5158A4-4FFF-4F05-B2E1-00333FDBF201}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF5158A4-4FFF-4F05-B2E1-00333FDBF201}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF5158A4-4FFF-4F05-B2E1-00333FDBF201}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -193,6 +199,7 @@ Global
 		{82E9B0FD-646C-4391-958C-C11AF70C5C29} = {BDCDC468-2E1C-47D7-A499-987FBDC86BDD}
 		{06AB8D08-DEC5-4A00-BD38-7A2637923329} = {BDCDC468-2E1C-47D7-A499-987FBDC86BDD}
 		{E3A127CE-7978-46B0-9298-061AC53EBD7F} = {831BAA38-4FBB-484C-8993-42227145E995}
+		{FF5158A4-4FFF-4F05-B2E1-00333FDBF201} = {BDCDC468-2E1C-47D7-A499-987FBDC86BDD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {09583719-2DC2-4BF1-A168-4C38B60B1FAC}
