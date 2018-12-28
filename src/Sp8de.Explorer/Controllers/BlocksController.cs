@@ -35,6 +35,11 @@ namespace Sp8de.Explorer.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Sp8deBlock>> Get(long id)
         {
+            if (id < 1)
+            {
+                return null;
+            }
+
             var rs = await blockStorage.Get(id);
             if (rs == null)
             {
@@ -47,6 +52,11 @@ namespace Sp8de.Explorer.Api.Controllers
         [HttpGet("{id}/transactions")]
         public async Task<ActionResult<IList<Sp8deTransaction>>> GetTransactions(int id)
         {
+            if (id < 1)
+            {
+                return null;
+            }
+
             var rs = await blockStorage.Get(id);
             if (rs == null)
             {
@@ -54,6 +64,10 @@ namespace Sp8de.Explorer.Api.Controllers
             }
 
             var transactions = await blockStorage.GetTransactions(rs.Id);
+            if (transactions == null)
+            {
+                return null;
+            }
 
             return transactions.ToList();
         }
