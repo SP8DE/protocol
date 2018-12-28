@@ -11,10 +11,10 @@ namespace Sp8de.Common.Utils
 {
     public static class SMTPHelper
     {
-        public static string SMTP_SERVER = "smtp.gmail.com";
+        public static string SMTP_SERVER = "";
         public static int SMTP_PORT = 587;
-        public static string SMTP_LOGIN = "noresponse@gold.io";
-        public static string SMTP_PASSWORD = "nr7m+C,PNp6=;R2%";
+        public static string SMTP_LOGIN = "";
+        public static string SMTP_PASSWORD = "";
 
         /// <summary>
         /// Send Mail via SMTP method
